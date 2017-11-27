@@ -52,7 +52,7 @@ public class MyServiceClient {
    */
   public Promise<String> getHello(String name) {
     return asyncRequestFactory
-        .createGetRequest(appContext.getMasterApiEndpoint() + "/hello/" + name)
+        .createGetRequest(appContext.getWsAgentServerApiEndpoint() + "/hello/" + name)
         .loader(loaderFactory.newLoader("Waiting for hello..."))
         .send(new StringUnmarshaller());
   }
