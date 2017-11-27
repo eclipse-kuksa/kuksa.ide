@@ -15,13 +15,13 @@
         <groupId>org.eclipse.che.sample</groupId>
         <version>0.1-SNAPSHOT</version>
     </parent>
-    <artifactId>assembly-wsmaster-war</artifactId>
+    <artifactId>assembly-wsagent-war</artifactId>
     <packaging>war</packaging>
-    <name>Plugin ServerService :: Che Assembly :: Workspace Master Assembly</name>
+    <name>Plugin ServerService :: Che Assembly :: Workspace Agent Assembly</name>
     <dependencies>
         <dependency>
-            <groupId>org.eclipse.che</groupId>
-            <artifactId>assembly-wsmaster-war</artifactId>
+            <groupId>org.eclipse.che.core</groupId>
+            <artifactId>che-wsagent-core</artifactId>
             <type>war</type>
         </dependency>
         <dependency>
@@ -63,18 +63,8 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
                 <configuration>
-                    <overlays>
-                        <overlay>
-                            <groupId>org.eclipse.che</groupId>
-                            <artifactId>assembly-wsmaster-war</artifactId>
-                            <type>war</type>
-                            <includes>
-                                <include>**/**</include>
-                                <include>META-INF/context.xml</include>
-                                <include>META-INF/web.xml</include>
-                            </includes>
-                        </overlay>
-                    </overlays>
+                    <packagingExcludes>WEB-INF/lib/*gwt*.jar,
+                        WEB-INF/lib/gin-*.jar</packagingExcludes>
                 </configuration>
             </plugin>
         </plugins>

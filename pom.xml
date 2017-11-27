@@ -28,7 +28,7 @@
         </license>
     </licenses>
     <properties>
-        <che.version>6.0.0-M2-SNAPSHOT</che.version>
+        <che.version>6.0.0-M3-SNAPSHOT</che.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -40,7 +40,13 @@
             </dependency>
             <dependency>
                 <groupId>org.eclipse.che.sample</groupId>
-                <artifactId>assembly-wsmaster-war</artifactId>
+                <artifactId>assembly-wsagent-server</artifactId>
+                <version>${project.version}</version>
+                <type>tar.gz</type>
+            </dependency>
+            <dependency>
+                 <groupId>org.eclipse.che.sample</groupId>
+                <artifactId>assembly-wsagent-war</artifactId>
                 <version>${project.version}</version>
                 <type>war</type>
             </dependency>

@@ -11,38 +11,27 @@
           xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
     <id>tomcat-zip</id>
     <formats>
-        <format>dir</format>
         <format>zip</format>
         <format>tar.gz</format>
     </formats>
+    <includeBaseDirectory>false</includeBaseDirectory>
     <dependencySets>
         <dependencySet>
             <useProjectArtifact>false</useProjectArtifact>
             <unpack>false</unpack>
-            <outputDirectory>tomcat/webapps</outputDirectory>
+            <outputDirectory>webapps</outputDirectory>
             <outputFileNameMapping>ROOT.war</outputFileNameMapping>
             <includes>
-                <include>org.eclipse.che.sample:assembly-ide-war</include>
-            </includes>
-        </dependencySet>
-        <dependencySet>
-            <useProjectArtifact>false</useProjectArtifact>
-            <unpack>false</unpack>
-            <outputDirectory>lib</outputDirectory>
-            <outputFileNameMapping>ws-agent.tar.gz</outputFileNameMapping>
-            <includes>
-                <include>org.eclipse.che.sample:assembly-wsmaster-war</include>
+                <include>org.eclipse.che.sample:assembly-wsagent-war</include>
             </includes>
         </dependencySet>
     </dependencySets>
-
     <fileSets>
         <fileSet>
-            <directory>${project.build.directory}/dependency/eclipse-che-${che.version}</directory>
+            <directory>${project.build.directory}/dependency/</directory>
             <outputDirectory></outputDirectory>
             <excludes>
-                <exclude>**/tomcat/webapps/ROOT.war</exclude>
-                <exclude>lib/ws-agent.tar.gz</exclude>
+                <exclude>webapps/ROOT.war</exclude>
             </excludes>
         </fileSet>
     </fileSets>

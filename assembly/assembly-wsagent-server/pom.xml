@@ -8,26 +8,21 @@
     http://www.eclipse.org/legal/epl-v10.html
 
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <artifactId>plugin-serverservice-assembly-parent</artifactId>
         <groupId>org.eclipse.che.sample</groupId>
         <version>0.1-SNAPSHOT</version>
     </parent>
-    <artifactId>assembly-main</artifactId>
+    <artifactId>assembly-wsagent-server</artifactId>
     <packaging>pom</packaging>
-    <name>Plugin ServerService :: Che Assembly :: Assemblies Tomcat</name>
+    <name>Plugin ServerService :: Che Assembly :: Workspace Agent Tomcat Assembly</name>
     <dependencies>
         <dependency>
             <groupId>org.eclipse.che.sample</groupId>
-            <artifactId>assembly-ide-war</artifactId>
+            <artifactId>assembly-wsagent-war</artifactId>
             <type>war</type>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.che.sample</groupId>
-            <artifactId>assembly-wsagent-server</artifactId>
-            <type>tar.gz</type>
         </dependency>
     </dependencies>
     <build>
@@ -45,12 +40,13 @@
                     </execution>
                 </executions>
                 <configuration>
+                    <tarLongFileMode>posix</tarLongFileMode>
                     <appendAssemblyId>false</appendAssemblyId>
                     <updateOnly>false</updateOnly>
                     <descriptors>
-                        <descriptor>${project.basedir}/src/assembly/assembly.xml</descriptor></descriptors>
-                    <finalName>eclipse-che-${project.version}</finalName>
-                    <tarLongFileMode>posix</tarLongFileMode>
+                        <descriptor>${project.basedir}/src/assembly/assembly.xml</descriptor>
+                    </descriptors>
+                    <finalName>ext-server-${project.version}</finalName>
                 </configuration>
             </plugin>
             <plugin>
@@ -67,9 +63,8 @@
                             <artifactItems>
                                 <artifactItem>
                                     <groupId>org.eclipse.che</groupId>
-                                    <artifactId>assembly-main</artifactId>
-                                    <version>${che.version}</version>
-                                    <type>zip</type>
+                                    <artifactId>assembly-wsagent-server</artifactId>
+                                    <type>tar.gz</type>
                                     <overWrite>true</overWrite>
                                     <outputDirectory>${project.build.directory}/dependency</outputDirectory>
                                 </artifactItem>
