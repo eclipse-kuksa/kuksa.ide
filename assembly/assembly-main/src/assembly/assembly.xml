@@ -31,7 +31,7 @@
             <outputDirectory>lib</outputDirectory>
             <outputFileNameMapping>ws-agent.tar.gz</outputFileNameMapping>
             <includes>
-                <include>org.eclipse.che.sample:assembly-wsmaster-war</include>
+                <include>org.eclipse.che.sample:assembly-wsagent-server</include>
             </includes>
         </dependencySet>
     </dependencySets>

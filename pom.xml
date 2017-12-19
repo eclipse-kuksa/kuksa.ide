@@ -12,7 +12,7 @@
     <parent>
         <artifactId>maven-depmgt-pom</artifactId>
         <groupId>org.eclipse.che.depmgt</groupId>
-        <version>6.0.0-M3-SNAPSHOT</version>
+        <version>6.0.0-M4-SNAPSHOT</version>
     </parent>
     <groupId>org.eclipse.che.sample</groupId>
     <artifactId>plugin-serverservice</artifactId>
@@ -28,7 +28,7 @@
         </license>
     </licenses>
     <properties>
-        <che.version>6.0.0-M3-SNAPSHOT</che.version>
+        <che.version>6.0.0-M4-SNAPSHOT</che.version>
     </properties>
     <dependencyManagement>
         <dependencies>
