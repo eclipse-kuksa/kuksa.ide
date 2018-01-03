@@ -17,7 +17,7 @@
     </parent>
     <groupId>org.eclipse.che.sample</groupId>
     <artifactId>plugin-serverservice</artifactId>
-    <version>6.0.0-M4-SNAPSHOT</version>
+    <version>6.0.0-M5-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>Plugin ServerService :: Parent pom</name>
     <url>https://www.eclipse.org/che/</url>
