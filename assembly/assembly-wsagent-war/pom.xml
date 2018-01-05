@@ -20,8 +20,8 @@
     <name>Plugin ServerService :: Che Assembly :: Workspace Agent Assembly</name>
     <dependencies>
         <dependency>
-            <groupId>org.eclipse.che.core</groupId>
-            <artifactId>che-wsagent-core</artifactId>
+            <groupId>org.eclipse.che</groupId>
+            <artifactId>assembly-wsagent-war</artifactId>
             <type>war</type>
         </dependency>
         <dependency>
