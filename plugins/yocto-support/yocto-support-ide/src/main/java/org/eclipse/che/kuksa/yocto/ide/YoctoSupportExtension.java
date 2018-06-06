@@ -8,6 +8,7 @@
 package org.eclipse.che.kuksa.yocto.ide;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import org.eclipse.che.ide.api.action.ActionManager;
 import org.eclipse.che.ide.api.action.DefaultActionGroup;
 import org.eclipse.che.ide.api.action.IdeActions;
@@ -19,6 +20,7 @@ import org.eclipse.che.kuksa.yocto.ide.action.MyAction;
  *
  * @author Edgar Mueller
  */
+@Singleton
 @Extension(title = "Yocto Support Extension", version = "0.0.1")
 public class YoctoSupportExtension {
 
