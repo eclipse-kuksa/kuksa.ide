@@ -5,11 +5,11 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  */
-package org.eclipse.che.sample.inject;
+package org.eclipse.che.kuksa.inject;
 
 import com.google.inject.AbstractModule;
 import org.eclipse.che.inject.DynaModule;
-import org.eclipse.che.sample.MyService;
+import org.eclipse.che.kuksa.MyService;
 
 /** Server service example Guice module for setting up a simple service. */
 @DynaModule

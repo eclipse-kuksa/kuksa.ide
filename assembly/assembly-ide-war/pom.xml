@@ -12,7 +12,7 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <artifactId>plugin-serverservice-assembly-parent</artifactId>
-        <groupId>org.eclipse.che.sample</groupId>
+        <groupId>org.eclipse.che.kuksa</groupId>
         <version>6.7.0-SNAPSHOT</version>
     </parent>
     <artifactId>assembly-ide-war</artifactId>
@@ -34,7 +34,7 @@
             <type>gwt-lib</type>
         </dependency>
         <dependency>
-            <groupId>org.eclipse.che.sample</groupId>
+            <groupId>org.eclipse.che.kuksa</groupId>
             <artifactId>plugin-serverservice-ide</artifactId>
             <type>gwt-lib</type>
         </dependency>

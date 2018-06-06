@@ -15,7 +15,7 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <artifactId>plugin-parent</artifactId>
-        <groupId>org.eclipse.che.sample</groupId>
+        <groupId>org.eclipse.che.kuksa</groupId>
         <version>6.7.0-SNAPSHOT</version>
     </parent>
     <artifactId>plugin-serverservice-parent</artifactId>
@@ -32,7 +32,7 @@
                 <artifactId>gwt-maven-plugin</artifactId>
                 <extensions>true</extensions>
                 <configuration>
-                    <moduleName>org.eclipse.che.sample.ServerServiceExtension</moduleName>
+                    <moduleName>org.eclipse.che.kuksa.ServerServiceExtension</moduleName>
                 </configuration>
             </plugin>
         </plugins>

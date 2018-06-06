@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  */
-package org.eclipse.che.sample.ide;
+package org.eclipse.che.kuksa.ide;
 
 import javax.inject.Inject;
 import org.eclipse.che.api.promises.client.Promise;

@@ -5,14 +5,14 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  */
-package org.eclipse.che.sample.ide;
+package org.eclipse.che.kuksa.ide;
 
 import com.google.inject.Inject;
 import org.eclipse.che.ide.api.action.ActionManager;
 import org.eclipse.che.ide.api.action.DefaultActionGroup;
 import org.eclipse.che.ide.api.action.IdeActions;
 import org.eclipse.che.ide.api.extension.Extension;
-import org.eclipse.che.sample.ide.action.MyAction;
+import org.eclipse.che.kuksa.ide.action.MyAction;
 
 /**
  * Server service extension that registers action which calls a service.

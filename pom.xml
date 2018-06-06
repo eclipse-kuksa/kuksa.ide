@@ -15,7 +15,7 @@
         <groupId>org.eclipse.che.depmgt</groupId>
         <version>6.7.0-SNAPSHOT</version>
     </parent>
-    <groupId>org.eclipse.che.sample</groupId>
+    <groupId>org.eclipse.che.kuksa</groupId>
     <artifactId>plugin-serverservice</artifactId>
     <version>6.7.0-SNAPSHOT</version>
     <packaging>pom</packaging>
@@ -29,8 +29,8 @@
         </license>
     </licenses>
     <scm>
-        <connection>scm:git:git@github.com:che-samples/che-ide-server-extension.git</connection>
-        <developerConnection>scm:git:git@github.com:che-samples/che-ide-server-extension.git</developerConnection>
+        <connection>scm:git:ssh://git@gitlab.idial.institute:2222/pedro.cuadrachamorro/kuksa-ide.git</connection>
+        <developerConnection>scm:git:ssh://git@gitlab.idial.institute:2222/pedro.cuadrachamorro/kuksa-ide.git</developerConnection>
         <tag>HEAD</tag>
     </scm>
     <properties>
@@ -39,31 +39,31 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>org.eclipse.che.sample</groupId>
+                <groupId>org.eclipse.che.kuksa</groupId>
                 <artifactId>assembly-ide-war</artifactId>
                 <version>${project.version}</version>
                 <type>war</type>
             </dependency>
             <dependency>
-                <groupId>org.eclipse.che.sample</groupId>
+                <groupId>org.eclipse.che.kuksa</groupId>
                 <artifactId>assembly-wsagent-server</artifactId>
                 <version>${project.version}</version>
                 <type>tar.gz</type>
             </dependency>
             <dependency>
-                 <groupId>org.eclipse.che.sample</groupId>
+                 <groupId>org.eclipse.che.kuksa</groupId>
                 <artifactId>assembly-wsagent-war</artifactId>
                 <version>${project.version}</version>
                 <type>war</type>
             </dependency>
             <dependency>
-                <groupId>org.eclipse.che.sample</groupId>
+                <groupId>org.eclipse.che.kuksa</groupId>
                 <artifactId>plugin-serverservice-ide</artifactId>
                 <version>${project.version}</version>
                 <type>gwt-lib</type>
             </dependency>
             <dependency>
-                <groupId>org.eclipse.che.sample</groupId>
+                <groupId>org.eclipse.che.kuksa</groupId>
                 <artifactId>plugin-serverservice-server</artifactId>
                 <version>${project.version}</version>
             </dependency>

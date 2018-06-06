@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  */
-package org.eclipse.che.sample.ide.action;
+package org.eclipse.che.kuksa.ide.action;
 
 import com.google.inject.Inject;
 import org.eclipse.che.api.promises.client.Operation;
@@ -15,7 +15,7 @@ import org.eclipse.che.ide.api.action.ActionEvent;
 import org.eclipse.che.ide.api.action.BaseAction;
 import org.eclipse.che.ide.api.notification.NotificationManager;
 import org.eclipse.che.ide.api.notification.StatusNotification;
-import org.eclipse.che.sample.ide.MyServiceClient;
+import org.eclipse.che.kuksa.ide.MyServiceClient;
 
 /**
  * Actions that triggers the sample server service call.
