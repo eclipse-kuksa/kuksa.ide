@@ -17,7 +17,7 @@
     </parent>
     <artifactId>assembly-wsagent-server</artifactId>
     <packaging>pom</packaging>
-    <name>Plugin ServerService :: Che Assembly :: Workspace Agent Tomcat Assembly</name>
+    <name>Kuksa IDE :: Che Assembly :: Workspace Agent Tomcat Assembly</name>
     <dependencies>
         <dependency>
             <groupId>org.eclipse.che.kuksa</groupId>

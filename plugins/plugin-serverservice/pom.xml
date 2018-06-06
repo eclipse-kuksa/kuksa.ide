@@ -20,21 +20,9 @@
     </parent>
     <artifactId>plugin-serverservice-parent</artifactId>
     <packaging>pom</packaging>
-    <name>Plugin ServerService :: Plugin :: Parent</name>
+    <name>Kuksa IDE :: Plugins :: ServerService</name>
     <modules>
         <module>plugin-serverservice-server</module>
         <module>plugin-serverservice-ide</module>
     </modules>
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>net.ltgt.gwt.maven</groupId>
-                <artifactId>gwt-maven-plugin</artifactId>
-                <extensions>true</extensions>
-                <configuration>
-                    <moduleName>org.eclipse.che.kuksa.ServerServiceExtension</moduleName>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
 </project>

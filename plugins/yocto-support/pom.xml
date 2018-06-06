@@ -7,20 +7,22 @@
     which accompanies this distribution, and is available at
     http://www.eclipse.org/legal/epl-v10.html
 
+    Contributors:
+      Codenvy, S.A. - initial API and implementation
+
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <artifactId>plugin-serverservice</artifactId>
+        <artifactId>plugin-parent</artifactId>
         <groupId>org.eclipse.che.kuksa</groupId>
         <version>6.7.0-SNAPSHOT</version>
-        <relativePath>../pom.xml</relativePath>
     </parent>
-    <artifactId>plugin-parent</artifactId>
+    <artifactId>yocto-support-parent</artifactId>
     <packaging>pom</packaging>
-    <name>Kuksa IDE :: Plugins</name>
+    <name>Kuksa IDE :: Plugins :: Yocto Support</name>
     <modules>
-        <module>plugin-serverservice</module>
-        <module>yocto-support</module>
+        <module>yocto-support-server</module>
+        <module>yocto-support-ide</module>
     </modules>
 </project>

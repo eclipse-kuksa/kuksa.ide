@@ -18,7 +18,7 @@
     <groupId>org.eclipse.che.kuksa</groupId>
     <artifactId>plugin-serverservice-assembly-parent</artifactId>
     <packaging>pom</packaging>
-    <name>Plugin ServerService :: Che Assembly :: Assembly Parent</name>
+    <name>Kuksa IDE :: Che Assembly</name>
   <modules>
     <module>assembly-wsagent-war</module>
     <module>assembly-wsagent-server</module>

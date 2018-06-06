@@ -17,7 +17,7 @@
     </parent>
     <artifactId>assembly-wsagent-war</artifactId>
     <packaging>war</packaging>
-    <name>Plugin ServerService :: Che Assembly :: Workspace Agent Assembly</name>
+    <name>Kuksa IDE :: Che Assembly :: Workspace Agent Assembly</name>
     <dependencies>
         <dependency>
             <groupId>org.eclipse.che</groupId>
@@ -27,6 +27,10 @@
         <dependency>
             <groupId>org.eclipse.che.kuksa</groupId>
             <artifactId>plugin-serverservice-server</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.che.kuksa</groupId>
+            <artifactId>yocto-support-server</artifactId>
         </dependency>
     </dependencies>
     <build>

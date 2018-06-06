@@ -17,7 +17,7 @@
     </parent>
     <artifactId>assembly-ide-war</artifactId>
     <packaging>war</packaging>
-    <name>Plugin ServerService :: Che Assembly :: IDE Assembly</name>
+    <name>Kuksa IDE :: Che Assembly :: IDE Assembly</name>
     <properties>
         <gwt.log.enable>false</gwt.log.enable>
         <generated.sources.directory>${project.build.directory}/generated-sources/gen</generated.sources.directory>
@@ -36,6 +36,11 @@
         <dependency>
             <groupId>org.eclipse.che.kuksa</groupId>
             <artifactId>plugin-serverservice-ide</artifactId>
+            <type>gwt-lib</type>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.che.kuksa</groupId>
+            <artifactId>yocto-support-ide</artifactId>
             <type>gwt-lib</type>
         </dependency>
         <dependency>

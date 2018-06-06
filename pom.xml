@@ -19,7 +19,7 @@
     <artifactId>plugin-serverservice</artifactId>
     <version>6.7.0-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>Plugin ServerService :: Parent pom</name>
+    <name>Kuksa IDE</name>
     <url>https://www.eclipse.org/che/</url>
     <licenses>
         <license>
@@ -65,6 +65,17 @@
             <dependency>
                 <groupId>org.eclipse.che.kuksa</groupId>
                 <artifactId>plugin-serverservice-server</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.che.kuksa</groupId>
+                <artifactId>yocto-support-ide</artifactId>
+                <version>${project.version}</version>
+                <type>gwt-lib</type>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.che.kuksa</groupId>
+                <artifactId>yocto-support-server</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
