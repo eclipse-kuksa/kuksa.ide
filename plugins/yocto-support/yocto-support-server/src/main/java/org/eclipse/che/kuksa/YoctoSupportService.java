@@ -17,7 +17,7 @@ import javax.ws.rs.PathParam;
  * @author Edgar Mueller
  */
 @Path("hello2")
-public class MyService {
+public class YoctoSupportService {
 
   /**
    * Returns a greeting message.

@@ -19,8 +19,8 @@ import org.eclipse.che.kuksa.yocto.ide.action.MyAction;
  *
  * @author Edgar Mueller
  */
-@Extension(title = "Server Service Sample Extension", version = "0.0.1")
-public class ServerServiceExtension {
+@Extension(title = "Yocto Support Extension", version = "0.0.1")
+public class YoctoSupportExtension {
 
   /**
    * Constructor.
@@ -29,7 +29,7 @@ public class ServerServiceExtension {
    * @param myAction the action that calls the example server service
    */
   @Inject
-  public ServerServiceExtension(ActionManager actionManager, MyAction myAction) {
+  public YoctoSupportExtension(ActionManager actionManager, MyAction myAction) {
 
     actionManager.registerAction("myAction2", myAction);
 

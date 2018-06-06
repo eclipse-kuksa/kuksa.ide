@@ -48,7 +48,7 @@
                 <artifactId>gwt-maven-plugin</artifactId>
                 <extensions>true</extensions>
                 <configuration>
-                    <moduleName>org.eclipse.che.kuksa.yocto.ide.ServerServiceExtension</moduleName>
+                    <moduleName>org.eclipse.che.kuksa.yocto.ide.YoctoSupportExtension</moduleName>
                 </configuration>
             </plugin>
         </plugins>

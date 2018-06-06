@@ -9,14 +9,14 @@ package org.eclipse.che.kuksa.inject;
 
 import com.google.inject.AbstractModule;
 import org.eclipse.che.inject.DynaModule;
-import org.eclipse.che.kuksa.MyService;
+import org.eclipse.che.kuksa.YoctoSupportService;
 
 /** Server service example Guice module for setting up a simple service. */
 @DynaModule
-public class ServerServiceGuiceModule extends AbstractModule {
+public class YoctoSupportGuiceModule extends AbstractModule {
 
   @Override
   protected void configure() {
-    bind(MyService.class);
+    bind(YoctoSupportService.class);
   }
 }
