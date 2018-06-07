@@ -1,0 +1,92 @@
+{
+  "v": "4.0",
+  "name": "roverapp",
+  "workspace": {
+    "defaultEnv": "default",
+    "environments": {
+      "default": {
+        "machines": {
+          "dev-machine": {
+            "attributes": {
+              "memoryLimitBytes": "2147483648"
+            },
+            "servers": {},
+            "volumes": {},
+            "installers": [
+              "org.eclipse.che.exec",
+              "org.eclipse.che.terminal",
+              "org.eclipse.che.ws-agent",
+              "org.eclipse.che.ssh"
+            ],
+            "env": {}
+          }
+        },
+        "recipe": {
+          "type": "dockerimage",
+          "content": "lkrawczyk/eclipse-che:latest"
+        }
+      }
+    },
+    "projects": [
+      {
+        "links": [],
+        "name": "rover-app",
+        "attributes": {
+          "contribute_to_branch": [
+            "master"
+          ]
+        },
+        "type": "cpp",
+        "source": {
+          "location": "https://github.com/app4mc-rover/rover-app",
+          "type": "git",
+          "parameters": {}
+        },
+        "path": "/rover-app",
+        "problems": [],
+        "mixins": [
+        ]
+      }
+    ],
+    "name": "cppagl",
+    "commands": [
+      {
+        "commandLine": ". /opt/rover/0.1.0/environment-setup-armv7vehf-neon-vfpv4-rover-linux-gnueabi && mkdir -p ${current.project.path}/build && cd ${current.project.path}/build && cmake ..",
+        "name": "Configure (cmake)",
+        "attributes": {
+          "goal": "Build"
+        },
+        "type": "custom"
+      },
+      {
+        "commandLine": ". /opt/rover/0.1.0/environment-setup-armv7vehf-neon-vfpv4-rover-linux-gnueabi && cd ${current.project.path}/build && make",
+        "name": "Build (cmake)",
+        "attributes": {
+          "goal": "Build"
+        },
+        "type": "custom"
+      },
+      {
+        "commandLine": "ssh -o StrictHostKeyChecking=no -t root@${TARGET_IP} mkdir -p ${current.project.path} && rsync -r ${current.project.path}/* root@${TARGET_IP}:${current.project.path} && echo \"Deployment done!\"",
+        "name": "Deploy",
+        "type": "custom",
+        "attributes": {
+          "goal": "Deploy"
+        }
+      },
+      {
+        "commandLine": "ssh -o StrictHostKeyChecking=no -t root@${TARGET_IP} ${current.project.path}/${EXECUTABLE_PATH}",
+        "name": "Run",
+        "type": "custom",
+        "attributes": {
+          "goal": "Run"
+        }
+      }
+    ],
+    "links": []
+  },
+  "creator": {
+    "name": "FH-Dortmund",
+    "email": "lukas.krawczyk@fh-dortmund.de"
+  }
+}
