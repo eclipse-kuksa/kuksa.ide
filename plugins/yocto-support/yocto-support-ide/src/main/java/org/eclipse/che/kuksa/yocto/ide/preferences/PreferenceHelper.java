@@ -28,10 +28,10 @@ public class PreferenceHelper {
    * @param pref The list of Yaml Preferences you want to convert
    * @return Map of Globs to List of urls of the Yaml Preferences
    */
-  public static Map<String, List<String>> yamlPreferenceToMap(List<YamlPreference> pref) {
+  public static Map<String, List<String>> yoctoPreferenceToMap(List<YoctoSdkPreferences> pref) {
     Map<String, List<String>> preferenceMap = new HashMap<String, List<String>>();
 
-    for (YamlPreference prefItr : pref) {
+    for (YoctoSdkPreferences prefItr : pref) {
 
       if (preferenceMap.containsKey(prefItr.getGlob())) {
         ArrayList<String> prefList = new ArrayList<String>(preferenceMap.get(prefItr.getGlob()));

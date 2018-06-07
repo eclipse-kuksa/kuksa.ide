@@ -39,8 +39,8 @@
             <g:FlowPanel width="100%">
                 <g:FlowPanel addStyleNames="{style.emptyBorder}">
                     <g:Button addStyleNames="{style.alignLeft}" height="22px"
-                              ui:field="addUrl" debugId="preferences-addUrl">
-                        <ui:text from="{locale.addUrlText}"/>
+                              ui:field="addSdk" debugId="preferences-addSdk">
+                        <ui:text from="{locale.addSdk}"/>
                     </g:Button>
                 </g:FlowPanel>
             </g:FlowPanel>
@@ -53,7 +53,7 @@
         <g:center>
             <g:ScrollPanel addStyleNames="{style.emptyBorder}">
                 <g:SimplePanel>
-                    <p1:CellTable width="100%" ui:field="yamlPreferenceCellTable" focus="false"
+                    <p1:CellTable width="100%" ui:field="yoctoSdkPreferenceCellTable" focus="false"
                                   debugId="preferences-cellTable-keys"/>
                 </g:SimplePanel>
             </g:ScrollPanel>

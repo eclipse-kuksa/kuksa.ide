@@ -19,30 +19,42 @@ import com.google.gwt.i18n.client.Messages;
  */
 public interface YoctoLocalizationConstant extends Messages {
 
-  @Key("addUrlText")
-  String addUrlText();
+  @Key("addSdk")
+  String addSdk();
 
-  @Key("deleteUrlText")
-  String deleteUrlText();
+  @Key("deleteSdk")
+  String deleteSdk();
 
   @Key("headerUiMessage")
   String headerUiMessage();
 
-  @Key("addUrlLabel")
-  String addUrlLabel();
+  @Key("addSdkUrlLabel")
+  String addSdkUrlLabel();
 
-  @Key("deleteUrlLabel")
-  String deleteUrlLabel();
+  @Key("addSdkNameLabel")
+  String addSdkNameLabel();
+
+  @Key("addSdkVersionLabel")
+  String addSdkVersionLabel();
+
+  @Key("deleteSdkLabel")
+  String deleteSdkLabel();
+
+  @Key("selectColumnHeader")
+  String selectColumnHeader();
 
   @Key("urlColumnHeader")
   String urlColumnHeader();
 
-  @Key("globColumnHeader")
-  String globColumnHeader();
+  @Key("sdkColumnHeader")
+  String sdkColumnHeader();
+
+  @Key("versionColumnHeader")
+  String versionColumnHeader();
 
   @Key("deleteColumnHeader")
   String deleteColumnHeader();
 
-  @Key("addSchemaButtonText")
-  String addSchemaButtonText();
+  @Key("addSdkButtonText")
+  String addSdkButtonText();
 }

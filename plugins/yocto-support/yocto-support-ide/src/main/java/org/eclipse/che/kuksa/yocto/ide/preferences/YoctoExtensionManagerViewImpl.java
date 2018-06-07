@@ -14,6 +14,7 @@ import com.google.gwt.cell.client.ButtonCell;
 import com.google.gwt.cell.client.Cell.Context;
 import com.google.gwt.cell.client.EditTextCell;
 import com.google.gwt.cell.client.FieldUpdater;
+import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -44,10 +45,10 @@ public class YoctoExtensionManagerViewImpl extends Composite implements YoctoExt
   private static YoctoExtensionManagerViewImplUiBinder uiBinder =
       GWT.create(YoctoExtensionManagerViewImplUiBinder.class);
 
-  @UiField Button addUrl;
+  @UiField Button addSdk;
 
   @UiField(provided = true)
-  CellTable<YamlPreference> yamlPreferenceCellTable;
+  CellTable<YoctoSdkPreferences> yoctoSdkPreferenceCellTable;
 
   @UiField Label headerUiMsg;
 
@@ -69,16 +70,16 @@ public class YoctoExtensionManagerViewImpl extends Composite implements YoctoExt
    */
   private void initYoctoExtensionTable(final CellTable.Resources res) {
 
-    yamlPreferenceCellTable = new CellTable<YamlPreference>(20, res);
-    Column<YamlPreference, String> urlColumn =
-        new Column<YamlPreference, String>(new EditTextCell()) {
+    yoctoSdkPreferenceCellTable = new CellTable<YoctoSdkPreferences>(20, res);
+    Column<YoctoSdkPreferences, String> nameColumn =
+        new Column<YoctoSdkPreferences, String>(new EditTextCell()) {
           @Override
-          public String getValue(YamlPreference object) {
-            return object.getUrl();
+          public String getValue(YoctoSdkPreferences object) {
+            return object.getName();
           }
 
           @Override
-          public void render(Context context, YamlPreference object, SafeHtmlBuilder sb) {
+          public void render(Context context, YoctoSdkPreferences object, SafeHtmlBuilder sb) {
             sb.appendHtmlConstant(
                 "<div id=\""
                     + UIObject.DEBUG_ID_PREFIX
@@ -89,24 +90,24 @@ public class YoctoExtensionManagerViewImpl extends Composite implements YoctoExt
           }
         };
 
-    urlColumn.setFieldUpdater(
-        new FieldUpdater<YamlPreference, String>() {
+    nameColumn.setFieldUpdater(
+        new FieldUpdater<YoctoSdkPreferences, String>() {
           @Override
-          public void update(int index, YamlPreference object, String value) {
-            object.setUrl(value);
+          public void update(int index, YoctoSdkPreferences object, String value) {
+            object.setName(value);
             delegate.nowDirty();
           }
         });
 
-    Column<YamlPreference, String> globColumn =
-        new Column<YamlPreference, String>(new EditTextCell()) {
+    Column<YoctoSdkPreferences, String> versionColumn =
+        new Column<YoctoSdkPreferences, String>(new EditTextCell()) {
           @Override
-          public String getValue(YamlPreference object) {
-            return object.getGlob();
+          public String getValue(YoctoSdkPreferences object) {
+            return object.getVersion();
           }
 
           @Override
-          public void render(Context context, YamlPreference object, SafeHtmlBuilder sb) {
+          public void render(Context context, YoctoSdkPreferences object, SafeHtmlBuilder sb) {
             sb.appendHtmlConstant(
                 "<div id=\""
                     + UIObject.DEBUG_ID_PREFIX
@@ -119,24 +120,86 @@ public class YoctoExtensionManagerViewImpl extends Composite implements YoctoExt
           }
         };
 
-    globColumn.setFieldUpdater(
-        new FieldUpdater<YamlPreference, String>() {
+    versionColumn.setFieldUpdater(
+        new FieldUpdater<YoctoSdkPreferences, String>() {
           @Override
-          public void update(int index, YamlPreference object, String value) {
-            object.setGlob(value);
+          public void update(int index, YoctoSdkPreferences object, String value) {
+            object.setVersion(value);
             delegate.nowDirty();
           }
         });
 
-    Column<YamlPreference, String> deletePreferenceColumn =
-        new Column<YamlPreference, String>(new ButtonCell()) {
+    Column<YoctoSdkPreferences, String> urlColumn =
+        new Column<YoctoSdkPreferences, String>(new TextCell()) {
           @Override
-          public String getValue(YamlPreference object) {
+          public String getValue(YoctoSdkPreferences object) {
+            return object.getUrl();
+          }
+
+          @Override
+          public void render(Context context, YoctoSdkPreferences object, SafeHtmlBuilder sb) {
+            sb.appendHtmlConstant(
+                "<div id=\""
+                    + UIObject.DEBUG_ID_PREFIX
+                    + "-preferences-cellTable-glob-"
+                    + context.getIndex()
+                    + "\">");
+            if (object != null) {
+              super.render(context, object, sb);
+            }
+          }
+        };
+
+    urlColumn.setFieldUpdater(
+        new FieldUpdater<YoctoSdkPreferences, String>() {
+          @Override
+          public void update(int index, YoctoSdkPreferences object, String value) {
+            //            object.setUrl(value);
+            //            delegate.refreshTable();
+          }
+        });
+
+    Column<YoctoSdkPreferences, String> selectPreferenceColumn =
+        new Column<YoctoSdkPreferences, String>(new ButtonCell()) {
+          @Override
+          public String getValue(YoctoSdkPreferences object) {
+            if (object.isSelected()) {
+              return "";
+            }
+            return "Select";
+          }
+
+          @Override
+          public void render(Context context, YoctoSdkPreferences object, SafeHtmlBuilder sb) {
+            sb.appendHtmlConstant(
+                "<div id=\""
+                    + UIObject.DEBUG_ID_PREFIX
+                    + "-preferences-cellTable-select-"
+                    + context.getIndex()
+                    + "\">");
+            super.render(context, object, sb);
+          }
+        };
+
+    // Creates handler on button clicked
+    selectPreferenceColumn.setFieldUpdater(
+        new FieldUpdater<YoctoSdkPreferences, String>() {
+          @Override
+          public void update(int index, YoctoSdkPreferences object, String value) {
+            delegate.onSelectClicked(object);
+            delegate.nowDirty();
+          }
+        });
+
+    Column<YoctoSdkPreferences, String> deletePreferenceColumn =
+        new Column<YoctoSdkPreferences, String>(new ButtonCell()) {
+          @Override
+          public String getValue(YoctoSdkPreferences object) {
             return "Delete";
           }
 
           @Override
-          public void render(Context context, YamlPreference object, SafeHtmlBuilder sb) {
+          public void render(Context context, YoctoSdkPreferences object, SafeHtmlBuilder sb) {
             sb.appendHtmlConstant(
                 "<div id=\""
                     + UIObject.DEBUG_ID_PREFIX
@@ -149,29 +212,33 @@ public class YoctoExtensionManagerViewImpl extends Composite implements YoctoExt
 
     // Creates handler on button clicked
     deletePreferenceColumn.setFieldUpdater(
-        new FieldUpdater<YamlPreference, String>() {
+        new FieldUpdater<YoctoSdkPreferences, String>() {
           @Override
-          public void update(int index, YamlPreference object, String value) {
+          public void update(int index, YoctoSdkPreferences object, String value) {
             delegate.onDeleteClicked(object);
           }
         });
 
-    yamlPreferenceCellTable.addColumn(urlColumn, local.urlColumnHeader());
-    yamlPreferenceCellTable.addColumn(globColumn, local.globColumnHeader());
-    yamlPreferenceCellTable.addColumn(deletePreferenceColumn, local.deleteColumnHeader());
-    yamlPreferenceCellTable.setWidth("100%", true);
-    yamlPreferenceCellTable.setColumnWidth(urlColumn, 45, Style.Unit.PCT);
-    yamlPreferenceCellTable.setColumnWidth(globColumn, 30, Style.Unit.PCT);
-    yamlPreferenceCellTable.setColumnWidth(deletePreferenceColumn, 25, Style.Unit.PCT);
+    yoctoSdkPreferenceCellTable.addColumn(nameColumn, local.sdkColumnHeader());
+    yoctoSdkPreferenceCellTable.addColumn(versionColumn, local.versionColumnHeader());
+    yoctoSdkPreferenceCellTable.addColumn(urlColumn, local.urlColumnHeader());
+    yoctoSdkPreferenceCellTable.addColumn(selectPreferenceColumn, local.selectColumnHeader());
+    yoctoSdkPreferenceCellTable.addColumn(deletePreferenceColumn, local.deleteColumnHeader());
+    yoctoSdkPreferenceCellTable.setWidth("100%", true);
+    yoctoSdkPreferenceCellTable.setColumnWidth(nameColumn, 45, Style.Unit.PCT);
+    yoctoSdkPreferenceCellTable.setColumnWidth(versionColumn, 30, Style.Unit.PCT);
+    yoctoSdkPreferenceCellTable.setColumnWidth(urlColumn, 30, Style.Unit.PCT);
+    yoctoSdkPreferenceCellTable.setColumnWidth(selectPreferenceColumn, 25, Style.Unit.PCT);
+    yoctoSdkPreferenceCellTable.setColumnWidth(deletePreferenceColumn, 25, Style.Unit.PCT);
 
     // don't show loading indicator
-    yamlPreferenceCellTable.setLoadingIndicator(null);
+    yoctoSdkPreferenceCellTable.setLoadingIndicator(null);
   }
 
   /** {@inheritDoc} */
   @Override
-  public void setPairs(@NotNull List<YamlPreference> pairs) {
-    this.yamlPreferenceCellTable.setRowData(pairs);
+  public void setPairs(@NotNull List<YoctoSdkPreferences> pairs) {
+    this.yoctoSdkPreferenceCellTable.setRowData(pairs);
   }
 
   /** {@inheritDoc} */
@@ -180,8 +247,8 @@ public class YoctoExtensionManagerViewImpl extends Composite implements YoctoExt
     this.delegate = delegate;
   }
 
-  @UiHandler("addUrl")
-  public void onAddUrlClicked(ClickEvent event) {
-    delegate.onAddUrlClicked();
+  @UiHandler("addSdk")
+  public void onAddSdkClicked(ClickEvent event) {
+    delegate.onAddSdkClicked();
   }
 }

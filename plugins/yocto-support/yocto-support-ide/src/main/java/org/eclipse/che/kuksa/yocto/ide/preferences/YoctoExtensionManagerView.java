@@ -27,12 +27,19 @@ public interface YoctoExtensionManagerView extends View<YoctoExtensionManagerVie
      *
      * @param prefKey prefKey what needs to be deleted
      */
-    void onDeleteClicked(@NotNull YamlPreference prefKey);
+    void onDeleteClicked(@NotNull YoctoSdkPreferences prefKey);
+
+    /**
+     * Performs any actions appropriate in response to the user having pressed the Delete button.
+     *
+     * @param prefKey prefKey what needs to be deleted
+     */
+    void onSelectClicked(@NotNull YoctoSdkPreferences pairKey);
 
     /**
      * Performs any actions appropriate in response to the user having pressed the Add url button.
      */
-    void onAddUrlClicked();
+    void onAddSdkClicked();
 
     /** Sets the current state to dirty. */
     void nowDirty();
@@ -43,5 +50,5 @@ public interface YoctoExtensionManagerView extends View<YoctoExtensionManagerVie
    *
    * @param pairs available pairs
    */
-  void setPairs(@NotNull List<YamlPreference> pairs);
+  void setPairs(@NotNull List<YoctoSdkPreferences> pairs);
 }
