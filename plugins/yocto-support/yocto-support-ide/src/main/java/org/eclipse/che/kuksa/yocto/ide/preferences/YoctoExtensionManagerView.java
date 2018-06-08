@@ -13,6 +13,7 @@ package org.eclipse.che.kuksa.yocto.ide.preferences;
 import java.util.List;
 import javax.validation.constraints.NotNull;
 import org.eclipse.che.ide.api.mvp.View;
+import org.eclipse.che.kuksa.yocto.shared.YoctoSdk;
 
 /**
  * The view of {@link YoctoExtensionManagerPresenter}.
@@ -27,14 +28,14 @@ public interface YoctoExtensionManagerView extends View<YoctoExtensionManagerVie
      *
      * @param prefKey prefKey what needs to be deleted
      */
-    void onDeleteClicked(@NotNull YoctoSdkPreferences prefKey);
+    void onDeleteClicked(@NotNull YoctoSdk prefKey);
 
     /**
      * Performs any actions appropriate in response to the user having pressed the Delete button.
      *
      * @param prefKey prefKey what needs to be deleted
      */
-    void onSelectClicked(@NotNull YoctoSdkPreferences pairKey);
+    void onSelectClicked(@NotNull YoctoSdk pairKey);
 
     /**
      * Performs any actions appropriate in response to the user having pressed the Add url button.
@@ -50,5 +51,5 @@ public interface YoctoExtensionManagerView extends View<YoctoExtensionManagerVie
    *
    * @param pairs available pairs
    */
-  void setPairs(@NotNull List<YoctoSdkPreferences> pairs);
+  void setPairs(@NotNull List<YoctoSdk> pairs);
 }

@@ -22,7 +22,8 @@
     <packaging>pom</packaging>
     <name>Kuksa IDE :: Plugins :: Yocto Support</name>
     <modules>
-        <module>yocto-support-server</module>
+        <module>yocto-support-shared</module>
         <module>yocto-support-ide</module>
+        <module>yocto-support-server</module>        
     </modules>
 </project>

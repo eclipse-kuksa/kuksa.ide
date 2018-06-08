@@ -10,16 +10,12 @@
  */
 package org.eclipse.che.kuksa.yocto.ide.preferences;
 
-import com.google.gwt.json.client.JSONArray;
-import com.google.gwt.json.client.JSONBoolean;
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import elemental.json.Json;
 import elemental.json.JsonObject;
-import java.util.ArrayList;
 import java.util.List;
 import javax.validation.constraints.NotNull;
 import org.eclipse.che.ide.api.preferences.AbstractPreferencePagePresenter;
@@ -29,13 +25,14 @@ import org.eclipse.che.ide.ui.dialogs.DialogFactory;
 import org.eclipse.che.ide.ui.dialogs.confirm.ConfirmCallback;
 import org.eclipse.che.ide.ui.dialogs.input.InputCallback;
 import org.eclipse.che.kuksa.yocto.ide.YoctoLocalizationConstant;
+import org.eclipse.che.kuksa.yocto.shared.YoctoSdk;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 // Initially taken from plugin-yaml
 
 /**
- * The presenter for managing the YoctoSdkPreferencesCellTable in YoctoExtensionManagerView.
+ * The presenter for managing the YoctoSdkCellTable in YoctoExtensionManagerView.
  *
  * @author Joshua Pinkney
  * @author Pedro Cuadra
@@ -49,16 +46,19 @@ public class YoctoExtensionManagerPresenter extends AbstractPreferencePagePresen
   private DialogFactory dialogFactory;
   private YoctoExtensionManagerView view;
   private PreferencesManager preferencesManager;
-  private List<YoctoSdkPreferences> yoctoSdkPreferences;
   private YoctoLocalizationConstant local;
+  //  private YoctoServiceClient serviceClient;
+  //  private NotificationManager notificationManager;
   private boolean dirty = false;
+  private final YoctoSdkManager yoctoSdkManager;
 
   @Inject
   public YoctoExtensionManagerPresenter(
       YoctoExtensionManagerView view,
       DialogFactory dialogFactory,
       PreferencesManager preferencesManager,
-      YoctoLocalizationConstant local) {
+      YoctoLocalizationConstant local,
+      YoctoSdkManager yoctoSdkManager) {
     super("Yocto SDK", "Yocto Settings");
     this.view = view;
     this.dialogFactory = dialogFactory;
@@ -67,18 +67,20 @@ public class YoctoExtensionManagerPresenter extends AbstractPreferencePagePresen
     if (preferencesManager.getValue(preferenceName) == null
         || "".equals(preferencesManager.getValue(preferenceName))
         || "{}".equals(preferencesManager.getValue(preferenceName))) {
-      this.yoctoSdkPreferences = new ArrayList<YoctoSdkPreferences>();
     } else {
-      this.yoctoSdkPreferences =
-          jsonToYoctoSdkPreferences(this.preferencesManager.getValue(this.preferenceName));
+      //      jsonToYoctoSdk(this.preferencesManager.getValue(this.preferenceName));
     }
     this.view.setDelegate(this);
+    //    this.serviceClient = serviceClient;
+    //    this.notificationManager = notificationManager;
+    this.yoctoSdkManager = yoctoSdkManager;
+
     refreshTable();
   }
 
   /** {@inheritDoc} */
   @Override
-  public void onDeleteClicked(@NotNull final YoctoSdkPreferences pairKey) {
+  public void onDeleteClicked(@NotNull final YoctoSdk pairKey) {
     dialogFactory
         .createConfirmDialog(
             local.deleteSdk(),
@@ -86,7 +88,7 @@ public class YoctoExtensionManagerPresenter extends AbstractPreferencePagePresen
             new ConfirmCallback() {
               @Override
               public void accepted() {
-                deleteKeyFromPreferences(pairKey);
+                yoctoSdkManager.removeSdk(pairKey);
                 refreshTable();
                 nowDirty();
               }
@@ -97,13 +99,17 @@ public class YoctoExtensionManagerPresenter extends AbstractPreferencePagePresen
 
   /** {@inheritDoc} */
   @Override
-  public void onSelectClicked(@NotNull final YoctoSdkPreferences pairKey) {
+  public void onSelectClicked(@NotNull final YoctoSdk pairKey) {
 
-    for (YoctoSdkPreferences pref : this.yoctoSdkPreferences) {
-      pref.setSelected(false);
-    }
-
-    pairKey.setSelected(true);
+    this.yoctoSdkManager.selectSdk(pairKey);
+    LOG.info(
+        "Selected SDK: { Name: "
+            + pairKey.getName()
+            + ", Version: "
+            + pairKey.getVersion()
+            + ", URL: "
+            + pairKey.getUrl()
+            + "}");
     refreshTable();
     nowDirty();
   }
@@ -118,36 +124,20 @@ public class YoctoExtensionManagerPresenter extends AbstractPreferencePagePresen
   }
 
   /**
-   * Delete a preference from Yaml Preferences
-   *
-   * @param pref The preference you would like to delete
-   */
-  private void deleteKeyFromPreferences(final YoctoSdkPreferences pref) {
-    this.yoctoSdkPreferences.remove(pref);
-  }
-
-  /**
    * Add a SDK to your workspace
    *
    * @param sdk The SDK you would like to download and install
    */
-  private void addUrlToSdkPreferences(YoctoSdkPreferences pref, String url) {
+  private void addUrlToSdkPreferences(YoctoSdk pref, String url) {
     pref.setUrl(url);
-
-    for (YoctoSdkPreferences currPref : this.yoctoSdkPreferences) {
-      if (pref.getName().equals(currPref.getName())
-          && pref.getVersion().equals(currPref.getVersion())) {
-        return;
-      }
-    }
-    this.yoctoSdkPreferences.add(pref);
+    this.yoctoSdkManager.addSdk(pref);
   }
 
-  private void addNameToSdkPreferences(YoctoSdkPreferences pref, String name) {
+  private void addNameToSdkPreferences(YoctoSdk pref, String name) {
     pref.setName(name);
   }
 
-  private void addVersionToSdkPreferences(YoctoSdkPreferences pref, String version) {
+  private void addVersionToSdkPreferences(YoctoSdk pref, String version) {
     pref.setVersion(version);
   }
 
@@ -157,34 +147,25 @@ public class YoctoExtensionManagerPresenter extends AbstractPreferencePagePresen
    * @param jsonStr The json string to turn into the list of Yaml Preferences
    * @return List of Yaml Preferences
    */
-  private List<YoctoSdkPreferences> jsonToYoctoSdkPreferences(String jsonStr) {
-    ArrayList<YoctoSdkPreferences> yoctoSdkPreferences = new ArrayList<YoctoSdkPreferences>();
+  private void jsonToYoctoSdk(String jsonStr) {
     JsonObject parsedJson = Json.parse(jsonStr);
+    YoctoSdk fact = new YoctoSdk();
 
     for (String name : parsedJson.keys()) {
       JsonObject nameObj = parsedJson.getObject(name);
 
       for (String version : nameObj.keys()) {
         JsonObject prefObj = nameObj.getObject(version);
-        YoctoSdkPreferences pref = new YoctoSdkPreferences();
-
-        pref.setName(name);
-        pref.setVersion(version);
-        pref.setUrl(prefObj.getString("url"));
-        pref.setSelected(prefObj.getBoolean("selected"));
-
-        yoctoSdkPreferences.add(pref);
+        this.yoctoSdkManager.addSdk(fact.with(prefObj));
       }
     }
-
-    return yoctoSdkPreferences;
   }
 
   /** {@inheritDoc} */
   @Override
   public void onAddSdkClicked() {
 
-    YoctoSdkPreferences pref = new YoctoSdkPreferences();
+    YoctoSdk pref = new YoctoSdk();
 
     dialogFactory
         .createInputDialog(
@@ -242,21 +223,6 @@ public class YoctoExtensionManagerPresenter extends AbstractPreferencePagePresen
         .show();
   }
 
-  //  /** Send the schemas to the Language Server */
-  //  private void setSchemas() {
-  //    Map<String, List<String>> schemaMap =
-  //        PreferenceHelper.yoctoPreferenceToMap(this.yoctoSdkPreferences);
-  //
-  //    Map<String, String> jsonSchemaMap = new HashMap<String, String>();
-  //    for (Map.Entry<String, List<String>> entry : schemaMap.entrySet()) {
-  //      jsonSchemaMap.put(entry.getKey(), prefListToJsonArray(entry.getValue()).toString());
-  //    }
-  //
-  //    if (schemaMap != null) {
-  //      //      service.putSchemas(jsonSchemaMap);
-  //    }
-  //  }
-
   /** {@inheritDoc} */
   @Override
   public boolean isDirty() {
@@ -278,37 +244,22 @@ public class YoctoExtensionManagerPresenter extends AbstractPreferencePagePresen
     //    setSchemas();
   }
 
-  /** Refresh YoctoSdkPreferencesCellTable */
+  /** Refresh YoctoSdkCellTable */
   private void refreshTable() {
-    view.setPairs(this.yoctoSdkPreferences);
+    view.setPairs(this.yoctoSdkManager.getAll());
   }
 
   /**
-   * Convert a list of strings to JSON
-   *
-   * @param yamlStringList the List of Strings you want to convert to JSON
-   * @return JSONArray of yoctoSdkPreferences
-   */
-  private JSONArray prefListToJsonArray(List<String> yamlStringList) {
-    JSONArray yamlPreferenceJsonArr = new JSONArray();
-    for (int arrNum = 0; arrNum < yamlStringList.size(); arrNum++) {
-      yamlPreferenceJsonArr.set(arrNum, new JSONString(yamlStringList.get(arrNum)));
-    }
-
-    return yamlPreferenceJsonArr;
-  }
-
-  /**
-   * Convert YoctoSdkPreferences's to JSON
+   * Convert YoctoSdk's to JSON
    *
    * @param yoctoSdkPreferencesList
    * @return String of yoctoSdkPreferences
    */
-  private String yoctoSdkPreferencesToJson(List<YoctoSdkPreferences> yoctoSdkPreferencesList) {
+  private String yoctoSdkPreferencesToJson(List<YoctoSdk> yoctoSdkPreferencesList) {
 
     JSONObject mainObj = new JSONObject();
 
-    for (YoctoSdkPreferences pref : yoctoSdkPreferencesList) {
+    for (YoctoSdk pref : yoctoSdkPreferencesList) {
       JSONObject nameObj;
 
       // If not yet added create it
@@ -319,18 +270,11 @@ public class YoctoExtensionManagerPresenter extends AbstractPreferencePagePresen
 
       nameObj = mainObj.get(pref.getName()).isObject();
 
-      JSONObject versionObj = new JSONObject();
-
       if (nameObj.containsKey(pref.getVersion())) {
         continue;
       }
 
-      versionObj.put("name", new JSONString(pref.getName()));
-      versionObj.put("version", new JSONString(pref.getVersion()));
-      versionObj.put("url", new JSONString(pref.getUrl()));
-      versionObj.put("selected", JSONBoolean.getInstance(pref.isSelected()));
-
-      nameObj.put(pref.getVersion(), versionObj);
+      nameObj.put(pref.getVersion(), pref.toJson());
     }
 
     return mainObj.toString();
@@ -341,7 +285,7 @@ public class YoctoExtensionManagerPresenter extends AbstractPreferencePagePresen
     //    setSchemas();
 
     this.preferencesManager.setValue(
-        this.preferenceName, yoctoSdkPreferencesToJson(this.yoctoSdkPreferences));
+        this.preferenceName, yoctoSdkPreferencesToJson(this.yoctoSdkManager.getAll()));
     this.preferencesManager.flushPreferences();
     dirty = false;
     delegate.onDirtyChanged();

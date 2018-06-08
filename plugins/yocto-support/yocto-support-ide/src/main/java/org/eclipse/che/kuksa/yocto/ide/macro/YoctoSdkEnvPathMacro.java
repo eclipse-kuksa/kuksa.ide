@@ -18,6 +18,8 @@ import org.eclipse.che.api.promises.client.PromiseProvider;
 import org.eclipse.che.ide.CoreLocalizationConstant;
 import org.eclipse.che.ide.api.app.AppContext;
 import org.eclipse.che.ide.api.macro.Macro;
+import org.eclipse.che.kuksa.yocto.ide.preferences.YoctoSdkManager;
+import org.eclipse.che.kuksa.yocto.shared.YoctoSdk;
 
 /**
  * Provides path to the environment file of the selected SDK
@@ -32,6 +34,7 @@ public class YoctoSdkEnvPathMacro implements Macro {
   private final AppContext appContext;
   private final PromiseProvider promises;
   private final CoreLocalizationConstant localizationConstants;
+  private String expandVal;
 
   @Inject
   public YoctoSdkEnvPathMacro(
@@ -54,11 +57,13 @@ public class YoctoSdkEnvPathMacro implements Macro {
     return "Environment file of the selected Yocto-based SDK";
   }
 
+  public void setSelectedSdk(YoctoSdk pref) {
+    expandVal = YoctoSdkManager.SDK_ROOT_PATH;
+  }
+
   @NotNull
   @Override
   public Promise<String> expand() {
-    String value = "";
-
-    return promises.resolve("/opt/");
+    return promises.resolve(expandVal);
   }
 }

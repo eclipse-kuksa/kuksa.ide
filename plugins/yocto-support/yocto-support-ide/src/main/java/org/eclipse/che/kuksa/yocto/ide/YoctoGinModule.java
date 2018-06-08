@@ -23,6 +23,7 @@ import org.eclipse.che.kuksa.yocto.ide.macro.YoctoSdkPathMacro;
 import org.eclipse.che.kuksa.yocto.ide.preferences.YoctoExtensionManagerPresenter;
 import org.eclipse.che.kuksa.yocto.ide.preferences.YoctoExtensionManagerView;
 import org.eclipse.che.kuksa.yocto.ide.preferences.YoctoExtensionManagerViewImpl;
+import org.eclipse.che.kuksa.yocto.ide.preferences.YoctoSdkManager;
 
 /**
  * GIN module for Che Yocto extension.
@@ -46,6 +47,8 @@ public class YoctoGinModule extends AbstractGinModule {
     bind(YoctoExtensionManagerView.class)
         .to(YoctoExtensionManagerViewImpl.class)
         .in(Singleton.class);
+
+    bind(YoctoSdkManager.class);
 
     GinMultibinder.newSetBinder(binder(), PreferencePagePresenter.class)
         .addBinding()

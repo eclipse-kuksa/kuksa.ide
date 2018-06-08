@@ -21,7 +21,7 @@ import org.eclipse.che.kuksa.yocto.ide.action.MyAction;
  * @author Edgar Mueller
  */
 @Singleton
-@Extension(title = "Yocto Support Extension", version = "0.0.1")
+@Extension(title = "Yocto Support", version = "0.0.1")
 public class YoctoSupportExtension {
 
   /**

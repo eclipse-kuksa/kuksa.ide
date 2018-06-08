@@ -8,14 +8,15 @@
 package org.eclipse.che.kuksa.yocto.ide.action;
 
 import com.google.inject.Inject;
-import org.eclipse.che.api.promises.client.Operation;
-import org.eclipse.che.api.promises.client.OperationException;
-import org.eclipse.che.api.promises.client.PromiseError;
 import org.eclipse.che.ide.api.action.ActionEvent;
 import org.eclipse.che.ide.api.action.BaseAction;
+import org.eclipse.che.ide.api.command.CommandExecutor;
+import org.eclipse.che.ide.api.command.CommandImpl;
+import org.eclipse.che.ide.api.command.CommandManager;
 import org.eclipse.che.ide.api.notification.NotificationManager;
-import org.eclipse.che.ide.api.notification.StatusNotification;
-import org.eclipse.che.kuksa.yocto.ide.MyServiceClient;
+import org.eclipse.che.ide.api.workspace.WsAgentServerUtil;
+import org.eclipse.che.kuksa.yocto.ide.YoctoServiceClient;
+import org.eclipse.che.kuksa.yocto.shared.YoctoSdk;
 
 /**
  * Actions that triggers the sample server service call.
@@ -25,7 +26,10 @@ import org.eclipse.che.kuksa.yocto.ide.MyServiceClient;
 public class MyAction extends BaseAction {
 
   private final NotificationManager notificationManager;
-  private final MyServiceClient serviceClient;
+  private final YoctoServiceClient serviceClient;
+  private final CommandManager commandManager;
+  private final CommandExecutor commandExecutor;
+  private final WsAgentServerUtil wsAgentServerUtil;
 
   /**
    * Constructor.
@@ -35,39 +39,53 @@ public class MyAction extends BaseAction {
    */
   @Inject
   public MyAction(
-      final NotificationManager notificationManager, final MyServiceClient serviceClient) {
+      final NotificationManager notificationManager,
+      final YoctoServiceClient serviceClient,
+      CommandManager commandManager,
+      CommandExecutor commandExecutor,
+      WsAgentServerUtil wsAgentServerUtil) {
     super("My Action 2", "My Action 2 Description");
     this.notificationManager = notificationManager;
     this.serviceClient = serviceClient;
+    this.commandManager = commandManager;
+    this.commandExecutor = commandExecutor;
+    this.wsAgentServerUtil = wsAgentServerUtil;
   }
 
   @Override
-  public void actionPerformed(ActionEvent e) {
-    // This calls the service in the workspace.
-    // This method is in our org.eclipse.che.plugin.serverservice.ide.MyServiceClient class
-    // This is a Promise, so the .then() method is invoked after the response is made
-    serviceClient
-        .getHello("CheTheAllPowerful!")
-        .then(
-            new Operation<String>() {
-              @Override
-              public void apply(String response) throws OperationException {
-                // This passes the response String to the notification manager.
-                notificationManager.notify(
-                    response,
-                    StatusNotification.Status.SUCCESS,
-                    StatusNotification.DisplayMode.FLOAT_MODE);
-              }
-            })
-        .catchError(
-            new Operation<PromiseError>() {
-              @Override
-              public void apply(PromiseError error) throws OperationException {
-                notificationManager.notify(
-                    "Fail",
-                    StatusNotification.Status.FAIL,
-                    StatusNotification.DisplayMode.FLOAT_MODE);
-              }
-            });
+  public void actionPerformed(ActionEvent event) {
+    YoctoSdk pref = new YoctoSdk();
+    //    CommandImpl cmd = new CommandImpl("test", "mkdir test_auto_action", "yocto");
+    //    this.cmdExec.executeCommand(cmd);
+    //    this.serviceClient
+    //        .installSdk(pref)
+    //        .then(
+    //            new Operation<String>() {
+    //              @Override
+    //              public void apply(String response) throws OperationException {
+    //                // This passes the response String to the notification manager.
+    //                notificationManager.notify(
+    //                    response,
+    //                    StatusNotification.Status.SUCCESS,
+    //                    StatusNotification.DisplayMode.FLOAT_MODE);
+    //              }
+    //            })
+    //        .catchError(
+    //            new Operation<PromiseError>() {
+    //              @Override
+    //              public void apply(PromiseError error) throws OperationException {
+    //                notificationManager.notify(
+    //                    "Fail",
+    //                    StatusNotification.Status.FAIL,
+    //                    StatusNotification.DisplayMode.FLOAT_MODE);
+    //              }
+    //            });
+
+    final String name = "test";
+    CommandImpl cmd = new CommandImpl("test", "mkdir test_auto_action", "yocto");
+
+    wsAgentServerUtil
+        .getWsAgentServerMachine()
+        .ifPresent(m -> commandExecutor.executeCommand(cmd, m.getName()));
   }
 }

@@ -31,6 +31,7 @@ import java.util.List;
 import javax.validation.constraints.NotNull;
 import org.eclipse.che.ide.ui.cellview.CellTableResources;
 import org.eclipse.che.kuksa.yocto.ide.YoctoLocalizationConstant;
+import org.eclipse.che.kuksa.yocto.shared.YoctoSdk;
 
 /**
  * The implementation of {@link YoctoExtensionManagerView}.
@@ -48,7 +49,7 @@ public class YoctoExtensionManagerViewImpl extends Composite implements YoctoExt
   @UiField Button addSdk;
 
   @UiField(provided = true)
-  CellTable<YoctoSdkPreferences> yoctoSdkPreferenceCellTable;
+  CellTable<YoctoSdk> yoctoSdkPreferenceCellTable;
 
   @UiField Label headerUiMsg;
 
@@ -70,16 +71,16 @@ public class YoctoExtensionManagerViewImpl extends Composite implements YoctoExt
    */
   private void initYoctoExtensionTable(final CellTable.Resources res) {
 
-    yoctoSdkPreferenceCellTable = new CellTable<YoctoSdkPreferences>(20, res);
-    Column<YoctoSdkPreferences, String> nameColumn =
-        new Column<YoctoSdkPreferences, String>(new EditTextCell()) {
+    yoctoSdkPreferenceCellTable = new CellTable<YoctoSdk>(20, res);
+    Column<YoctoSdk, String> nameColumn =
+        new Column<YoctoSdk, String>(new EditTextCell()) {
           @Override
-          public String getValue(YoctoSdkPreferences object) {
+          public String getValue(YoctoSdk object) {
             return object.getName();
           }
 
           @Override
-          public void render(Context context, YoctoSdkPreferences object, SafeHtmlBuilder sb) {
+          public void render(Context context, YoctoSdk object, SafeHtmlBuilder sb) {
             sb.appendHtmlConstant(
                 "<div id=\""
                     + UIObject.DEBUG_ID_PREFIX
@@ -91,23 +92,23 @@ public class YoctoExtensionManagerViewImpl extends Composite implements YoctoExt
         };
 
     nameColumn.setFieldUpdater(
-        new FieldUpdater<YoctoSdkPreferences, String>() {
+        new FieldUpdater<YoctoSdk, String>() {
           @Override
-          public void update(int index, YoctoSdkPreferences object, String value) {
+          public void update(int index, YoctoSdk object, String value) {
             object.setName(value);
             delegate.nowDirty();
           }
         });
 
-    Column<YoctoSdkPreferences, String> versionColumn =
-        new Column<YoctoSdkPreferences, String>(new EditTextCell()) {
+    Column<YoctoSdk, String> versionColumn =
+        new Column<YoctoSdk, String>(new EditTextCell()) {
           @Override
-          public String getValue(YoctoSdkPreferences object) {
+          public String getValue(YoctoSdk object) {
             return object.getVersion();
           }
 
           @Override
-          public void render(Context context, YoctoSdkPreferences object, SafeHtmlBuilder sb) {
+          public void render(Context context, YoctoSdk object, SafeHtmlBuilder sb) {
             sb.appendHtmlConstant(
                 "<div id=\""
                     + UIObject.DEBUG_ID_PREFIX
@@ -121,23 +122,23 @@ public class YoctoExtensionManagerViewImpl extends Composite implements YoctoExt
         };
 
     versionColumn.setFieldUpdater(
-        new FieldUpdater<YoctoSdkPreferences, String>() {
+        new FieldUpdater<YoctoSdk, String>() {
           @Override
-          public void update(int index, YoctoSdkPreferences object, String value) {
+          public void update(int index, YoctoSdk object, String value) {
             object.setVersion(value);
             delegate.nowDirty();
           }
         });
 
-    Column<YoctoSdkPreferences, String> urlColumn =
-        new Column<YoctoSdkPreferences, String>(new TextCell()) {
+    Column<YoctoSdk, String> urlColumn =
+        new Column<YoctoSdk, String>(new TextCell()) {
           @Override
-          public String getValue(YoctoSdkPreferences object) {
+          public String getValue(YoctoSdk object) {
             return object.getUrl();
           }
 
           @Override
-          public void render(Context context, YoctoSdkPreferences object, SafeHtmlBuilder sb) {
+          public void render(Context context, YoctoSdk object, SafeHtmlBuilder sb) {
             sb.appendHtmlConstant(
                 "<div id=\""
                     + UIObject.DEBUG_ID_PREFIX
@@ -151,18 +152,18 @@ public class YoctoExtensionManagerViewImpl extends Composite implements YoctoExt
         };
 
     urlColumn.setFieldUpdater(
-        new FieldUpdater<YoctoSdkPreferences, String>() {
+        new FieldUpdater<YoctoSdk, String>() {
           @Override
-          public void update(int index, YoctoSdkPreferences object, String value) {
+          public void update(int index, YoctoSdk object, String value) {
             //            object.setUrl(value);
             //            delegate.refreshTable();
           }
         });
 
-    Column<YoctoSdkPreferences, String> selectPreferenceColumn =
-        new Column<YoctoSdkPreferences, String>(new ButtonCell()) {
+    Column<YoctoSdk, String> selectPreferenceColumn =
+        new Column<YoctoSdk, String>(new ButtonCell()) {
           @Override
-          public String getValue(YoctoSdkPreferences object) {
+          public String getValue(YoctoSdk object) {
             if (object.isSelected()) {
               return "";
             }
@@ -170,7 +171,7 @@ public class YoctoExtensionManagerViewImpl extends Composite implements YoctoExt
           }
 
           @Override
-          public void render(Context context, YoctoSdkPreferences object, SafeHtmlBuilder sb) {
+          public void render(Context context, YoctoSdk object, SafeHtmlBuilder sb) {
             sb.appendHtmlConstant(
                 "<div id=\""
                     + UIObject.DEBUG_ID_PREFIX
@@ -183,23 +184,23 @@ public class YoctoExtensionManagerViewImpl extends Composite implements YoctoExt
 
     // Creates handler on button clicked
     selectPreferenceColumn.setFieldUpdater(
-        new FieldUpdater<YoctoSdkPreferences, String>() {
+        new FieldUpdater<YoctoSdk, String>() {
           @Override
-          public void update(int index, YoctoSdkPreferences object, String value) {
+          public void update(int index, YoctoSdk object, String value) {
             delegate.onSelectClicked(object);
             delegate.nowDirty();
           }
         });
 
-    Column<YoctoSdkPreferences, String> deletePreferenceColumn =
-        new Column<YoctoSdkPreferences, String>(new ButtonCell()) {
+    Column<YoctoSdk, String> deletePreferenceColumn =
+        new Column<YoctoSdk, String>(new ButtonCell()) {
           @Override
-          public String getValue(YoctoSdkPreferences object) {
+          public String getValue(YoctoSdk object) {
             return "Delete";
           }
 
           @Override
-          public void render(Context context, YoctoSdkPreferences object, SafeHtmlBuilder sb) {
+          public void render(Context context, YoctoSdk object, SafeHtmlBuilder sb) {
             sb.appendHtmlConstant(
                 "<div id=\""
                     + UIObject.DEBUG_ID_PREFIX
@@ -212,9 +213,9 @@ public class YoctoExtensionManagerViewImpl extends Composite implements YoctoExt
 
     // Creates handler on button clicked
     deletePreferenceColumn.setFieldUpdater(
-        new FieldUpdater<YoctoSdkPreferences, String>() {
+        new FieldUpdater<YoctoSdk, String>() {
           @Override
-          public void update(int index, YoctoSdkPreferences object, String value) {
+          public void update(int index, YoctoSdk object, String value) {
             delegate.onDeleteClicked(object);
           }
         });
@@ -237,7 +238,7 @@ public class YoctoExtensionManagerViewImpl extends Composite implements YoctoExt
 
   /** {@inheritDoc} */
   @Override
-  public void setPairs(@NotNull List<YoctoSdkPreferences> pairs) {
+  public void setPairs(@NotNull List<YoctoSdk> pairs) {
     this.yoctoSdkPreferenceCellTable.setRowData(pairs);
   }
 

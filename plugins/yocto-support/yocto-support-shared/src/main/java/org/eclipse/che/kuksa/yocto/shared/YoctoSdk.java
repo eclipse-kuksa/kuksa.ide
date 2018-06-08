@@ -8,14 +8,19 @@
  * Contributors:
  *   Pedro Cuadra - pjcuadra@gmail.com
  */
-package org.eclipse.che.kuksa.yocto.ide.preferences;
+package org.eclipse.che.kuksa.yocto.shared;
+
+import com.google.gwt.json.client.JSONBoolean;
+import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONString;
+import elemental.json.JsonObject;
 
 /**
- * Yocto SDK Preferences object
+ * Yocto SDK object
  *
  * @author Pedro Cuadra
  */
-public class YoctoSdkPreferences {
+public class YoctoSdk {
 
   private String version;
   private String name;
@@ -23,7 +28,7 @@ public class YoctoSdkPreferences {
   private String glob;
   private boolean selected;
 
-  public YoctoSdkPreferences(String name, String version, String url, String glob) {
+  public YoctoSdk(String name, String version, String url, String glob) {
     this.url = url;
     this.glob = glob;
     this.version = version;
@@ -31,7 +36,26 @@ public class YoctoSdkPreferences {
     selected = false;
   }
 
-  public YoctoSdkPreferences() {
+  public YoctoSdk with(JsonObject prefObj) {
+    this.setName(prefObj.getString("name"));
+    this.setVersion(prefObj.getString("version"));
+    this.setUrl(prefObj.getString("url"));
+    this.setSelected(prefObj.getBoolean("selected"));
+    return this;
+  }
+
+  public JSONObject toJson() {
+    JSONObject versionObj = new JSONObject();
+
+    versionObj.put("name", new JSONString(this.getName()));
+    versionObj.put("version", new JSONString(this.getVersion()));
+    versionObj.put("url", new JSONString(this.getUrl()));
+    versionObj.put("selected", JSONBoolean.getInstance(this.isSelected()));
+
+    return versionObj;
+  }
+
+  public YoctoSdk() {
     this.url = "http://unknown.sh";
     this.glob = "/*";
     this.version = "0.0.0";
