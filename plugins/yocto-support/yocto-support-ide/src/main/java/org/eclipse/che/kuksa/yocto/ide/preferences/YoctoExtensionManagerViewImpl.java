@@ -172,12 +172,15 @@ public class YoctoExtensionManagerViewImpl extends Composite implements YoctoExt
 
           @Override
           public void render(Context context, YoctoSdk object, SafeHtmlBuilder sb) {
+            String visibility = object.isSelected() ? " style=\"visibility: hidden\" " : "";
             sb.appendHtmlConstant(
                 "<div id=\""
                     + UIObject.DEBUG_ID_PREFIX
                     + "-preferences-cellTable-select-"
                     + context.getIndex()
-                    + "\">");
+                    + "\" " 
+                    + visibility
+                    + ">");
             super.render(context, object, sb);
           }
         };
@@ -188,7 +191,6 @@ public class YoctoExtensionManagerViewImpl extends Composite implements YoctoExt
           @Override
           public void update(int index, YoctoSdk object, String value) {
             delegate.onSelectClicked(object);
-            delegate.nowDirty();
           }
         });
 
@@ -201,12 +203,13 @@ public class YoctoExtensionManagerViewImpl extends Composite implements YoctoExt
 
           @Override
           public void render(Context context, YoctoSdk object, SafeHtmlBuilder sb) {
+              
             sb.appendHtmlConstant(
                 "<div id=\""
                     + UIObject.DEBUG_ID_PREFIX
                     + "-preferences-cellTable-delete-"
                     + context.getIndex()
-                    + "\">");
+                    + "\" >");
             super.render(context, object, sb);
           }
         };

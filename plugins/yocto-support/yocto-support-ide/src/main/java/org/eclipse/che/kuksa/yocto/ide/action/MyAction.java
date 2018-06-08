@@ -27,9 +27,6 @@ public class MyAction extends BaseAction {
 
   private final NotificationManager notificationManager;
   private final YoctoServiceClient serviceClient;
-  private final CommandManager commandManager;
-  private final CommandExecutor commandExecutor;
-  private final WsAgentServerUtil wsAgentServerUtil;
 
   /**
    * Constructor.
@@ -40,52 +37,17 @@ public class MyAction extends BaseAction {
   @Inject
   public MyAction(
       final NotificationManager notificationManager,
-      final YoctoServiceClient serviceClient,
-      CommandManager commandManager,
-      CommandExecutor commandExecutor,
-      WsAgentServerUtil wsAgentServerUtil) {
-    super("My Action 2", "My Action 2 Description");
+      final YoctoServiceClient serviceClient) {
+    super("My Action67", "My Action 2 Description");
     this.notificationManager = notificationManager;
     this.serviceClient = serviceClient;
-    this.commandManager = commandManager;
-    this.commandExecutor = commandExecutor;
-    this.wsAgentServerUtil = wsAgentServerUtil;
   }
 
   @Override
   public void actionPerformed(ActionEvent event) {
     YoctoSdk pref = new YoctoSdk();
-    //    CommandImpl cmd = new CommandImpl("test", "mkdir test_auto_action", "yocto");
-    //    this.cmdExec.executeCommand(cmd);
-    //    this.serviceClient
-    //        .installSdk(pref)
-    //        .then(
-    //            new Operation<String>() {
-    //              @Override
-    //              public void apply(String response) throws OperationException {
-    //                // This passes the response String to the notification manager.
-    //                notificationManager.notify(
-    //                    response,
-    //                    StatusNotification.Status.SUCCESS,
-    //                    StatusNotification.DisplayMode.FLOAT_MODE);
-    //              }
-    //            })
-    //        .catchError(
-    //            new Operation<PromiseError>() {
-    //              @Override
-    //              public void apply(PromiseError error) throws OperationException {
-    //                notificationManager.notify(
-    //                    "Fail",
-    //                    StatusNotification.Status.FAIL,
-    //                    StatusNotification.DisplayMode.FLOAT_MODE);
-    //              }
-    //            });
 
-    final String name = "test";
-    CommandImpl cmd = new CommandImpl("test", "mkdir test_auto_action", "yocto");
-
-    wsAgentServerUtil
-        .getWsAgentServerMachine()
-        .ifPresent(m -> commandExecutor.executeCommand(cmd, m.getName()));
   }
+
+
 }

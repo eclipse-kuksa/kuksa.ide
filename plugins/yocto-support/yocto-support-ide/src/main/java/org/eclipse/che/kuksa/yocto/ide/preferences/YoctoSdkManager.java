@@ -13,9 +13,15 @@ package org.eclipse.che.kuksa.yocto.ide.preferences;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import java.util.ArrayList;
+import com.google.gwt.json.client.JSONObject;
+import elemental.json.Json;
+import elemental.json.JsonObject;
 import java.util.List;
+import org.eclipse.che.ide.api.command.CommandExecutor;
 import org.eclipse.che.ide.api.command.CommandImpl;
 import org.eclipse.che.ide.api.notification.NotificationManager;
+import org.eclipse.che.ide.api.notification.StatusNotification;
+import org.eclipse.che.ide.api.workspace.WsAgentServerUtil;
 import org.eclipse.che.kuksa.yocto.ide.YoctoLocalizationConstant;
 import org.eclipse.che.kuksa.yocto.ide.macro.YoctoSdkEnvPathMacro;
 import org.eclipse.che.kuksa.yocto.ide.macro.YoctoSdkPathMacro;
@@ -38,18 +44,10 @@ public class YoctoSdkManager {
   private List<YoctoSdk> yoctoSdkList;
   private YoctoLocalizationConstant local;
   private NotificationManager notificationManager;
-  //  private final CommandExecutor commandExecutor;
-  //  private final MacroProcessor macroProcessor;
-  //  private final CommandConsoleFactory commandConsoleFactory;
-  //  private final ProcessesPanelPresenter processesPanelPresenter;
-  //  private final ExecAgentCommandManager execAgentClient;
-  //  private final MachineChooser machineChooser;
-  //  private final SelectionAgent selectionAgent;
   private final YoctoSdkEnvPathMacro yoctoSdkEnvPathMacro;
   private final YoctoSdkPathMacro yoctoSdkPathMacro;
   public static final String SDK_ROOT_PATH = "/projects/.sdk";
   private static final String SDK_TMP_PATH = "/projects/.sdk/tmp";
-  //  private final WsAgentServerUtil wsAgentServerUtil;
 
   @Inject
   public YoctoSdkManager(
@@ -59,87 +57,10 @@ public class YoctoSdkManager {
       YoctoSdkPathMacro yoctoSdkPathMacro) {
     this.local = local;
     this.notificationManager = notificationManager;
-    //    this.commandExecutor = commandExecutor;
     this.yoctoSdkList = new ArrayList<YoctoSdk>();
-    //    this.macroProcessor = macroProcessor;
-    //    this.commandConsoleFactory = commandConsoleFactory;
-    //    this.processesPanelPresenter = processesPanelPresenter;
-    //    this.execAgentClient = execAgentClient;
-    //    this.machineChooser = machineChooser;
-    //    this.selectionAgent = selectionAgent;
     this.yoctoSdkEnvPathMacro = yoctoSdkEnvPathMacro;
     this.yoctoSdkPathMacro = yoctoSdkPathMacro;
-    //    this.wsAgentServerUtil = wsAgentServerUtil;
   }
-
-  private void executeCommand(final CommandImpl cmd) {
-    //    wsAgentServerUtil
-    //        .getWsAgentServerMachine()
-    //        .ifPresent(m -> commandExecutor.executeCommand(cmd, m.getName()));
-  }
-
-  //  public void executeCommand(Command command, String machineName) {
-  //    final String name = command.getName();
-  //    final String commandLine = command.getCommandLine();
-  //    final String type = command.getType();
-  //    final Map<String, String> attributes = command.getAttributes();
-  //
-  //    macroProcessor
-  //        .expandMacros(commandLine)
-  //        .then(
-  //            new Operation<String>() {
-  //              @Override
-  //              public void apply(String expandedCommandLine) throws OperationException {
-  //                final CommandImpl expandedCommand =
-  //                    new CommandImpl(name, expandedCommandLine, type, attributes);
-  //                final CommandOutputConsole console =
-  //                    commandConsoleFactory.create(expandedCommand, machineName);
-  //
-  //                processesPanelPresenter.addCommandOutput(machineName, console, true);
-  //
-  //                execAgentClient
-  //                    .startProcess(machineName, expandedCommand)
-  //                    .thenIfProcessStartedEvent(console.getProcessStartedConsumer())
-  //                    .thenIfProcessDiedEvent(console.getProcessDiedConsumer())
-  //                    .thenIfProcessStdOutEvent(console.getStdOutConsumer())
-  //                    .thenIfProcessStdErrEvent(console.getStdErrConsumer());
-  //              }
-  //            });
-  //  }
-  //
-  //  public void executeCommand(CommandImpl command) {
-  //    final MachineImpl selectedMachine = getSelectedMachine();
-  //
-  //    if (selectedMachine != null) {
-  //      executeCommand(command, selectedMachine.getName());
-  //    } else {
-  //      machineChooser
-  //          .show()
-  //          .then(
-  //              new Operation<MachineImpl>() {
-  //                @Override
-  //                public void apply(MachineImpl machine) throws OperationException {
-  //                  executeCommand(command, machine.getName());
-  //                }
-  //              });
-  //    }
-  //  }
-
-  //  /** Returns the currently selected machine or {@code null} if none. */
-  //  @Nullable
-  //  private MachineImpl getSelectedMachine() {
-  //    final Selection<?> selection = selectionAgent.getSelection();
-  //
-  //    if (selection != null && !selection.isEmpty() && selection.isSingleSelection()) {
-  //      final Object possibleNode = selection.getHeadElement();
-  //
-  //      if (possibleNode instanceof MachineImpl) {
-  //        return (MachineImpl) possibleNode;
-  //      }
-  //    }
-  //
-  //    return null;
-  //  }
 
   private String getInstallDirectory(final YoctoSdk pref) {
     return YoctoSdkManager.SDK_ROOT_PATH + "/" + pref.getName() + "/" + pref.getVersion();
@@ -157,27 +78,50 @@ public class YoctoSdkManager {
     cmdLine += "curl -L " + pref.getUrl() + " -o " + getDownloadPath(pref) + " && ";
     cmdLine += "chmod +x " + getDownloadPath(pref) + " && ";
     cmdLine += getDownloadPath(pref) + " -y -d " + getInstallDirectory(pref);
-
-    //    cmdLine = "pwd";
-
-    CommandImpl installSdk = new CommandImpl("Install SDK", cmdLine, "yocto");
-    this.executeCommand(installSdk);
+    
+    notificationManager.notify(
+        cmdLine,
+        StatusNotification.Status.SUCCESS,
+        StatusNotification.DisplayMode.FLOAT_MODE);
+    
+  }
+  
+  private boolean compareYoctoSdk(YoctoSdk pref_1, YoctoSdk pref_2) {
+      return pref_1.getName().equals(pref_2.getName()) && pref_1.getVersion().equals(pref_2.getVersion());
   }
 
-  public void addSdk(final YoctoSdk pref) {
+  public boolean addSdk(final YoctoSdk pref) {
+      
+    for (YoctoSdk curr_pref: this.yoctoSdkList) {
+        if (this.compareYoctoSdk(curr_pref, pref)) {
+            notificationManager.notify(
+                "Error " + pref.getName() + " " + pref.getVersion() + " already added",
+                StatusNotification.Status.FAIL,
+                StatusNotification.DisplayMode.FLOAT_MODE);
+            return false;
+        }
+    }
+    
+    
+    
     installSdk(pref);
     this.yoctoSdkList.add(pref);
-    //    notificationManager.notify(
-    //        pref.getName() + " (" + pref.getVersion() + ")",
-    //        StatusNotification.Status.SUCCESS,
-    //        StatusNotification.DisplayMode.FLOAT_MODE);
+    
+    notificationManager.notify(
+        "Yocto SDK " + pref.getName() + " " + pref.getVersion() + " added",
+        StatusNotification.Status.SUCCESS,
+        StatusNotification.DisplayMode.FLOAT_MODE);
+        
+    return true;
   }
 
   private void uninstallSdk(final YoctoSdk pref) {
     String cmdLine = "rm -rf " + getInstallDirectory(pref);
-
-    CommandImpl removeSdk = new CommandImpl("Remove SDK", cmdLine, "yocto");
-    this.executeCommand(removeSdk);
+    
+    notificationManager.notify(
+        cmdLine,
+        StatusNotification.Status.SUCCESS,
+        StatusNotification.DisplayMode.FLOAT_MODE);
   }
 
   /**
@@ -188,19 +132,85 @@ public class YoctoSdkManager {
   public void removeSdk(final YoctoSdk pref) {
     this.uninstallSdk(pref);
     this.yoctoSdkList.remove(pref);
+    
+    notificationManager.notify(
+        "Yocto SDK " + pref.getName() + " " + pref.getVersion() + " removed",
+        StatusNotification.Status.SUCCESS,
+        StatusNotification.DisplayMode.FLOAT_MODE);
   }
 
-  public void selectSdk(final YoctoSdk pref) {
+  public boolean selectSdk(final YoctoSdk pref) {
+      
+    if (pref.isSelected()) {
+        return false;
+    }
 
     for (YoctoSdk curr_pref : this.yoctoSdkList) {
       curr_pref.setSelected(false);
     }
+    
+    notificationManager.notify(
+        "Yocto SDK " + pref.getName() + " " + pref.getVersion() + " selected",
+        StatusNotification.Status.SUCCESS,
+        StatusNotification.DisplayMode.FLOAT_MODE);
 
     pref.setSelected(true);
     this.yoctoSdkEnvPathMacro.setSelectedSdk(pref);
+    
+    return true;
   }
 
   public List<YoctoSdk> getAll() {
     return this.yoctoSdkList;
+  }
+  
+  /**
+   * Converts json string to list of Yaml Preferences
+   *
+   * @param jsonStr The json string to turn into the list of Yaml Preferences
+   * @return List of Yaml Preferences
+   */
+  public void loadJsonString(String jsonStr) {
+    JsonObject parsedJson = Json.parse(jsonStr);
+    
+    for (String name : parsedJson.keys()) {
+      JsonObject nameObj = parsedJson.getObject(name);
+
+      for (String version : nameObj.keys()) {
+        JsonObject prefObj = nameObj.getObject(version);
+        this.yoctoSdkList.add(YoctoSdk.with(prefObj));
+      }
+    }
+  }
+  
+  /**
+   * Convert YoctoSdk's to JSON
+   *
+   * @param yoctoSdkPreferencesList
+   * @return String of yoctoSdkPreferences
+   */
+  public String toJsonString() {
+
+    JSONObject mainObj = new JSONObject();
+
+    for (YoctoSdk pref : yoctoSdkList) {
+      JSONObject nameObj;
+
+      // If not yet added create it
+      if (!mainObj.containsKey(pref.getName())) {
+        nameObj = new JSONObject();
+        mainObj.put(pref.getName(), nameObj);
+      }
+
+      nameObj = mainObj.get(pref.getName()).isObject();
+
+      if (nameObj.containsKey(pref.getVersion())) {
+        continue;
+      }
+
+      nameObj.put(pref.getVersion(), pref.toJson());
+    }
+
+    return mainObj.toString();
   }
 }

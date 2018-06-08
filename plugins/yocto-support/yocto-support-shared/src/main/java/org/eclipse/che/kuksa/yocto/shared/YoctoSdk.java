@@ -36,12 +36,13 @@ public class YoctoSdk {
     selected = false;
   }
 
-  public YoctoSdk with(JsonObject prefObj) {
-    this.setName(prefObj.getString("name"));
-    this.setVersion(prefObj.getString("version"));
-    this.setUrl(prefObj.getString("url"));
-    this.setSelected(prefObj.getBoolean("selected"));
-    return this;
+  public static YoctoSdk with(JsonObject prefObj) {
+    YoctoSdk newObj = new YoctoSdk();
+    newObj.setName(prefObj.getString("name"));
+    newObj.setVersion(prefObj.getString("version"));
+    newObj.setUrl(prefObj.getString("url"));
+    newObj.setSelected(prefObj.getBoolean("selected"));
+    return newObj;
   }
 
   public JSONObject toJson() {
