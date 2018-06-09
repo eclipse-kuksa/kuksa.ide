@@ -35,7 +35,7 @@ public interface YoctoSdkInputDialogView {
 
   /** Sets the value to the input. */
   void setValue(String value);
-  
+
   void clear();
 
   /** Sets the window title. */

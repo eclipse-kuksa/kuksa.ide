@@ -12,6 +12,6 @@
 <module>
     <inherits name="org.eclipse.che.api.project.Project"/>
 
-    <source path="ide"/>
-    <source path="shared"/>
+    <source path=""/>
+    <source path=""/>
 </module>

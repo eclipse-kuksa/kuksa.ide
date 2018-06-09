@@ -35,11 +35,6 @@
         </dependency>
         <dependency>
             <groupId>org.eclipse.che.kuksa</groupId>
-            <artifactId>plugin-serverservice-ide</artifactId>
-            <type>gwt-lib</type>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.che.kuksa</groupId>
             <artifactId>yocto-support-ide</artifactId>
             <type>gwt-lib</type>
         </dependency>

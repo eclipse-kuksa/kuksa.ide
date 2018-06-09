@@ -17,14 +17,14 @@ import elemental.json.Json;
 import elemental.json.JsonObject;
 import java.util.ArrayList;
 import java.util.List;
+import org.eclipse.che.ide.api.command.CommandImpl;
 import org.eclipse.che.ide.api.notification.NotificationManager;
 import org.eclipse.che.ide.api.notification.StatusNotification;
+import org.eclipse.che.kuksa.yocto.ide.YoctoConstants;
 import org.eclipse.che.kuksa.yocto.ide.YoctoLocalizationConstant;
+import org.eclipse.che.kuksa.yocto.ide.YoctoSdk;
 import org.eclipse.che.kuksa.yocto.ide.macro.YoctoSdkEnvPathMacro;
 import org.eclipse.che.kuksa.yocto.ide.macro.YoctoSdkPathMacro;
-import org.eclipse.che.kuksa.yocto.shared.YoctoSdk;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 // Initially taken from plugin-yaml
 
@@ -37,13 +37,13 @@ import org.slf4j.LoggerFactory;
 @Singleton
 public class YoctoSdkManager {
 
-  private static final Logger LOG = LoggerFactory.getLogger(YoctoSdkManager.class);
+  //  private static final Logger LOG = LoggerFactory.getLogger(YoctoSdkManager.class);
   private List<YoctoSdk> yoctoSdkList;
   private YoctoLocalizationConstant local;
   private NotificationManager notificationManager;
   private final YoctoSdkEnvPathMacro yoctoSdkEnvPathMacro;
   private final YoctoSdkPathMacro yoctoSdkPathMacro;
-  public static final String SDK_ROOT_PATH = "/projects/.sdk";
+  //  private CustomSilentCommandExecutor commandExecutor;
   private static final String SDK_TMP_PATH = "/projects/.sdk/tmp";
 
   @Inject
@@ -52,15 +52,17 @@ public class YoctoSdkManager {
       NotificationManager notificationManager,
       YoctoSdkEnvPathMacro yoctoSdkEnvPathMacro,
       YoctoSdkPathMacro yoctoSdkPathMacro) {
+    //      CustomCommandExecutor commandExecutor) {
     this.local = local;
     this.notificationManager = notificationManager;
     this.yoctoSdkList = new ArrayList<YoctoSdk>();
     this.yoctoSdkEnvPathMacro = yoctoSdkEnvPathMacro;
     this.yoctoSdkPathMacro = yoctoSdkPathMacro;
+    //    this.commandExecutor = commandExecutor;
   }
 
   private String getInstallDirectory(final YoctoSdk pref) {
-    return YoctoSdkManager.SDK_ROOT_PATH + "/" + pref.getName() + "/" + pref.getVersion();
+    return YoctoConstants.SDK_ROOT_PATH + "/" + pref.getName() + "/" + pref.getVersion();
   }
 
   private String getDownloadPath(final YoctoSdk pref) {
@@ -70,14 +72,34 @@ public class YoctoSdkManager {
   private void installSdk(final YoctoSdk pref) {
     String cmdLine = "";
 
+    cmdLine = getDownloadPath(pref) + " -y -d " + getInstallDirectory(pref);
+
+    CommandImpl installCmd = new CommandImpl("Install SDK", cmdLine, "yocto");
+
+    //    this.commandExecutor.executeCommand(
+    //        installCmd,
+    //        new StatusNotification(
+    //            "Installing SDK " + pref.getName() + "(" + pref.getVersion() + ")",
+    //            StatusNotification.Status.PROGRESS,
+    //            StatusNotification.DisplayMode.FLOAT_MODE));
+  }
+
+  private void downloadSdk(final YoctoSdk pref) {
+    String cmdLine = "";
+
     cmdLine = "mkdir -p " + YoctoSdkManager.SDK_TMP_PATH + " && ";
     cmdLine += "cd " + YoctoSdkManager.SDK_TMP_PATH + " && ";
-    cmdLine += "curl -L " + pref.getUrl() + " -o " + getDownloadPath(pref) + " && ";
-    cmdLine += "chmod +x " + getDownloadPath(pref) + " && ";
-    cmdLine += getDownloadPath(pref) + " -y -d " + getInstallDirectory(pref);
+    cmdLine += "curl -s -L " + pref.getUrl() + " -o " + getDownloadPath(pref) + " && ";
+    cmdLine += "chmod +x " + getDownloadPath(pref);
 
-    notificationManager.notify(
-        cmdLine, StatusNotification.Status.SUCCESS, StatusNotification.DisplayMode.FLOAT_MODE);
+    CommandImpl downloadCmd = new CommandImpl("Download SDK", cmdLine, "yocto");
+
+    //    this.commandExecutor.executeCommand(
+    //        downloadCmd,
+    //        new StatusNotification(
+    //            "Downloading SDK from " + pref.getUrl(),
+    //            StatusNotification.Status.PROGRESS,
+    //            StatusNotification.DisplayMode.FLOAT_MODE));
   }
 
   private boolean compareYoctoSdk(YoctoSdk pref_1, YoctoSdk pref_2) {
@@ -97,6 +119,7 @@ public class YoctoSdkManager {
       }
     }
 
+    downloadSdk(pref);
     installSdk(pref);
     this.yoctoSdkList.add(pref);
 
@@ -146,7 +169,10 @@ public class YoctoSdkManager {
         StatusNotification.DisplayMode.FLOAT_MODE);
 
     pref.setSelected(true);
+
+    // Update the macros for expansion
     this.yoctoSdkEnvPathMacro.setSelectedSdk(pref);
+    this.yoctoSdkPathMacro.setSelectedSdk(pref);
 
     return true;
   }
@@ -169,7 +195,13 @@ public class YoctoSdkManager {
 
       for (String version : nameObj.keys()) {
         JsonObject prefObj = nameObj.getObject(version);
-        this.yoctoSdkList.add(YoctoSdk.with(prefObj));
+        YoctoSdk pref = YoctoSdk.with(prefObj);
+        this.yoctoSdkList.add(pref);
+
+        if (pref.isSelected()) {
+          this.yoctoSdkEnvPathMacro.setSelectedSdk(pref);
+          this.yoctoSdkPathMacro.setSelectedSdk(pref);
+        }
       }
     }
   }

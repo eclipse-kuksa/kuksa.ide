@@ -10,15 +10,12 @@
  */
 package org.eclipse.che.kuksa.yocto.ide.preferences.dialog;
 
+import com.google.inject.Inject;
 import javax.validation.constraints.NotNull;
-
 import org.eclipse.che.ide.api.notification.NotificationManager;
 import org.eclipse.che.ide.api.notification.StatusNotification;
 import org.eclipse.che.ide.ui.dialogs.CancelCallback;
-import org.eclipse.che.ide.ui.dialogs.input.InputValidator;
-import org.eclipse.che.kuksa.yocto.shared.YoctoSdk;
-
-import com.google.inject.Inject;
+import org.eclipse.che.kuksa.yocto.ide.YoctoSdk;
 
 /**
  * {@link YoctoSdkInputDialog} implementation.
@@ -30,6 +27,7 @@ public class YoctoSdkInputDialogPresenter implements YoctoSdkInputDialogView.Act
 
   /** This component view. */
   private final YoctoSdkInputDialogView view;
+
   private final NotificationManager notificationManager;
 
   /** The callback used on OK. */
@@ -37,19 +35,18 @@ public class YoctoSdkInputDialogPresenter implements YoctoSdkInputDialogView.Act
 
   /** The callback used on cancel. */
   private CancelCallback cancelCallback;
-  
+
   @Inject
   public YoctoSdkInputDialogPresenter(
-      final @NotNull YoctoSdkInputDialogView view,
-      final NotificationManager notificationManager) {
+      final @NotNull YoctoSdkInputDialogView view, final NotificationManager notificationManager) {
     this.view = view;
     this.inputCallback = null;
     this.view.setDelegate(this);
     this.notificationManager = notificationManager;
   }
-  
+
   public void setInputCallback(YoctoSdkCallback inputCallback) {
-    this.inputCallback = inputCallback;  
+    this.inputCallback = inputCallback;
   }
 
   @Override
@@ -63,29 +60,29 @@ public class YoctoSdkInputDialogPresenter implements YoctoSdkInputDialogView.Act
   @Override
   public void accepted() {
     if (!isInputValid()) {
-       notificationManager.notify(
-        "Error Invalid Input",
-        StatusNotification.Status.FAIL,
-        StatusNotification.DisplayMode.FLOAT_MODE);
-        return;
+      notificationManager.notify(
+          "Error Invalid Input",
+          StatusNotification.Status.FAIL,
+          StatusNotification.DisplayMode.FLOAT_MODE);
+      return;
     }
-    
+
     view.closeDialog();
     YoctoSdk yoctoSdk = new YoctoSdk();
     yoctoSdk.setName(view.getName());
     yoctoSdk.setVersion(view.getVersion());
     yoctoSdk.setUrl(view.getUrl());
-    
+
     if (this.inputCallback != null) {
-        inputCallback.accepted(yoctoSdk);    
+      inputCallback.accepted(yoctoSdk);
     }
   }
 
   @Override
   public void inputValueChanged(int sel) {
-       if (isInputValid()) {
-           this.view.hideErrorHint();
-       }
+    if (isInputValid()) {
+      this.view.hideErrorHint();
+    }
   }
 
   @Override
@@ -104,7 +101,7 @@ public class YoctoSdkInputDialogPresenter implements YoctoSdkInputDialogView.Act
       accepted();
       return;
     }
-    
+
     notificationManager.notify(
         "Error Invalid Input",
         StatusNotification.Status.FAIL,
@@ -115,30 +112,30 @@ public class YoctoSdkInputDialogPresenter implements YoctoSdkInputDialogView.Act
     view.setContent("");
     view.showDialog();
   }
-  
+
   public void clear() {
     view.clear();
   }
 
   private boolean validateSingle(String input) {
     if (input.trim().isEmpty()) {
-//      view.showErrorHint("Empty Fields");
+      //      view.showErrorHint("Empty Fields");
       return false;
     }
-    
+
     return true;
   }
-  
+
   private boolean validateUrl(String input) {
     if (!validateSingle(input)) {
       this.view.showErrorHint("Invalid URL");
       return false;
     }
-    
-    if (input.startsWith("http://") || input.startsWith("https://")) {      
+
+    if (input.startsWith("http://") || input.startsWith("https://")) {
       return true;
     }
-        
+
     this.view.showErrorHint("Invalid URL");
     return false;
   }

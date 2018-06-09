@@ -13,7 +13,7 @@ package org.eclipse.che.kuksa.yocto.ide.preferences;
 import java.util.List;
 import javax.validation.constraints.NotNull;
 import org.eclipse.che.ide.api.mvp.View;
-import org.eclipse.che.kuksa.yocto.shared.YoctoSdk;
+import org.eclipse.che.kuksa.yocto.ide.YoctoSdk;
 
 /**
  * The view of {@link YoctoExtensionManagerPresenter}.

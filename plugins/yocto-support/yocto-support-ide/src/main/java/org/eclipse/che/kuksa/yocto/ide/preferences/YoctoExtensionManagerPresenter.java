@@ -20,10 +20,9 @@ import org.eclipse.che.ide.ui.dialogs.CancelCallback;
 import org.eclipse.che.ide.ui.dialogs.DialogFactory;
 import org.eclipse.che.ide.ui.dialogs.confirm.ConfirmCallback;
 import org.eclipse.che.kuksa.yocto.ide.YoctoLocalizationConstant;
+import org.eclipse.che.kuksa.yocto.ide.YoctoSdk;
 import org.eclipse.che.kuksa.yocto.ide.preferences.dialog.YoctoSdkCallback;
 import org.eclipse.che.kuksa.yocto.ide.preferences.dialog.YoctoSdkInputDialogPresenter;
-import org.eclipse.che.kuksa.yocto.ide.preferences.dialog.YoctoSdkInputDialogView;
-import org.eclipse.che.kuksa.yocto.shared.YoctoSdk;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -74,6 +73,16 @@ public class YoctoExtensionManagerPresenter extends AbstractPreferencePagePresen
     this.view.setDelegate(this);
     this.inputPresenter = inputPresenter;
 
+    this.inputPresenter.setInputCallback(
+        new YoctoSdkCallback() {
+          @Override
+          public void accepted(YoctoSdk pref) {
+            yoctoSdkManager.addSdk(pref);
+            refreshTable();
+            nowDirty();
+          }
+        });
+
     refreshTable();
   }
 
@@ -123,41 +132,19 @@ public class YoctoExtensionManagerPresenter extends AbstractPreferencePagePresen
     };
   }
 
-  /**
-   * Add a SDK to your workspace
-   *
-   * @param sdk The SDK you would like to download and install
-   */
-  private void addUrlToSdkPreferences(YoctoSdk pref, String url) {
-    pref.setUrl(url);
-    this.yoctoSdkManager.addSdk(pref);
-  }
-
-  private void addNameToSdkPreferences(YoctoSdk pref, String name) {
-    pref.setName(name);
-  }
-
-  private void addVersionToSdkPreferences(YoctoSdk pref, String version) {
-    pref.setVersion(version);
-  }
-
   /** {@inheritDoc} */
   @Override
   public void onAddSdkClicked() {
+    //    inputPresenter.clear();
+    //    inputPresenter.show();
 
     YoctoSdk pref = new YoctoSdk();
-    inputPresenter.setInputCallback(new YoctoSdkCallback() {
-              @Override
-              public void accepted(YoctoSdk pref) {
-                yoctoSdkManager.addSdk(pref);
-                refreshTable();
-                nowDirty();
-              }
-            });
 
-
-    inputPresenter.clear();
-    inputPresenter.show();
+    pref.setName("rover");
+    pref.setVersion("test");
+    pref.setUrl("https://www.dropbox.com/s/u7jl42nq2rhkzhm/install_sdk_dummy.sh?dl=0");
+    //    yoctoSdkManager.removeSdk(pref);
+    yoctoSdkManager.addSdk(pref);
   }
 
   /** {@inheritDoc} */
@@ -170,8 +157,8 @@ public class YoctoExtensionManagerPresenter extends AbstractPreferencePagePresen
   @Override
   public void nowDirty() {
     dirty = true;
-//    delegate.onDirtyChanged();
-//    dirty = false;
+    //    delegate.onDirtyChanged();
+    //    dirty = false;
   }
 
   /** {@inheritDoc} */
@@ -191,7 +178,7 @@ public class YoctoExtensionManagerPresenter extends AbstractPreferencePagePresen
     this.preferencesManager.setValue(this.preferenceName, yoctoSdkManager.toJsonString());
     this.preferencesManager.flushPreferences();
     dirty = false;
-//    delegate.onDirtyChanged();
+    //    delegate.onDirtyChanged();
   }
 
   @Override

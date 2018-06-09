@@ -62,7 +62,7 @@ public class YoctoSdkInputDialogViewImpl extends Window implements YoctoSdkInput
     nameValue.ensureDebugId("askNameValueDialog-textBox");
     versionValue.ensureDebugId("askVersionValueDialog-textBox");
     urlValue.ensureDebugId("askUrlValueDialog-textBox");
-    
+
     setTitleCaption("Add new SDK");
   }
 
@@ -116,7 +116,7 @@ public class YoctoSdkInputDialogViewImpl extends Window implements YoctoSdkInput
   public void setValue(String value) {
     //    this.value.setText(value);
   }
-  
+
   @Override
   public void clear() {
     nameValue.setValue("");

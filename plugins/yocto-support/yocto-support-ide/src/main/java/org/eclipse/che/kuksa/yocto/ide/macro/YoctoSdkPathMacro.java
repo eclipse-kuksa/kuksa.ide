@@ -17,7 +17,9 @@ import org.eclipse.che.api.promises.client.Promise;
 import org.eclipse.che.api.promises.client.PromiseProvider;
 import org.eclipse.che.ide.CoreLocalizationConstant;
 import org.eclipse.che.ide.api.app.AppContext;
-import org.eclipse.che.ide.api.macro.Macro;
+import org.eclipse.che.ide.api.macro.BaseMacro;
+import org.eclipse.che.kuksa.yocto.ide.YoctoConstants;
+import org.eclipse.che.kuksa.yocto.ide.YoctoSdk;
 
 /**
  * Provides path to the installation directory of the selected SDK
@@ -25,40 +27,41 @@ import org.eclipse.che.ide.api.macro.Macro;
  * @author Pedro Cuadra
  */
 @Singleton
-public class YoctoSdkPathMacro implements Macro {
+public class YoctoSdkPathMacro extends BaseMacro {
 
   private static final String KEY = "${yocto.sdk.path}";
+  private static final String DEFAULT_VALUE = "/opt/";
+  private static final String DESCRIPTION = "Installation path to the selected Yocto-based SDK";
 
   private final AppContext appContext;
   private final PromiseProvider promises;
   private final CoreLocalizationConstant localizationConstants;
+  private String expandVal;
 
   @Inject
   public YoctoSdkPathMacro(
       AppContext appContext,
       PromiseProvider promises,
       CoreLocalizationConstant localizationConstants) {
+    super(KEY, DEFAULT_VALUE, DESCRIPTION);
     this.appContext = appContext;
     this.promises = promises;
     this.localizationConstants = localizationConstants;
   }
 
-  @NotNull
-  @Override
-  public String getName() {
-    return KEY;
-  }
-
-  @Override
-  public String getDescription() {
-    return "Installation path to the selected Yocto-based SDK";
-  }
-
+  /** {@inheritDoc} */
   @NotNull
   @Override
   public Promise<String> expand() {
-    String value = "";
+    return promises.resolve(expandVal);
+  }
 
-    return promises.resolve("/opt/");
+  public void setSelectedSdk(YoctoSdk pref) {
+    String path = YoctoConstants.SDK_ROOT_PATH;
+
+    path += "/" + pref.getName();
+    path += "/" + pref.getVersion();
+
+    this.expandVal = path;
   }
 }

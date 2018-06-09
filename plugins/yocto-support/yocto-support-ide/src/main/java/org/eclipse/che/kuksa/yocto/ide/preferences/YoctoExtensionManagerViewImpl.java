@@ -30,7 +30,7 @@ import java.util.List;
 import javax.validation.constraints.NotNull;
 import org.eclipse.che.ide.ui.cellview.CellTableResources;
 import org.eclipse.che.kuksa.yocto.ide.YoctoLocalizationConstant;
-import org.eclipse.che.kuksa.yocto.shared.YoctoSdk;
+import org.eclipse.che.kuksa.yocto.ide.YoctoSdk;
 
 /**
  * The implementation of {@link YoctoExtensionManagerView}.
@@ -197,13 +197,13 @@ public class YoctoExtensionManagerViewImpl extends Composite implements YoctoExt
 
     yoctoSdkPreferenceCellTable.addColumn(nameColumn, local.sdkColumnHeader());
     yoctoSdkPreferenceCellTable.addColumn(versionColumn, local.versionColumnHeader());
-//    yoctoSdkPreferenceCellTable.addColumn(urlColumn, local.urlColumnHeader());
+    //    yoctoSdkPreferenceCellTable.addColumn(urlColumn, local.urlColumnHeader());
     yoctoSdkPreferenceCellTable.addColumn(selectPreferenceColumn, local.selectColumnHeader());
     yoctoSdkPreferenceCellTable.addColumn(deletePreferenceColumn, local.deleteColumnHeader());
     yoctoSdkPreferenceCellTable.setWidth("100%", true);
     yoctoSdkPreferenceCellTable.setColumnWidth(nameColumn, 45, Style.Unit.PCT);
     yoctoSdkPreferenceCellTable.setColumnWidth(versionColumn, 30, Style.Unit.PCT);
-//    yoctoSdkPreferenceCellTable.setColumnWidth(urlColumn, 30, Style.Unit.PCT);
+    //    yoctoSdkPreferenceCellTable.setColumnWidth(urlColumn, 30, Style.Unit.PCT);
     yoctoSdkPreferenceCellTable.setColumnWidth(selectPreferenceColumn, 40, Style.Unit.PCT);
     yoctoSdkPreferenceCellTable.setColumnWidth(deletePreferenceColumn, 40, Style.Unit.PCT);
 

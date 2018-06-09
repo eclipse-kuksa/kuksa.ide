@@ -36,15 +36,6 @@
           <artifactId>che-core-ide-ui</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.eclipse.che.kuksa</groupId>
-            <artifactId>yocto-support-shared</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.che.kuksa</groupId>
-            <artifactId>yocto-support-shared</artifactId>
-            <classifier>sources</classifier>
-        </dependency>
-        <dependency>
             <groupId>com.google.gwt.inject</groupId>
             <artifactId>gin</artifactId>
         </dependency>
@@ -71,6 +62,11 @@
           <artifactId>slf4j-api</artifactId>
           <version>1.7.24</version>
         </dependency>
+        <dependency>
+          <groupId>org.eclipse.che.core</groupId>
+          <artifactId>che-core-api-model</artifactId>
+          <version>6.7.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -79,24 +75,18 @@
                 <artifactId>gwt-maven-plugin</artifactId>
                 <extensions>true</extensions>
                 <configuration>
-                    <moduleName>org.eclipse.che.kuksa.yocto.YoctoSupportExtension</moduleName>
+                    <moduleName>org.eclipse.che.kuksa.yocto.ide.YoctoSupportExtension</moduleName>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>analyze</id>
-                        <configuration>
-                            <ignoredUnusedDeclaredDependencies>
-                                <!-- Ignore *-sources.jar analysis due to the fact that analyzer works at bytecode level                                     but *-sources.jar is required for including to the GWT source path. -->
-                                <dep>org.eclipse.che.kuksa:yocto-support-shared</dep>
-                            </ignoredUnusedDeclaredDependencies>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
         </plugins>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.eclipse.che.core</groupId>
+                    <artifactId>che-core-api-dto-maven-plugin</artifactId>
+                    <version>${project.version}</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
     </build>
 </project>

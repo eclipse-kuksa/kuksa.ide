@@ -17,9 +17,9 @@ import org.eclipse.che.api.promises.client.Promise;
 import org.eclipse.che.api.promises.client.PromiseProvider;
 import org.eclipse.che.ide.CoreLocalizationConstant;
 import org.eclipse.che.ide.api.app.AppContext;
-import org.eclipse.che.ide.api.macro.Macro;
-import org.eclipse.che.kuksa.yocto.ide.preferences.YoctoSdkManager;
-import org.eclipse.che.kuksa.yocto.shared.YoctoSdk;
+import org.eclipse.che.ide.api.macro.BaseMacro;
+import org.eclipse.che.kuksa.yocto.ide.YoctoConstants;
+import org.eclipse.che.kuksa.yocto.ide.YoctoSdk;
 
 /**
  * Provides path to the environment file of the selected SDK
@@ -27,9 +27,11 @@ import org.eclipse.che.kuksa.yocto.shared.YoctoSdk;
  * @author Pedro Cuadra
  */
 @Singleton
-public class YoctoSdkEnvPathMacro implements Macro {
+public class YoctoSdkEnvPathMacro extends BaseMacro {
 
   private static final String KEY = "${yocto.sdk.env.path}";
+  private static final String DEFAULT_VALUE = "/opt/";
+  private static final String DESCRIPTION = "Environment file of the selected Yocto-based SDK";
 
   private final AppContext appContext;
   private final PromiseProvider promises;
@@ -41,29 +43,27 @@ public class YoctoSdkEnvPathMacro implements Macro {
       AppContext appContext,
       PromiseProvider promises,
       CoreLocalizationConstant localizationConstants) {
+    super(KEY, DEFAULT_VALUE, DESCRIPTION);
+
+    expandVal = "def";
     this.appContext = appContext;
     this.promises = promises;
     this.localizationConstants = localizationConstants;
   }
 
-  @NotNull
-  @Override
-  public String getName() {
-    return KEY;
-  }
-
-  @Override
-  public String getDescription() {
-    return "Environment file of the selected Yocto-based SDK";
-  }
-
-  public void setSelectedSdk(YoctoSdk pref) {
-    expandVal = YoctoSdkManager.SDK_ROOT_PATH;
-  }
-
+  /** {@inheritDoc} */
   @NotNull
   @Override
   public Promise<String> expand() {
     return promises.resolve(expandVal);
+  }
+
+  public void setSelectedSdk(YoctoSdk pref) {
+    String path = YoctoConstants.SDK_ROOT_PATH;
+
+    path += "/" + pref.getName();
+    path += "/" + pref.getVersion();
+
+    this.expandVal = path;
   }
 }

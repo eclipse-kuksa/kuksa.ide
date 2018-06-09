@@ -1,6 +1,6 @@
 package org.eclipse.che.kuksa.yocto.ide.preferences.dialog;
 
-import org.eclipse.che.kuksa.yocto.shared.YoctoSdk;
+import org.eclipse.che.kuksa.yocto.ide.YoctoSdk;
 
 public interface YoctoSdkCallback {
   /**

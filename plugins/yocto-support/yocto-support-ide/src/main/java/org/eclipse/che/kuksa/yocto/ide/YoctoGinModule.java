@@ -13,13 +13,12 @@ package org.eclipse.che.kuksa.yocto.ide;
 import com.google.gwt.inject.client.AbstractGinModule;
 import com.google.gwt.inject.client.multibindings.GinMultibinder;
 import com.google.inject.Singleton;
-
 import org.eclipse.che.ide.api.command.CommandType;
 import org.eclipse.che.ide.api.extension.ExtensionGinModule;
-import org.eclipse.che.ide.api.macro.Macro;
 import org.eclipse.che.ide.api.preferences.PreferencePagePresenter;
 import org.eclipse.che.kuksa.yocto.ide.command.YoctoCommandType;
 import org.eclipse.che.kuksa.yocto.ide.macro.YoctoSdkEnvPathMacro;
+import org.eclipse.che.kuksa.yocto.ide.macro.YoctoSdkMacroRegistrar;
 import org.eclipse.che.kuksa.yocto.ide.macro.YoctoSdkPathMacro;
 import org.eclipse.che.kuksa.yocto.ide.preferences.YoctoExtensionManagerPresenter;
 import org.eclipse.che.kuksa.yocto.ide.preferences.YoctoExtensionManagerView;
@@ -41,9 +40,13 @@ public class YoctoGinModule extends AbstractGinModule {
   @Override
   protected void configure() {
 
-    GinMultibinder<Macro> macrosBinder = GinMultibinder.newSetBinder(binder(), Macro.class);
-    macrosBinder.addBinding().to(YoctoSdkPathMacro.class);
-    macrosBinder.addBinding().to(YoctoSdkEnvPathMacro.class);
+    //    newSetBinder(binder(), Macro.class).addBinding().to(YoctoSdkPathMacro.class);
+    //    newSetBinder(binder(), Macro.class).addBinding().to(YoctoSdkEnvPathMacro.class);
+
+    bind(YoctoSdkMacroRegistrar.class).asEagerSingleton();
+    bind(YoctoSdkEnvPathMacro.class).asEagerSingleton();
+    bind(YoctoSdkPathMacro.class).asEagerSingleton();
+    //    bind(CustomCommandExecutor.class);
 
     GinMultibinder.newSetBinder(binder(), CommandType.class)
         .addBinding()
@@ -55,6 +58,7 @@ public class YoctoGinModule extends AbstractGinModule {
 
     bind(YoctoSdkInputDialogView.class).to(YoctoSdkInputDialogViewImpl.class).in(Singleton.class);
 
+    //    bind(CustomSilentCommandExecutor.class);
     bind(YoctoSdkManager.class);
     bind(YoctoSdkInputDialogFooter.class);
     bind(YoctoSdkInputDialogPresenter.class);

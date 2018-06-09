@@ -8,7 +8,7 @@
  * Contributors:
  *   Pedro Cuadra - pjcuadra@gmail.com
  */
-package org.eclipse.che.kuksa.yocto.shared;
+package org.eclipse.che.kuksa.yocto.ide;
 
 import com.google.gwt.json.client.JSONBoolean;
 import com.google.gwt.json.client.JSONObject;
