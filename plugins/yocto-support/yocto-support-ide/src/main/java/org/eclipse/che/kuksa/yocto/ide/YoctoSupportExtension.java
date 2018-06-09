@@ -7,13 +7,8 @@
  */
 package org.eclipse.che.kuksa.yocto.ide;
 
-import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import org.eclipse.che.ide.api.action.ActionManager;
-import org.eclipse.che.ide.api.action.DefaultActionGroup;
-import org.eclipse.che.ide.api.action.IdeActions;
 import org.eclipse.che.ide.api.extension.Extension;
-import org.eclipse.che.kuksa.yocto.ide.action.MyAction;
 
 /**
  * Server service extension that registers action which calls a service.
@@ -24,19 +19,6 @@ import org.eclipse.che.kuksa.yocto.ide.action.MyAction;
 @Extension(title = "Yocto Support", version = "0.0.1")
 public class YoctoSupportExtension {
 
-  /**
-   * Constructor.
-   *
-   * @param actionManager the {@link ActionManager} that is used to register our actions
-   * @param myAction the action that calls the example server service
-   */
-  @Inject
-  public YoctoSupportExtension(ActionManager actionManager, MyAction myAction) {
-
-    actionManager.registerAction("myAction2", myAction);
-
-    DefaultActionGroup mainContextMenuGroup =
-        (DefaultActionGroup) actionManager.getAction(IdeActions.GROUP_MAIN_CONTEXT_MENU);
-    mainContextMenuGroup.add(myAction);
-  }
+  /** Constructor. */
+  public YoctoSupportExtension() {}
 }

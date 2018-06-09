@@ -20,7 +20,6 @@
     <packaging>pom</packaging>
     <name>Kuksa IDE :: Plugins</name>
     <modules>
-        <module>plugin-serverservice</module>
         <module>yocto-support</module>
     </modules>
 </project>

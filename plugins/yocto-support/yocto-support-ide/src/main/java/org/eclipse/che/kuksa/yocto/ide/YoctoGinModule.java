@@ -13,6 +13,7 @@ package org.eclipse.che.kuksa.yocto.ide;
 import com.google.gwt.inject.client.AbstractGinModule;
 import com.google.gwt.inject.client.multibindings.GinMultibinder;
 import com.google.inject.Singleton;
+
 import org.eclipse.che.ide.api.command.CommandType;
 import org.eclipse.che.ide.api.extension.ExtensionGinModule;
 import org.eclipse.che.ide.api.macro.Macro;
@@ -24,6 +25,10 @@ import org.eclipse.che.kuksa.yocto.ide.preferences.YoctoExtensionManagerPresente
 import org.eclipse.che.kuksa.yocto.ide.preferences.YoctoExtensionManagerView;
 import org.eclipse.che.kuksa.yocto.ide.preferences.YoctoExtensionManagerViewImpl;
 import org.eclipse.che.kuksa.yocto.ide.preferences.YoctoSdkManager;
+import org.eclipse.che.kuksa.yocto.ide.preferences.dialog.YoctoSdkInputDialogFooter;
+import org.eclipse.che.kuksa.yocto.ide.preferences.dialog.YoctoSdkInputDialogPresenter;
+import org.eclipse.che.kuksa.yocto.ide.preferences.dialog.YoctoSdkInputDialogView;
+import org.eclipse.che.kuksa.yocto.ide.preferences.dialog.YoctoSdkInputDialogViewImpl;
 
 /**
  * GIN module for Che Yocto extension.
@@ -48,7 +53,11 @@ public class YoctoGinModule extends AbstractGinModule {
         .to(YoctoExtensionManagerViewImpl.class)
         .in(Singleton.class);
 
+    bind(YoctoSdkInputDialogView.class).to(YoctoSdkInputDialogViewImpl.class).in(Singleton.class);
+
     bind(YoctoSdkManager.class);
+    bind(YoctoSdkInputDialogFooter.class);
+    bind(YoctoSdkInputDialogPresenter.class);
 
     GinMultibinder.newSetBinder(binder(), PreferencePagePresenter.class)
         .addBinding()

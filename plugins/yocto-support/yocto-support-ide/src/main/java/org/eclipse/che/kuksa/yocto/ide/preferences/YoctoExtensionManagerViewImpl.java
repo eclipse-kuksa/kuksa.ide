@@ -12,7 +12,6 @@ package org.eclipse.che.kuksa.yocto.ide.preferences;
 
 import com.google.gwt.cell.client.ButtonCell;
 import com.google.gwt.cell.client.Cell.Context;
-import com.google.gwt.cell.client.EditTextCell;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
@@ -73,7 +72,7 @@ public class YoctoExtensionManagerViewImpl extends Composite implements YoctoExt
 
     yoctoSdkPreferenceCellTable = new CellTable<YoctoSdk>(20, res);
     Column<YoctoSdk, String> nameColumn =
-        new Column<YoctoSdk, String>(new EditTextCell()) {
+        new Column<YoctoSdk, String>(new TextCell()) {
           @Override
           public String getValue(YoctoSdk object) {
             return object.getName();
@@ -91,17 +90,8 @@ public class YoctoExtensionManagerViewImpl extends Composite implements YoctoExt
           }
         };
 
-    nameColumn.setFieldUpdater(
-        new FieldUpdater<YoctoSdk, String>() {
-          @Override
-          public void update(int index, YoctoSdk object, String value) {
-            object.setName(value);
-            delegate.nowDirty();
-          }
-        });
-
     Column<YoctoSdk, String> versionColumn =
-        new Column<YoctoSdk, String>(new EditTextCell()) {
+        new Column<YoctoSdk, String>(new TextCell()) {
           @Override
           public String getValue(YoctoSdk object) {
             return object.getVersion();
@@ -120,15 +110,6 @@ public class YoctoExtensionManagerViewImpl extends Composite implements YoctoExt
             }
           }
         };
-
-    versionColumn.setFieldUpdater(
-        new FieldUpdater<YoctoSdk, String>() {
-          @Override
-          public void update(int index, YoctoSdk object, String value) {
-            object.setVersion(value);
-            delegate.nowDirty();
-          }
-        });
 
     Column<YoctoSdk, String> urlColumn =
         new Column<YoctoSdk, String>(new TextCell()) {
@@ -151,15 +132,6 @@ public class YoctoExtensionManagerViewImpl extends Composite implements YoctoExt
           }
         };
 
-    urlColumn.setFieldUpdater(
-        new FieldUpdater<YoctoSdk, String>() {
-          @Override
-          public void update(int index, YoctoSdk object, String value) {
-            //            object.setUrl(value);
-            //            delegate.refreshTable();
-          }
-        });
-
     Column<YoctoSdk, String> selectPreferenceColumn =
         new Column<YoctoSdk, String>(new ButtonCell()) {
           @Override
@@ -178,7 +150,7 @@ public class YoctoExtensionManagerViewImpl extends Composite implements YoctoExt
                     + UIObject.DEBUG_ID_PREFIX
                     + "-preferences-cellTable-select-"
                     + context.getIndex()
-                    + "\" " 
+                    + "\" "
                     + visibility
                     + ">");
             super.render(context, object, sb);
@@ -203,7 +175,7 @@ public class YoctoExtensionManagerViewImpl extends Composite implements YoctoExt
 
           @Override
           public void render(Context context, YoctoSdk object, SafeHtmlBuilder sb) {
-              
+
             sb.appendHtmlConstant(
                 "<div id=\""
                     + UIObject.DEBUG_ID_PREFIX
@@ -225,15 +197,15 @@ public class YoctoExtensionManagerViewImpl extends Composite implements YoctoExt
 
     yoctoSdkPreferenceCellTable.addColumn(nameColumn, local.sdkColumnHeader());
     yoctoSdkPreferenceCellTable.addColumn(versionColumn, local.versionColumnHeader());
-    yoctoSdkPreferenceCellTable.addColumn(urlColumn, local.urlColumnHeader());
+//    yoctoSdkPreferenceCellTable.addColumn(urlColumn, local.urlColumnHeader());
     yoctoSdkPreferenceCellTable.addColumn(selectPreferenceColumn, local.selectColumnHeader());
     yoctoSdkPreferenceCellTable.addColumn(deletePreferenceColumn, local.deleteColumnHeader());
     yoctoSdkPreferenceCellTable.setWidth("100%", true);
     yoctoSdkPreferenceCellTable.setColumnWidth(nameColumn, 45, Style.Unit.PCT);
     yoctoSdkPreferenceCellTable.setColumnWidth(versionColumn, 30, Style.Unit.PCT);
-    yoctoSdkPreferenceCellTable.setColumnWidth(urlColumn, 30, Style.Unit.PCT);
-    yoctoSdkPreferenceCellTable.setColumnWidth(selectPreferenceColumn, 25, Style.Unit.PCT);
-    yoctoSdkPreferenceCellTable.setColumnWidth(deletePreferenceColumn, 25, Style.Unit.PCT);
+//    yoctoSdkPreferenceCellTable.setColumnWidth(urlColumn, 30, Style.Unit.PCT);
+    yoctoSdkPreferenceCellTable.setColumnWidth(selectPreferenceColumn, 40, Style.Unit.PCT);
+    yoctoSdkPreferenceCellTable.setColumnWidth(deletePreferenceColumn, 40, Style.Unit.PCT);
 
     // don't show loading indicator
     yoctoSdkPreferenceCellTable.setLoadingIndicator(null);

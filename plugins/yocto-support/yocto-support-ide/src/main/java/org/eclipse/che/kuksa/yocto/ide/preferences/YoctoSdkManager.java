@@ -10,18 +10,15 @@
  */
 package org.eclipse.che.kuksa.yocto.ide.preferences;
 
+import com.google.gwt.json.client.JSONObject;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import java.util.ArrayList;
-import com.google.gwt.json.client.JSONObject;
 import elemental.json.Json;
 import elemental.json.JsonObject;
+import java.util.ArrayList;
 import java.util.List;
-import org.eclipse.che.ide.api.command.CommandExecutor;
-import org.eclipse.che.ide.api.command.CommandImpl;
 import org.eclipse.che.ide.api.notification.NotificationManager;
 import org.eclipse.che.ide.api.notification.StatusNotification;
-import org.eclipse.che.ide.api.workspace.WsAgentServerUtil;
 import org.eclipse.che.kuksa.yocto.ide.YoctoLocalizationConstant;
 import org.eclipse.che.kuksa.yocto.ide.macro.YoctoSdkEnvPathMacro;
 import org.eclipse.che.kuksa.yocto.ide.macro.YoctoSdkPathMacro;
@@ -78,50 +75,44 @@ public class YoctoSdkManager {
     cmdLine += "curl -L " + pref.getUrl() + " -o " + getDownloadPath(pref) + " && ";
     cmdLine += "chmod +x " + getDownloadPath(pref) + " && ";
     cmdLine += getDownloadPath(pref) + " -y -d " + getInstallDirectory(pref);
-    
+
     notificationManager.notify(
-        cmdLine,
-        StatusNotification.Status.SUCCESS,
-        StatusNotification.DisplayMode.FLOAT_MODE);
-    
+        cmdLine, StatusNotification.Status.SUCCESS, StatusNotification.DisplayMode.FLOAT_MODE);
   }
-  
+
   private boolean compareYoctoSdk(YoctoSdk pref_1, YoctoSdk pref_2) {
-      return pref_1.getName().equals(pref_2.getName()) && pref_1.getVersion().equals(pref_2.getVersion());
+    return pref_1.getName().equals(pref_2.getName())
+        && pref_1.getVersion().equals(pref_2.getVersion());
   }
 
   public boolean addSdk(final YoctoSdk pref) {
-      
-    for (YoctoSdk curr_pref: this.yoctoSdkList) {
-        if (this.compareYoctoSdk(curr_pref, pref)) {
-            notificationManager.notify(
-                "Error " + pref.getName() + " " + pref.getVersion() + " already added",
-                StatusNotification.Status.FAIL,
-                StatusNotification.DisplayMode.FLOAT_MODE);
-            return false;
-        }
+
+    for (YoctoSdk curr_pref : this.yoctoSdkList) {
+      if (this.compareYoctoSdk(curr_pref, pref)) {
+        notificationManager.notify(
+            "Error " + pref.getName() + " " + pref.getVersion() + " already added",
+            StatusNotification.Status.FAIL,
+            StatusNotification.DisplayMode.FLOAT_MODE);
+        return false;
+      }
     }
-    
-    
-    
+
     installSdk(pref);
     this.yoctoSdkList.add(pref);
-    
+
     notificationManager.notify(
         "Yocto SDK " + pref.getName() + " " + pref.getVersion() + " added",
         StatusNotification.Status.SUCCESS,
         StatusNotification.DisplayMode.FLOAT_MODE);
-        
+
     return true;
   }
 
   private void uninstallSdk(final YoctoSdk pref) {
     String cmdLine = "rm -rf " + getInstallDirectory(pref);
-    
+
     notificationManager.notify(
-        cmdLine,
-        StatusNotification.Status.SUCCESS,
-        StatusNotification.DisplayMode.FLOAT_MODE);
+        cmdLine, StatusNotification.Status.SUCCESS, StatusNotification.DisplayMode.FLOAT_MODE);
   }
 
   /**
@@ -132,7 +123,7 @@ public class YoctoSdkManager {
   public void removeSdk(final YoctoSdk pref) {
     this.uninstallSdk(pref);
     this.yoctoSdkList.remove(pref);
-    
+
     notificationManager.notify(
         "Yocto SDK " + pref.getName() + " " + pref.getVersion() + " removed",
         StatusNotification.Status.SUCCESS,
@@ -140,15 +131,15 @@ public class YoctoSdkManager {
   }
 
   public boolean selectSdk(final YoctoSdk pref) {
-      
+
     if (pref.isSelected()) {
-        return false;
+      return false;
     }
 
     for (YoctoSdk curr_pref : this.yoctoSdkList) {
       curr_pref.setSelected(false);
     }
-    
+
     notificationManager.notify(
         "Yocto SDK " + pref.getName() + " " + pref.getVersion() + " selected",
         StatusNotification.Status.SUCCESS,
@@ -156,14 +147,14 @@ public class YoctoSdkManager {
 
     pref.setSelected(true);
     this.yoctoSdkEnvPathMacro.setSelectedSdk(pref);
-    
+
     return true;
   }
 
   public List<YoctoSdk> getAll() {
     return this.yoctoSdkList;
   }
-  
+
   /**
    * Converts json string to list of Yaml Preferences
    *
@@ -172,7 +163,7 @@ public class YoctoSdkManager {
    */
   public void loadJsonString(String jsonStr) {
     JsonObject parsedJson = Json.parse(jsonStr);
-    
+
     for (String name : parsedJson.keys()) {
       JsonObject nameObj = parsedJson.getObject(name);
 
@@ -182,7 +173,7 @@ public class YoctoSdkManager {
       }
     }
   }
-  
+
   /**
    * Convert YoctoSdk's to JSON
    *

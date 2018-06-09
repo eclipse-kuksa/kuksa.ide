@@ -10,21 +10,19 @@
  */
 package org.eclipse.che.kuksa.yocto.ide.preferences;
 
-import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import elemental.json.Json;
-import elemental.json.JsonObject;
-import java.util.List;
 import javax.validation.constraints.NotNull;
 import org.eclipse.che.ide.api.preferences.AbstractPreferencePagePresenter;
 import org.eclipse.che.ide.api.preferences.PreferencesManager;
 import org.eclipse.che.ide.ui.dialogs.CancelCallback;
 import org.eclipse.che.ide.ui.dialogs.DialogFactory;
 import org.eclipse.che.ide.ui.dialogs.confirm.ConfirmCallback;
-import org.eclipse.che.ide.ui.dialogs.input.InputCallback;
 import org.eclipse.che.kuksa.yocto.ide.YoctoLocalizationConstant;
+import org.eclipse.che.kuksa.yocto.ide.preferences.dialog.YoctoSdkCallback;
+import org.eclipse.che.kuksa.yocto.ide.preferences.dialog.YoctoSdkInputDialogPresenter;
+import org.eclipse.che.kuksa.yocto.ide.preferences.dialog.YoctoSdkInputDialogView;
 import org.eclipse.che.kuksa.yocto.shared.YoctoSdk;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,6 +49,7 @@ public class YoctoExtensionManagerPresenter extends AbstractPreferencePagePresen
   //  private NotificationManager notificationManager;
   private boolean dirty = false;
   private final YoctoSdkManager yoctoSdkManager;
+  private final YoctoSdkInputDialogPresenter inputPresenter;
 
   @Inject
   public YoctoExtensionManagerPresenter(
@@ -58,7 +57,8 @@ public class YoctoExtensionManagerPresenter extends AbstractPreferencePagePresen
       DialogFactory dialogFactory,
       PreferencesManager preferencesManager,
       YoctoLocalizationConstant local,
-      YoctoSdkManager yoctoSdkManager) {
+      YoctoSdkManager yoctoSdkManager,
+      YoctoSdkInputDialogPresenter inputPresenter) {
     super("Yocto SDK", "Yocto Settings");
     this.view = view;
     this.dialogFactory = dialogFactory;
@@ -72,6 +72,7 @@ public class YoctoExtensionManagerPresenter extends AbstractPreferencePagePresen
       yoctoSdkManager.loadJsonString(this.preferencesManager.getValue(this.preferenceName));
     }
     this.view.setDelegate(this);
+    this.inputPresenter = inputPresenter;
 
     refreshTable();
   }
@@ -100,18 +101,17 @@ public class YoctoExtensionManagerPresenter extends AbstractPreferencePagePresen
   public void onSelectClicked(@NotNull final YoctoSdk pairKey) {
 
     if (this.yoctoSdkManager.selectSdk(pairKey)) {
-        LOG.info(
-        "Selected SDK: { Name: "
-            + pairKey.getName()
-            + ", Version: "
-            + pairKey.getVersion()
-            + ", URL: "
-            + pairKey.getUrl()
-            + "}");
-    refreshTable();
-    nowDirty();
+      LOG.info(
+          "Selected SDK: { Name: "
+              + pairKey.getName()
+              + ", Version: "
+              + pairKey.getVersion()
+              + ", URL: "
+              + pairKey.getUrl()
+              + "}");
+      refreshTable();
+      nowDirty();
     }
-    
   }
 
   private CancelCallback getCancelCallback() {
@@ -141,67 +141,23 @@ public class YoctoExtensionManagerPresenter extends AbstractPreferencePagePresen
     pref.setVersion(version);
   }
 
-
   /** {@inheritDoc} */
   @Override
   public void onAddSdkClicked() {
 
     YoctoSdk pref = new YoctoSdk();
-
-    dialogFactory
-        .createInputDialog(
-            local.addSdk(),
-            local.addSdkUrlLabel(),
-            "",
-            0,
-            0,
-            local.addSdkButtonText(),
-            new InputCallback() {
+    inputPresenter.setInputCallback(new YoctoSdkCallback() {
               @Override
-              public void accepted(String url) {
-                addUrlToSdkPreferences(pref, url);
+              public void accepted(YoctoSdk pref) {
+                yoctoSdkManager.addSdk(pref);
                 refreshTable();
                 nowDirty();
               }
-            },
-            getCancelCallback())
-        .show();
+            });
 
-    dialogFactory
-        .createInputDialog(
-            local.addSdk(),
-            local.addSdkVersionLabel(),
-            "",
-            0,
-            0,
-            local.addSdkButtonText(),
-            new InputCallback() {
-              @Override
-              public void accepted(String version) {
-                addVersionToSdkPreferences(pref, version);
-                nowDirty();
-              }
-            },
-            getCancelCallback())
-        .show();
 
-    dialogFactory
-        .createInputDialog(
-            local.addSdk(),
-            local.addSdkNameLabel(),
-            "",
-            0,
-            0,
-            local.addSdkButtonText(),
-            new InputCallback() {
-              @Override
-              public void accepted(String name) {
-                addNameToSdkPreferences(pref, name);
-                nowDirty();
-              }
-            },
-            getCancelCallback())
-        .show();
+    inputPresenter.clear();
+    inputPresenter.show();
   }
 
   /** {@inheritDoc} */
@@ -214,7 +170,8 @@ public class YoctoExtensionManagerPresenter extends AbstractPreferencePagePresen
   @Override
   public void nowDirty() {
     dirty = true;
-    delegate.onDirtyChanged();
+//    delegate.onDirtyChanged();
+//    dirty = false;
   }
 
   /** {@inheritDoc} */
@@ -231,11 +188,10 @@ public class YoctoExtensionManagerPresenter extends AbstractPreferencePagePresen
 
   @Override
   public void storeChanges() {
-    this.preferencesManager.setValue(
-        this.preferenceName, yoctoSdkManager.toJsonString());
+    this.preferencesManager.setValue(this.preferenceName, yoctoSdkManager.toJsonString());
     this.preferencesManager.flushPreferences();
     dirty = false;
-    delegate.onDirtyChanged();
+//    delegate.onDirtyChanged();
   }
 
   @Override
