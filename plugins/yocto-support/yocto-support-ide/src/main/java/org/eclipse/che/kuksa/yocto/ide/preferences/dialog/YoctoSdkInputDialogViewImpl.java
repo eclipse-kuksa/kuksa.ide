@@ -119,9 +119,9 @@ public class YoctoSdkInputDialogViewImpl extends Window implements YoctoSdkInput
 
   @Override
   public void clear() {
-    nameValue.setValue("rover");
-    versionValue.setValue("0.0.0-test");
-    urlValue.setValue("https://www.dropbox.com/s/u7jl42nq2rhkzhm/install_sdk_dummy.sh?dl=0");
+    nameValue.setValue("sdk-name");
+    versionValue.setValue("x.x.x");
+    urlValue.setValue("https://sdk_install_script.sh");
   }
 
   @Override

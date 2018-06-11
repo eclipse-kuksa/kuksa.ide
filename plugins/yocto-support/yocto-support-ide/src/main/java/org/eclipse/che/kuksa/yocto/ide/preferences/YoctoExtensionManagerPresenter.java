@@ -135,8 +135,8 @@ public class YoctoExtensionManagerPresenter extends AbstractPreferencePagePresen
   /** {@inheritDoc} */
   @Override
   public void onAddSdkClicked() {
-        inputPresenter.clear();
-        inputPresenter.show();
+    inputPresenter.clear();
+    inputPresenter.show();
   }
 
   /** {@inheritDoc} */

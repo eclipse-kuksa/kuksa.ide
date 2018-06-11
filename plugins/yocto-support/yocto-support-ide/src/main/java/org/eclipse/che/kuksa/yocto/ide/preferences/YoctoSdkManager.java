@@ -75,18 +75,24 @@ public class YoctoSdkManager {
 
     cmdLine = "mkdir -p " + YoctoSdkManager.SDK_TMP_PATH + " && ";
     cmdLine += "cd " + YoctoSdkManager.SDK_TMP_PATH + " && ";
-    cmdLine += "wget --quiet -O " + getDownloadPath(pref) + " " + pref.getUrl() + " -o /dev/null && ";
+    cmdLine +=
+        "wget --quiet -O " + getDownloadPath(pref) + " " + pref.getUrl() + " -o /dev/null && ";
     cmdLine += "chmod +x " + getDownloadPath(pref) + " && ";
     cmdLine += getDownloadPath(pref) + " -y -d " + getInstallDirectory(pref) + " && exit";
 
     CommandImpl installCmd = new CommandImpl("Install SDK", cmdLine, "yocto");
+
+    ArrayList<String> ignoreErrors = new ArrayList<String>();
+    ignoreErrors.add("xargs: file:");
+    ignoreErrors.add("sed: no input files");
 
     this.commandExecutor.executeCommand(
         installCmd,
         new StatusNotification(
             "Installing SDK " + pref.getName() + " (" + pref.getVersion() + ")",
             StatusNotification.Status.PROGRESS,
-            StatusNotification.DisplayMode.FLOAT_MODE));
+            StatusNotification.DisplayMode.FLOAT_MODE),
+        ignoreErrors);
   }
 
   private boolean compareYoctoSdk(YoctoSdk pref_1, YoctoSdk pref_2) {
@@ -106,7 +112,7 @@ public class YoctoSdkManager {
       }
     }
 
-//    downloadSdk(pref);
+    //    downloadSdk(pref);
     installSdk(pref);
     this.yoctoSdkList.add(pref);
 
@@ -120,16 +126,15 @@ public class YoctoSdkManager {
 
   private void uninstallSdk(final YoctoSdk pref) {
     String cmdLine = "rm -rf " + getInstallDirectory(pref) + " && exit";
-    
+
     CommandImpl uninstallCmd = new CommandImpl("Uninstall SDK", cmdLine, "yocto");
-    
-     this.commandExecutor.executeCommand(
+
+    this.commandExecutor.executeCommand(
         uninstallCmd,
         new StatusNotification(
             "Uninstalling SDK " + pref.getName() + " (" + pref.getVersion() + ")",
             StatusNotification.Status.PROGRESS,
             StatusNotification.DisplayMode.FLOAT_MODE));
-
   }
 
   /**

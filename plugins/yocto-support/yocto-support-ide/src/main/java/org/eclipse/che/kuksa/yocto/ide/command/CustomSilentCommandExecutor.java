@@ -12,10 +12,9 @@ package org.eclipse.che.kuksa.yocto.ide.command;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.function.Consumer;
-
 import org.eclipse.che.agent.exec.shared.dto.ProcessStartResponseDto;
 import org.eclipse.che.agent.exec.shared.dto.event.ProcessDiedEventDto;
 import org.eclipse.che.agent.exec.shared.dto.event.ProcessStdErrEventDto;
@@ -84,7 +83,11 @@ public class CustomSilentCommandExecutor {
     this.commandRunning = false;
   }
 
-  public void executeCommand(Command command, String machineName, StatusNotification notification) {
+  public void executeCommand(
+      Command command,
+      String machineName,
+      StatusNotification notification,
+      ArrayList<String> ignoreErrors) {
     final String name = command.getName();
     final String type = command.getType();
     final String commandLine = command.getCommandLine();
@@ -105,22 +108,30 @@ public class CustomSilentCommandExecutor {
         .thenIfProcessStdErrEvent(
             new Consumer<ProcessStdErrEventDto>() {
 
-            @Override
-            public void accept(ProcessStdErrEventDto arg0) {
+              @Override
+              public void accept(ProcessStdErrEventDto arg0) {
+
+                console.getStdErrConsumer().accept(arg0);
+
+                if (ignoreErrors != null) {
+                  for (String ignoreError : ignoreErrors) {
+                    if (arg0.getText().contains(ignoreError)) {
+                      return;
+                    }
+                  }
+                }
                 notification.setTitle(orginalTitle + " failed with " + arg0.getText());
                 notification.setStatus(StatusNotification.Status.FAIL);
-                
-                console.getStdErrConsumer().accept(arg0);
-            }
+              }
             })
-//        .thenIfProcessStdOutEvent(console.getStdOutConsumer())
+        //        .thenIfProcessStdOutEvent(console.getStdOutConsumer())
         .thenIfProcessDiedEvent(
             new Consumer<ProcessDiedEventDto>() { // Run command
 
               @Override
               public void accept(ProcessDiedEventDto arg0) {
                 if (notification.getStatus() != StatusNotification.Status.FAIL) {
-                    notification.setStatus(StatusNotification.Status.SUCCESS);    
+                  notification.setStatus(StatusNotification.Status.SUCCESS);
                 }
                 console.close();
               }
@@ -128,10 +139,15 @@ public class CustomSilentCommandExecutor {
   }
 
   public void executeCommand(CommandImpl command, StatusNotification notification) {
+    this.executeCommand(command, notification, null);
+  }
+
+  public void executeCommand(
+      CommandImpl command, StatusNotification notification, ArrayList<String> ignoreErrors) {
     final MachineImpl selectedMachine = getSelectedMachine();
 
     if (selectedMachine != null) {
-      executeCommand(command, selectedMachine.getName(), notification);
+      executeCommand(command, selectedMachine.getName(), notification, ignoreErrors);
     } else {
       machineChooser
           .show()
@@ -140,7 +156,7 @@ public class CustomSilentCommandExecutor {
 
                 @Override
                 public Object apply(MachineImpl machine) throws FunctionException {
-                  executeCommand(command, machine.getName(), notification);
+                  executeCommand(command, machine.getName(), notification, ignoreErrors);
                   return null;
                 }
               });

@@ -47,7 +47,7 @@ public class YoctoGinModule extends AbstractGinModule {
     bind(YoctoSdkEnvPathMacro.class).asEagerSingleton();
     bind(YoctoSdkPathMacro.class).asEagerSingleton();
     bind(YoctoSdkMacroRegistrar.class).asEagerSingleton();
-    //    bind(CustomCommandExecutor.class);
+    bind(CustomSilentCommandExecutor.class);
 
     GinMultibinder.newSetBinder(binder(), CommandType.class)
         .addBinding()
@@ -59,7 +59,6 @@ public class YoctoGinModule extends AbstractGinModule {
 
     bind(YoctoSdkInputDialogView.class).to(YoctoSdkInputDialogViewImpl.class).in(Singleton.class);
 
-    bind(CustomSilentCommandExecutor.class);
     bind(YoctoSdkManager.class);
     bind(YoctoSdkInputDialogFooter.class);
     bind(YoctoSdkInputDialogPresenter.class);
