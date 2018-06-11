@@ -63,6 +63,7 @@ public class YoctoSdkEnvPathMacro extends BaseMacro {
 
     path += "/" + pref.getName();
     path += "/" + pref.getVersion();
+    path += "/env*";
 
     this.expandVal = path;
   }
