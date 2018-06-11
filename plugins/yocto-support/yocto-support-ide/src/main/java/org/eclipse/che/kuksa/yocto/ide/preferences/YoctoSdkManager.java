@@ -77,22 +77,19 @@ public class YoctoSdkManager {
     cmdLine += "cd " + YoctoSdkManager.SDK_TMP_PATH + " && ";
     cmdLine +=
         "wget --quiet -O " + getDownloadPath(pref) + " " + pref.getUrl() + " -o /dev/null && ";
+    // Check if was downloaded successfully    
+    cmdLine += "`[ -s " + getDownloadPath(pref) + " ] || exit 1` && ";
     cmdLine += "chmod +x " + getDownloadPath(pref) + " && ";
-    cmdLine += getDownloadPath(pref) + " -y -d " + getInstallDirectory(pref) + " && exit";
+    cmdLine += getDownloadPath(pref) + " -y -d " + getInstallDirectory(pref);
 
     CommandImpl installCmd = new CommandImpl("Install SDK", cmdLine, "yocto");
-
-    ArrayList<String> ignoreErrors = new ArrayList<String>();
-    ignoreErrors.add("xargs: file:");
-    ignoreErrors.add("sed: no input files");
 
     this.commandExecutor.executeCommand(
         installCmd,
         new StatusNotification(
             "Installing SDK " + pref.getName() + " (" + pref.getVersion() + ")",
             StatusNotification.Status.PROGRESS,
-            StatusNotification.DisplayMode.FLOAT_MODE),
-        ignoreErrors);
+            StatusNotification.DisplayMode.FLOAT_MODE));
   }
 
   private boolean compareYoctoSdk(YoctoSdk pref_1, YoctoSdk pref_2) {
@@ -116,16 +113,13 @@ public class YoctoSdkManager {
     installSdk(pref);
     this.yoctoSdkList.add(pref);
 
-    notificationManager.notify(
-        "Yocto SDK " + pref.getName() + " " + pref.getVersion() + " added",
-        StatusNotification.Status.SUCCESS,
-        StatusNotification.DisplayMode.FLOAT_MODE);
-
     return true;
   }
 
   private void uninstallSdk(final YoctoSdk pref) {
-    String cmdLine = "rm -rf " + getInstallDirectory(pref) + " && exit";
+    String cmdLine = "rm -rf " + getInstallDirectory(pref) + " && ";
+    
+    cmdLine += "rm -rf " + getDownloadPath(pref);
 
     CommandImpl uninstallCmd = new CommandImpl("Uninstall SDK", cmdLine, "yocto");
 
@@ -145,11 +139,6 @@ public class YoctoSdkManager {
   public void removeSdk(final YoctoSdk pref) {
     this.uninstallSdk(pref);
     this.yoctoSdkList.remove(pref);
-
-    notificationManager.notify(
-        "Yocto SDK " + pref.getName() + " " + pref.getVersion() + " removed",
-        StatusNotification.Status.SUCCESS,
-        StatusNotification.DisplayMode.FLOAT_MODE);
   }
 
   public boolean selectSdk(final YoctoSdk pref) {

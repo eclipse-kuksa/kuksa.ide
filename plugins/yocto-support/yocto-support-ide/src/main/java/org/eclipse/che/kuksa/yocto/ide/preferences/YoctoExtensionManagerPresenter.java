@@ -149,8 +149,7 @@ public class YoctoExtensionManagerPresenter extends AbstractPreferencePagePresen
   @Override
   public void nowDirty() {
     dirty = true;
-    //    delegate.onDirtyChanged();
-    //    dirty = false;
+    delegate.onDirtyChanged();
   }
 
   /** {@inheritDoc} */
