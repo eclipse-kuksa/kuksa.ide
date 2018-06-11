@@ -16,6 +16,7 @@ import com.google.inject.Singleton;
 import org.eclipse.che.ide.api.command.CommandType;
 import org.eclipse.che.ide.api.extension.ExtensionGinModule;
 import org.eclipse.che.ide.api.preferences.PreferencePagePresenter;
+import org.eclipse.che.kuksa.yocto.ide.command.CustomSilentCommandExecutor;
 import org.eclipse.che.kuksa.yocto.ide.command.YoctoCommandType;
 import org.eclipse.che.kuksa.yocto.ide.macro.YoctoSdkEnvPathMacro;
 import org.eclipse.che.kuksa.yocto.ide.macro.YoctoSdkMacroRegistrar;
@@ -43,9 +44,9 @@ public class YoctoGinModule extends AbstractGinModule {
     //    newSetBinder(binder(), Macro.class).addBinding().to(YoctoSdkPathMacro.class);
     //    newSetBinder(binder(), Macro.class).addBinding().to(YoctoSdkEnvPathMacro.class);
 
-    bind(YoctoSdkMacroRegistrar.class).asEagerSingleton();
     bind(YoctoSdkEnvPathMacro.class).asEagerSingleton();
     bind(YoctoSdkPathMacro.class).asEagerSingleton();
+    bind(YoctoSdkMacroRegistrar.class).asEagerSingleton();
     //    bind(CustomCommandExecutor.class);
 
     GinMultibinder.newSetBinder(binder(), CommandType.class)
@@ -58,7 +59,7 @@ public class YoctoGinModule extends AbstractGinModule {
 
     bind(YoctoSdkInputDialogView.class).to(YoctoSdkInputDialogViewImpl.class).in(Singleton.class);
 
-    //    bind(CustomSilentCommandExecutor.class);
+    bind(CustomSilentCommandExecutor.class);
     bind(YoctoSdkManager.class);
     bind(YoctoSdkInputDialogFooter.class);
     bind(YoctoSdkInputDialogPresenter.class);

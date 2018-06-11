@@ -1,21 +1,21 @@
 /*
- * Copyright (c) 2012-2018 Red Hat, Inc.
+ * Copyright (c) 2018
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *   Red Hat, Inc. - initial API and implementation
+ *   Pedro Cuadra - pjcuadra@gmail.com
  */
 package org.eclipse.che.kuksa.yocto.ide;
 
 import com.google.gwt.i18n.client.Messages;
 
 /**
- * Localization for Yaml Language Server.
+ * Localization for Yocto Support plugin.
  *
- * @author Joshua Pinkney
+ * @author Pedro Cuadra
  */
 public interface YoctoLocalizationConstant extends Messages {
 

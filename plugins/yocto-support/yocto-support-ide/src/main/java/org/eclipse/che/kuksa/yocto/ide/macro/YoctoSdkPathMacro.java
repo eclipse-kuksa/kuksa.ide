@@ -44,6 +44,7 @@ public class YoctoSdkPathMacro extends BaseMacro {
       PromiseProvider promises,
       CoreLocalizationConstant localizationConstants) {
     super(KEY, DEFAULT_VALUE, DESCRIPTION);
+    expandVal = "def";
     this.appContext = appContext;
     this.promises = promises;
     this.localizationConstants = localizationConstants;

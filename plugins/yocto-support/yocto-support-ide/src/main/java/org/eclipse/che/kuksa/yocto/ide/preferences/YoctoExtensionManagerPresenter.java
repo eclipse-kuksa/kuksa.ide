@@ -135,16 +135,8 @@ public class YoctoExtensionManagerPresenter extends AbstractPreferencePagePresen
   /** {@inheritDoc} */
   @Override
   public void onAddSdkClicked() {
-    //    inputPresenter.clear();
-    //    inputPresenter.show();
-
-    YoctoSdk pref = new YoctoSdk();
-
-    pref.setName("rover");
-    pref.setVersion("test");
-    pref.setUrl("https://www.dropbox.com/s/u7jl42nq2rhkzhm/install_sdk_dummy.sh?dl=0");
-    //    yoctoSdkManager.removeSdk(pref);
-    yoctoSdkManager.addSdk(pref);
+        inputPresenter.clear();
+        inputPresenter.show();
   }
 
   /** {@inheritDoc} */

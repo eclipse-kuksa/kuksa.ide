@@ -23,6 +23,7 @@ import org.eclipse.che.ide.api.notification.StatusNotification;
 import org.eclipse.che.kuksa.yocto.ide.YoctoConstants;
 import org.eclipse.che.kuksa.yocto.ide.YoctoLocalizationConstant;
 import org.eclipse.che.kuksa.yocto.ide.YoctoSdk;
+import org.eclipse.che.kuksa.yocto.ide.command.CustomSilentCommandExecutor;
 import org.eclipse.che.kuksa.yocto.ide.macro.YoctoSdkEnvPathMacro;
 import org.eclipse.che.kuksa.yocto.ide.macro.YoctoSdkPathMacro;
 
@@ -43,7 +44,7 @@ public class YoctoSdkManager {
   private NotificationManager notificationManager;
   private final YoctoSdkEnvPathMacro yoctoSdkEnvPathMacro;
   private final YoctoSdkPathMacro yoctoSdkPathMacro;
-  //  private CustomSilentCommandExecutor commandExecutor;
+  private CustomSilentCommandExecutor commandExecutor;
   private static final String SDK_TMP_PATH = "/projects/.sdk/tmp";
 
   @Inject
@@ -51,14 +52,14 @@ public class YoctoSdkManager {
       YoctoLocalizationConstant local,
       NotificationManager notificationManager,
       YoctoSdkEnvPathMacro yoctoSdkEnvPathMacro,
-      YoctoSdkPathMacro yoctoSdkPathMacro) {
-    //      CustomCommandExecutor commandExecutor) {
+      YoctoSdkPathMacro yoctoSdkPathMacro,
+      CustomSilentCommandExecutor commandExecutor) {
     this.local = local;
     this.notificationManager = notificationManager;
     this.yoctoSdkList = new ArrayList<YoctoSdk>();
     this.yoctoSdkEnvPathMacro = yoctoSdkEnvPathMacro;
     this.yoctoSdkPathMacro = yoctoSdkPathMacro;
-    //    this.commandExecutor = commandExecutor;
+    this.commandExecutor = commandExecutor;
   }
 
   private String getInstallDirectory(final YoctoSdk pref) {
@@ -72,34 +73,20 @@ public class YoctoSdkManager {
   private void installSdk(final YoctoSdk pref) {
     String cmdLine = "";
 
-    cmdLine = getDownloadPath(pref) + " -y -d " + getInstallDirectory(pref);
+    cmdLine = "mkdir -p " + YoctoSdkManager.SDK_TMP_PATH + " && ";
+    cmdLine += "cd " + YoctoSdkManager.SDK_TMP_PATH + " && ";
+    cmdLine += "wget --quiet -O " + getDownloadPath(pref) + " " + pref.getUrl() + " -o /dev/null && ";
+    cmdLine += "chmod +x " + getDownloadPath(pref) + " && ";
+    cmdLine += getDownloadPath(pref) + " -y -d " + getInstallDirectory(pref) + " && exit";
 
     CommandImpl installCmd = new CommandImpl("Install SDK", cmdLine, "yocto");
 
-    //    this.commandExecutor.executeCommand(
-    //        installCmd,
-    //        new StatusNotification(
-    //            "Installing SDK " + pref.getName() + "(" + pref.getVersion() + ")",
-    //            StatusNotification.Status.PROGRESS,
-    //            StatusNotification.DisplayMode.FLOAT_MODE));
-  }
-
-  private void downloadSdk(final YoctoSdk pref) {
-    String cmdLine = "";
-
-    cmdLine = "mkdir -p " + YoctoSdkManager.SDK_TMP_PATH + " && ";
-    cmdLine += "cd " + YoctoSdkManager.SDK_TMP_PATH + " && ";
-    cmdLine += "curl -s -L " + pref.getUrl() + " -o " + getDownloadPath(pref) + " && ";
-    cmdLine += "chmod +x " + getDownloadPath(pref);
-
-    CommandImpl downloadCmd = new CommandImpl("Download SDK", cmdLine, "yocto");
-
-    //    this.commandExecutor.executeCommand(
-    //        downloadCmd,
-    //        new StatusNotification(
-    //            "Downloading SDK from " + pref.getUrl(),
-    //            StatusNotification.Status.PROGRESS,
-    //            StatusNotification.DisplayMode.FLOAT_MODE));
+    this.commandExecutor.executeCommand(
+        installCmd,
+        new StatusNotification(
+            "Installing SDK " + pref.getName() + " (" + pref.getVersion() + ")",
+            StatusNotification.Status.PROGRESS,
+            StatusNotification.DisplayMode.FLOAT_MODE));
   }
 
   private boolean compareYoctoSdk(YoctoSdk pref_1, YoctoSdk pref_2) {
@@ -119,7 +106,7 @@ public class YoctoSdkManager {
       }
     }
 
-    downloadSdk(pref);
+//    downloadSdk(pref);
     installSdk(pref);
     this.yoctoSdkList.add(pref);
 
@@ -132,10 +119,17 @@ public class YoctoSdkManager {
   }
 
   private void uninstallSdk(final YoctoSdk pref) {
-    String cmdLine = "rm -rf " + getInstallDirectory(pref);
+    String cmdLine = "rm -rf " + getInstallDirectory(pref) + " && exit";
+    
+    CommandImpl uninstallCmd = new CommandImpl("Uninstall SDK", cmdLine, "yocto");
+    
+     this.commandExecutor.executeCommand(
+        uninstallCmd,
+        new StatusNotification(
+            "Uninstalling SDK " + pref.getName() + " (" + pref.getVersion() + ")",
+            StatusNotification.Status.PROGRESS,
+            StatusNotification.DisplayMode.FLOAT_MODE));
 
-    notificationManager.notify(
-        cmdLine, StatusNotification.Status.SUCCESS, StatusNotification.DisplayMode.FLOAT_MODE);
   }
 
   /**

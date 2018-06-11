@@ -67,6 +67,16 @@
           <artifactId>che-core-api-model</artifactId>
           <version>6.7.0-SNAPSHOT</version>
         </dependency>
+        <dependency>
+          <groupId>org.eclipse.che.core</groupId>
+          <artifactId>che-core-commons-annotations</artifactId>
+          <version>6.7.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+          <groupId>org.eclipse.che</groupId>
+          <artifactId>che-exec-agent-shared</artifactId>
+          <version>6.7.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -79,14 +89,5 @@
                 </configuration>
             </plugin>
         </plugins>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.eclipse.che.core</groupId>
-                    <artifactId>che-core-api-dto-maven-plugin</artifactId>
-                    <version>${project.version}</version>
-                </plugin>
-            </plugins>
-        </pluginManagement>
     </build>
 </project>

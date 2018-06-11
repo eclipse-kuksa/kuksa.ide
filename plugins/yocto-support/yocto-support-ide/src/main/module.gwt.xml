@@ -13,5 +13,4 @@
     <inherits name="org.eclipse.che.api.project.Project"/>
 
     <source path=""/>
-    <source path=""/>
 </module>

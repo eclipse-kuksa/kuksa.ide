@@ -72,6 +72,6 @@ public class YoctoSdkMacroRegistrar {
   }
 
   private void registerMacros() {
-    macroRegistryProvider.get().register(macros);
+    //        macroRegistryProvider.get().register(macros);
   }
 }
