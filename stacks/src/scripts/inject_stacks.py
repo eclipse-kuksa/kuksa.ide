@@ -15,12 +15,13 @@ import os
 if __name__ == '__main__':
 
     src_path = '../'
+    target_path = '../../target/classes'
     main_path = os.path.join(src_path, 'main')
     res_path = os.path.join(main_path, 'resources')
     stacks_path = os.path.join(res_path, 'stacks')
     
     org_stacks_file = os.path.join(res_path, 'stacks.json')
-    out_stacks_file = os.path.join(res_path, 'stacks.json')
+    out_stacks_file = os.path.join(target_path, 'stacks.json')
     
     with open(org_stacks_file) as f:
         stacks_data = json.load(f)
