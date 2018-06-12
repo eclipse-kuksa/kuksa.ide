@@ -112,11 +112,11 @@ public class YoctoSdkManager {
     //    downloadSdk(pref);
     installSdk(pref);
     this.yoctoSdkList.add(pref);
-    
+
     // To force notification throw
-    if (this.yoctoSdkList.size() == 1){
-        this.yoctoSdkEnvPathMacro.deselect();
-        this.yoctoSdkPathMacro.deselect();
+    if (this.yoctoSdkList.size() == 1) {
+      this.yoctoSdkEnvPathMacro.deselect();
+      this.yoctoSdkPathMacro.deselect();
     }
 
     return true;
@@ -144,8 +144,8 @@ public class YoctoSdkManager {
    */
   public void removeSdk(final YoctoSdk pref) {
     if (pref.isSelected()) {
-        this.yoctoSdkEnvPathMacro.deselect();
-        this.yoctoSdkPathMacro.deselect();
+      this.yoctoSdkEnvPathMacro.deselect();
+      this.yoctoSdkPathMacro.deselect();
     }
     this.uninstallSdk(pref);
     this.yoctoSdkList.remove(pref);

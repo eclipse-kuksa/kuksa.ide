@@ -34,6 +34,15 @@
                 <include>org.eclipse.che.kuksa:assembly-wsagent-server</include>
             </includes>
         </dependencySet>
+        <dependencySet>
+            <useProjectArtifact>false</useProjectArtifact>
+            <unpack>false</unpack>
+            <outputDirectory>tomcat/webapps</outputDirectory>
+            <outputFileNameMapping>api.war</outputFileNameMapping>
+            <includes>
+                <include>org.eclipse.che.kuksa:assembly-wsmaster-war</include>
+            </includes>
+        </dependencySet>
     </dependencySets>
 
     <fileSets>

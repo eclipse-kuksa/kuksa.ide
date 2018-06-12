@@ -16,14 +16,14 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
     <groupId>org.eclipse.che.kuksa</groupId>
-    <artifactId>stacks-parent</artifactId>
-    <packaging>pom</packaging>
+    <artifactId>kuksa-stacks</artifactId>
+    <packaging>jar</packaging>
     <name>Kuksa IDE :: Stacks</name>
     <dependencies>
         <dependency>
-          <groupId>org.eclipse.che.core</groupId>
-          <artifactId>che-core-ide-stacks</artifactId>
-          <classifier>sources</classifier>
+                <groupId>org.eclipse.che.core</groupId>
+                <artifactId>che-core-ide-stacks</artifactId>
+                <type>jar</type>
         </dependency>
     </dependencies>
     <build>
@@ -33,11 +33,70 @@
                 <artifactId>license-maven-plugin</artifactId>
                 <configuration>
                     <excludes>
+                        <exclude>**/pom.xml</exclude>
+                        <exclude>**/*.json</exclude>
+                        <exclude>**/inject_stacks.py</exclude>
                         <exclude>**/type-ceylon.svg</exclude>
                         <exclude>**/type-bitnami.svg</exclude>
                         <exclude>**/type-zend.svg</exclude>
                     </excludes>
                 </configuration>
+            </plugin>
+            <!--Extract core's resources-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.1.1</version>
+                <executions>
+                    <execution>
+                        <id>analyze</id>
+                        <goals>
+                            <goal>analyze-only</goal>
+                        </goals>                
+                        <configuration>
+                            <failOnWarning>true</failOnWarning>
+                            <ignoredUnusedDeclaredDependencies>
+                              <ignoredUnusedDeclaredDependency>org.eclipse.che.core:che-core-ide-stacks</ignoredUnusedDeclaredDependency>
+                            </ignoredUnusedDeclaredDependencies>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>unpack</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>unpack-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <overWrite>true</overWrite>
+                            <excludes>META-INF/**</excludes>
+                            <outputDirectory>src/main/resources</outputDirectory>
+                            <overWriteReleases>true</overWriteReleases>
+                            <overWriteSnapshots>true</overWriteSnapshots>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.2.1</version>
+                <executions>
+                    <execution>
+                        <configuration>
+                            <executable>python</executable>
+                            <workingDirectory>src/scripts/</workingDirectory>
+                            <arguments>
+                                <argument>inject_stacks.py</argument>
+                            </arguments>    
+        
+                        </configuration>
+                        <id>python-build</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

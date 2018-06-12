@@ -72,11 +72,11 @@ public class RemoteTargetManager {
     }
 
     this.remoteTargetList.add(pref);
-    
+
     // To force notification throw
-    if (this.remoteTargetList.size() == 1){
-        this.remoteTargetUserMacro.deselect();
-        this.remoteTargetHostnameMacro.deselect();
+    if (this.remoteTargetList.size() == 1) {
+      this.remoteTargetUserMacro.deselect();
+      this.remoteTargetHostnameMacro.deselect();
     }
 
     return true;
@@ -89,8 +89,8 @@ public class RemoteTargetManager {
    */
   public void removeSdk(final RemoteTarget pref) {
     if (pref.isSelected()) {
-        this.remoteTargetUserMacro.deselect();
-        this.remoteTargetHostnameMacro.deselect();
+      this.remoteTargetUserMacro.deselect();
+      this.remoteTargetHostnameMacro.deselect();
     }
     this.remoteTargetList.remove(pref);
   }

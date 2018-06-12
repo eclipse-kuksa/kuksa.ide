@@ -15,13 +15,11 @@ import com.google.inject.Singleton;
 import javax.validation.constraints.NotNull;
 import org.eclipse.che.api.promises.client.Promise;
 import org.eclipse.che.api.promises.client.PromiseProvider;
-import org.eclipse.che.ide.CoreLocalizationConstant;
-import org.eclipse.che.ide.api.app.AppContext;
 import org.eclipse.che.ide.api.macro.BaseMacro;
-import org.eclipse.che.kuksa.yocto.ide.YoctoConstants;
-import org.eclipse.che.kuksa.yocto.ide.YoctoSdk;
 import org.eclipse.che.ide.api.notification.NotificationManager;
 import org.eclipse.che.ide.api.notification.StatusNotification;
+import org.eclipse.che.kuksa.yocto.ide.YoctoConstants;
+import org.eclipse.che.kuksa.yocto.ide.YoctoSdk;
 
 /**
  * Provides path to the environment file of the selected SDK
@@ -42,8 +40,7 @@ public class YoctoSdkEnvPathMacro extends BaseMacro {
   private boolean thrown;
 
   @Inject
-  public YoctoSdkEnvPathMacro(PromiseProvider promises,
-    NotificationManager notificationManager) {
+  public YoctoSdkEnvPathMacro(PromiseProvider promises, NotificationManager notificationManager) {
     super(KEY, DEFAULT_VALUE, DESCRIPTION);
 
     this.promises = promises;
@@ -57,28 +54,31 @@ public class YoctoSdkEnvPathMacro extends BaseMacro {
   @Override
   public Promise<String> expand() {
     if (this.sel == null) {
-         if (!thrown) {
-            notificationManager.notify(new StatusNotification(FAIL_MESSAGE, StatusNotification.Status.WARNING,
-            StatusNotification.DisplayMode.FLOAT_MODE));
-            thrown = true;
-        }
-        return promises.resolve("");
+      if (!thrown) {
+        notificationManager.notify(
+            new StatusNotification(
+                FAIL_MESSAGE,
+                StatusNotification.Status.WARNING,
+                StatusNotification.DisplayMode.FLOAT_MODE));
+        thrown = true;
+      }
+      return promises.resolve("");
     }
-    
+
     String path = YoctoConstants.SDK_ROOT_PATH;
 
     path += "/" + this.sel.getName();
     path += "/" + this.sel.getVersion();
     path += "/env*";
-    
-    return promises.resolve(path);  
+
+    return promises.resolve(path);
   }
-  
+
   public void setSelected(YoctoSdk pref) {
     this.sel = pref;
     this.thrown = false;
   }
-  
+
   public void deselect() {
     this.sel = null;
     this.thrown = false;
