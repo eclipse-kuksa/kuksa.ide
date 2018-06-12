@@ -32,31 +32,23 @@
             color: red;
         }
     </ui:style>
-    <g:DockLayoutPanel unit="PX" width="360px" height="150px" addStyleNames="{style.emptyBorder}" debugId="dialog-input">
+    <g:DockLayoutPanel unit="PX" width="360px" height="100px" addStyleNames="{style.emptyBorder}" debugId="dialog-input">
         <g:center>
             <g:Grid width="100%" height="100%">
                 <g:row>
                     <g:customCell verticalAlignment="ALIGN_MIDDLE">
-                        <g:Label ui:field="nameLabel" addStyleNames="{style.label}"/>
+                        <g:Label ui:field="hostnameLabel" addStyleNames="{style.label}"/>
                     </g:customCell>
                     <g:customCell verticalAlignment="ALIGN_MIDDLE">
-                        <g:TextBox ui:field="nameValue" addStyleNames="{style.input}"/>
-                    </g:customCell>
-                </g:row>
-                <g:row>
-                    <g:customCell verticalAlignment="ALIGN_MIDDLE">
-                        <g:Label ui:field="versionLabel" addStyleNames="{style.label}"/>
-                    </g:customCell>
-                    <g:customCell verticalAlignment="ALIGN_MIDDLE">
-                        <g:TextBox ui:field="versionValue" addStyleNames="{style.input}"/>
+                        <g:TextBox ui:field="hostnameValue" addStyleNames="{style.input}"/>
                     </g:customCell>
                 </g:row>
                 <g:row>
                     <g:customCell verticalAlignment="ALIGN_MIDDLE">
-                        <g:Label ui:field="urlLabel" addStyleNames="{style.label}"/>
+                        <g:Label ui:field="userLabel" addStyleNames="{style.label}"/>
                     </g:customCell>
                     <g:customCell verticalAlignment="ALIGN_MIDDLE">
-                        <g:TextBox ui:field="urlValue" addStyleNames="{style.input}"/>
+                        <g:TextBox ui:field="userValue" addStyleNames="{style.input}"/>
                     </g:customCell>
                 </g:row>
             </g:Grid>

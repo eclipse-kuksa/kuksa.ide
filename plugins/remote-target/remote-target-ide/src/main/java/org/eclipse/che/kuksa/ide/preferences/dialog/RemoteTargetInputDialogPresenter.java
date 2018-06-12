@@ -23,7 +23,8 @@ import org.eclipse.che.kuksa.ide.RemoteTarget;
  * @author Mickaël Leduque
  * @author Artem Zatsarynnyi
  */
-public class RemoteTargetInputDialogPresenter implements RemoteTargetInputDialogView.ActionDelegate {
+public class RemoteTargetInputDialogPresenter
+    implements RemoteTargetInputDialogView.ActionDelegate {
 
   /** This component view. */
   private final RemoteTargetInputDialogView view;
@@ -38,7 +39,8 @@ public class RemoteTargetInputDialogPresenter implements RemoteTargetInputDialog
 
   @Inject
   public RemoteTargetInputDialogPresenter(
-      final @NotNull RemoteTargetInputDialogView view, final NotificationManager notificationManager) {
+      final @NotNull RemoteTargetInputDialogView view,
+      final NotificationManager notificationManager) {
     this.view = view;
     this.inputCallback = null;
     this.view.setDelegate(this);
@@ -68,13 +70,12 @@ public class RemoteTargetInputDialogPresenter implements RemoteTargetInputDialog
     }
 
     view.closeDialog();
-    RemoteTarget yoctoSdk = new RemoteTarget();
-    yoctoSdk.setName(view.getName());
-    yoctoSdk.setVersion(view.getVersion());
-    yoctoSdk.setUrl(view.getUrl());
+    RemoteTarget remoteTarget = new RemoteTarget();
+    remoteTarget.setHostname(view.getHostname());
+    remoteTarget.setUser(view.getUser());
 
     if (this.inputCallback != null) {
-      inputCallback.accepted(yoctoSdk);
+      inputCallback.accepted(remoteTarget);
     }
   }
 
@@ -126,23 +127,7 @@ public class RemoteTargetInputDialogPresenter implements RemoteTargetInputDialog
     return true;
   }
 
-  private boolean validateUrl(String input) {
-    if (!validateSingle(input)) {
-      this.view.showErrorHint("Invalid URL");
-      return false;
-    }
-
-    if (input.startsWith("http://") || input.startsWith("https://")) {
-      return true;
-    }
-
-    this.view.showErrorHint("Invalid URL");
-    return false;
-  }
-
   private boolean isInputValid() {
-    return validateSingle(view.getName())
-        && validateSingle(view.getVersion())
-        && validateUrl(view.getUrl());
+    return validateSingle(view.getHostname()) && validateSingle(view.getUser());
   }
 }

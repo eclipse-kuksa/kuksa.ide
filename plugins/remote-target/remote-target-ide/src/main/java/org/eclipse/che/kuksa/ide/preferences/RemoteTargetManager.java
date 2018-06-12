@@ -13,18 +13,25 @@ package org.eclipse.che.kuksa.ide.preferences;
 import com.google.gwt.json.client.JSONObject;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+
 import elemental.json.Json;
 import elemental.json.JsonObject;
+
 import java.util.ArrayList;
 import java.util.List;
-import org.eclipse.che.ide.api.command.CommandImpl;
+
 import org.eclipse.che.ide.api.notification.NotificationManager;
 import org.eclipse.che.ide.api.notification.StatusNotification;
+import org.eclipse.che.kuksa.ide.RemoteTarget;
+import org.eclipse.che.kuksa.ide.RemoteTargetLocalizationConstant;
+import org.eclipse.che.kuksa.ide.macro.RemoteTargetHostnameMacro;
+import org.eclipse.che.kuksa.ide.macro.RemoteTargetUserMacro;
 
 // Initially taken from plugin-yaml
 
 /**
- * The presenter for managing the RemoteTargetCellTable in YoctoExtensionManagerView.
+ * The presenter for managing the RemoteTargetCellTable in RemoteTargetManagerView.
+ *
  * @author Pedro Cuadra
  */
 @Singleton
@@ -32,19 +39,22 @@ public class RemoteTargetManager {
 
   //  private static final Logger LOG = LoggerFactory.getLogger(RemoteTargetManager.class);
   private List<RemoteTarget> remoteTargetList;
-  private YoctoLocalizationConstant local;
+  private RemoteTargetLocalizationConstant local;
   private NotificationManager notificationManager;
   private final RemoteTargetHostnameMacro remoteTargetHostnameMacro;
+  private final RemoteTargetUserMacro remoteTargetUserMacro;
 
   @Inject
   public RemoteTargetManager(
       RemoteTargetLocalizationConstant local,
       NotificationManager notificationManager,
-      RemoteTargetHostnameMacro remoteTargetHostnameMacro) {
+      RemoteTargetHostnameMacro remoteTargetHostnameMacro,
+      RemoteTargetUserMacro remoteTargetUserMacro) {
     this.local = local;
     this.notificationManager = notificationManager;
     this.remoteTargetList = new ArrayList<RemoteTarget>();
     this.remoteTargetHostnameMacro = remoteTargetHostnameMacro;
+    this.remoteTargetUserMacro = remoteTargetUserMacro;
   }
 
   private boolean compareRemoteTarget(RemoteTarget pref_1, RemoteTarget pref_2) {
@@ -65,7 +75,7 @@ public class RemoteTargetManager {
     }
 
     this.remoteTargetList.add(pref);
-
+    
     return true;
   }
 
@@ -89,13 +99,16 @@ public class RemoteTargetManager {
     }
 
     notificationManager.notify(
-        "Yocto SDK " + pref.getHostname() + " " + pref.getUser() + " selected",
+        "Remote Target " + pref.getHostname() + " " + pref.getUser() + " selected",
         StatusNotification.Status.SUCCESS,
         StatusNotification.DisplayMode.FLOAT_MODE);
 
     pref.setSelected(true);
 
     // Update the macros for expansion
+    this.remoteTargetUserMacro.setSelected(pref);
+    this.remoteTargetHostnameMacro.setSelected(pref);
+    
 
     return true;
   }
@@ -122,19 +135,13 @@ public class RemoteTargetManager {
         this.remoteTargetList.add(pref);
 
         if (pref.isSelected()) {
-          this.yoctoSdkEnvPathMacro.setSelectedSdk(pref);
-          this.yoctoSdkPathMacro.setSelectedSdk(pref);
+          this.remoteTargetUserMacro.setSelected(pref);
+          this.remoteTargetHostnameMacro.setSelected(pref);
         }
       }
     }
   }
 
-  /**
-   * Convert RemoteTarget's to JSON
-   *
-   * @param yoctoSdkPreferencesList
-   * @return String of yoctoSdkPreferences
-   */
   public String toJsonString() {
 
     JSONObject mainObj = new JSONObject();
@@ -148,7 +155,7 @@ public class RemoteTargetManager {
         mainObj.put(pref.getHostname(), nameObj);
       }
 
-      nameObj = mainObj.get(pref.getUser()).isObject();
+      nameObj = mainObj.get(pref.getHostname()).isObject();
 
       if (nameObj.containsKey(pref.getUser())) {
         continue;

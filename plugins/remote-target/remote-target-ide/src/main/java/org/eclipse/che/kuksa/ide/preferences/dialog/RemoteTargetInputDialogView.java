@@ -45,11 +45,9 @@ public interface RemoteTargetInputDialogView {
   void setOkButtonLabel(String label);
 
   /** Returns the input value. */
-  String getName();
+  String getHostname();
 
-  String getVersion();
-
-  String getUrl();
+  String getUser();
 
   /** Sets the beginning index to select the value in the input, inclusive. */
   void setSelectionStartIndex(int selectionStartIndex);

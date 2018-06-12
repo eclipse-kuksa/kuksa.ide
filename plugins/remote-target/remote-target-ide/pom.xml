@@ -11,13 +11,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <artifactId>yocto-support-parent</artifactId>
+        <artifactId>remote-target-parent</artifactId>
         <groupId>org.eclipse.che.kuksa</groupId>
         <version>6.7.0-SNAPSHOT</version>
     </parent>
-    <artifactId>yocto-support-ide</artifactId>
+    <artifactId>remote-target-ide</artifactId>
     <packaging>gwt-lib</packaging>
-    <name>Kuksa IDE :: Plugins :: Yocto Support :: IDE</name>
+    <name>Kuksa IDE :: Plugins :: Remote Target :: IDE</name>
     <dependencies>
         <dependency>
           <groupId>javax.validation</groupId>
@@ -67,16 +67,6 @@
           <artifactId>che-core-api-model</artifactId>
           <version>6.7.0-SNAPSHOT</version>
         </dependency>
-        <dependency>
-          <groupId>org.eclipse.che.core</groupId>
-          <artifactId>che-core-commons-annotations</artifactId>
-          <version>6.7.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-          <groupId>org.eclipse.che</groupId>
-          <artifactId>che-exec-agent-shared</artifactId>
-          <version>${che.version}</version>
-        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -85,7 +75,7 @@
                 <artifactId>gwt-maven-plugin</artifactId>
                 <extensions>true</extensions>
                 <configuration>
-                    <moduleName>org.eclipse.che.kuksa.yocto.ide.YoctoSupportExtension</moduleName>
+                    <moduleName>org.eclipse.che.kuksa.ide.RemoteTargetExtension</moduleName>
                 </configuration>
             </plugin>
         </plugins>

@@ -29,8 +29,8 @@ import com.google.inject.Singleton;
 import java.util.List;
 import javax.validation.constraints.NotNull;
 import org.eclipse.che.ide.ui.cellview.CellTableResources;
-import org.eclipse.che.kuksa.ide.RemoteTargetLocalizationConstant;
 import org.eclipse.che.kuksa.ide.RemoteTarget;
+import org.eclipse.che.kuksa.ide.RemoteTargetLocalizationConstant;
 
 /**
  * The implementation of {@link RemoteTargetManagerView}.
@@ -45,19 +45,20 @@ public class RemoteTargetManagerViewImpl extends Composite implements RemoteTarg
   private static RemoteTargetManagerViewImplUiBinder uiBinder =
       GWT.create(RemoteTargetManagerViewImplUiBinder.class);
 
-  @UiField Button addSdk;
+  @UiField Button addRemoteTarget;
 
   @UiField(provided = true)
-  CellTable<YoctoSdk> yoctoSdkPreferenceCellTable;
+  CellTable<RemoteTarget> remoteTargetPreferenceCellTable;
 
   @UiField Label headerUiMsg;
 
   private ActionDelegate delegate;
 
-  private YoctoLocalizationConstant local;
+  private RemoteTargetLocalizationConstant local;
 
   @Inject
-  protected RemoteTargetManagerViewImpl(CellTableResources res, YoctoLocalizationConstant local) {
+  protected RemoteTargetManagerViewImpl(
+      CellTableResources res, RemoteTargetLocalizationConstant local) {
     this.local = local;
     initRemoteTargetTable(res);
     initWidget(uiBinder.createAndBindUi(this));
@@ -70,16 +71,16 @@ public class RemoteTargetManagerViewImpl extends Composite implements RemoteTarg
    */
   private void initRemoteTargetTable(final CellTable.Resources res) {
 
-    yoctoSdkPreferenceCellTable = new CellTable<YoctoSdk>(20, res);
-    Column<YoctoSdk, String> nameColumn =
-        new Column<YoctoSdk, String>(new TextCell()) {
+    remoteTargetPreferenceCellTable = new CellTable<RemoteTarget>(20, res);
+    Column<RemoteTarget, String> nameColumn =
+        new Column<RemoteTarget, String>(new TextCell()) {
           @Override
-          public String getValue(YoctoSdk object) {
-            return object.getName();
+          public String getValue(RemoteTarget object) {
+            return object.getHostname();
           }
 
           @Override
-          public void render(Context context, YoctoSdk object, SafeHtmlBuilder sb) {
+          public void render(Context context, RemoteTarget object, SafeHtmlBuilder sb) {
             sb.appendHtmlConstant(
                 "<div id=\""
                     + UIObject.DEBUG_ID_PREFIX
@@ -90,15 +91,15 @@ public class RemoteTargetManagerViewImpl extends Composite implements RemoteTarg
           }
         };
 
-    Column<YoctoSdk, String> versionColumn =
-        new Column<YoctoSdk, String>(new TextCell()) {
+    Column<RemoteTarget, String> userColumn =
+        new Column<RemoteTarget, String>(new TextCell()) {
           @Override
-          public String getValue(YoctoSdk object) {
-            return object.getVersion();
+          public String getValue(RemoteTarget object) {
+            return object.getUser();
           }
 
           @Override
-          public void render(Context context, YoctoSdk object, SafeHtmlBuilder sb) {
+          public void render(Context context, RemoteTarget object, SafeHtmlBuilder sb) {
             sb.appendHtmlConstant(
                 "<div id=\""
                     + UIObject.DEBUG_ID_PREFIX
@@ -111,31 +112,10 @@ public class RemoteTargetManagerViewImpl extends Composite implements RemoteTarg
           }
         };
 
-    Column<YoctoSdk, String> urlColumn =
-        new Column<YoctoSdk, String>(new TextCell()) {
+    Column<RemoteTarget, String> selectPreferenceColumn =
+        new Column<RemoteTarget, String>(new ButtonCell()) {
           @Override
-          public String getValue(YoctoSdk object) {
-            return object.getUrl();
-          }
-
-          @Override
-          public void render(Context context, YoctoSdk object, SafeHtmlBuilder sb) {
-            sb.appendHtmlConstant(
-                "<div id=\""
-                    + UIObject.DEBUG_ID_PREFIX
-                    + "-preferences-cellTable-glob-"
-                    + context.getIndex()
-                    + "\">");
-            if (object != null) {
-              super.render(context, object, sb);
-            }
-          }
-        };
-
-    Column<YoctoSdk, String> selectPreferenceColumn =
-        new Column<YoctoSdk, String>(new ButtonCell()) {
-          @Override
-          public String getValue(YoctoSdk object) {
+          public String getValue(RemoteTarget object) {
             if (object.isSelected()) {
               return "";
             }
@@ -143,7 +123,7 @@ public class RemoteTargetManagerViewImpl extends Composite implements RemoteTarg
           }
 
           @Override
-          public void render(Context context, YoctoSdk object, SafeHtmlBuilder sb) {
+          public void render(Context context, RemoteTarget object, SafeHtmlBuilder sb) {
             String visibility = object.isSelected() ? " style=\"visibility: hidden\" " : "";
             sb.appendHtmlConstant(
                 "<div id=\""
@@ -159,22 +139,22 @@ public class RemoteTargetManagerViewImpl extends Composite implements RemoteTarg
 
     // Creates handler on button clicked
     selectPreferenceColumn.setFieldUpdater(
-        new FieldUpdater<YoctoSdk, String>() {
+        new FieldUpdater<RemoteTarget, String>() {
           @Override
-          public void update(int index, YoctoSdk object, String value) {
+          public void update(int index, RemoteTarget object, String value) {
             delegate.onSelectClicked(object);
           }
         });
 
-    Column<YoctoSdk, String> deletePreferenceColumn =
-        new Column<YoctoSdk, String>(new ButtonCell()) {
+    Column<RemoteTarget, String> deletePreferenceColumn =
+        new Column<RemoteTarget, String>(new ButtonCell()) {
           @Override
-          public String getValue(YoctoSdk object) {
+          public String getValue(RemoteTarget object) {
             return "Delete";
           }
 
           @Override
-          public void render(Context context, YoctoSdk object, SafeHtmlBuilder sb) {
+          public void render(Context context, RemoteTarget object, SafeHtmlBuilder sb) {
 
             sb.appendHtmlConstant(
                 "<div id=\""
@@ -188,33 +168,33 @@ public class RemoteTargetManagerViewImpl extends Composite implements RemoteTarg
 
     // Creates handler on button clicked
     deletePreferenceColumn.setFieldUpdater(
-        new FieldUpdater<YoctoSdk, String>() {
+        new FieldUpdater<RemoteTarget, String>() {
           @Override
-          public void update(int index, YoctoSdk object, String value) {
+          public void update(int index, RemoteTarget object, String value) {
             delegate.onDeleteClicked(object);
           }
         });
 
-    yoctoSdkPreferenceCellTable.addColumn(nameColumn, local.sdkColumnHeader());
-    yoctoSdkPreferenceCellTable.addColumn(versionColumn, local.versionColumnHeader());
-    //    yoctoSdkPreferenceCellTable.addColumn(urlColumn, local.urlColumnHeader());
-    yoctoSdkPreferenceCellTable.addColumn(selectPreferenceColumn, local.selectColumnHeader());
-    yoctoSdkPreferenceCellTable.addColumn(deletePreferenceColumn, local.deleteColumnHeader());
-    yoctoSdkPreferenceCellTable.setWidth("100%", true);
-    yoctoSdkPreferenceCellTable.setColumnWidth(nameColumn, 45, Style.Unit.PCT);
-    yoctoSdkPreferenceCellTable.setColumnWidth(versionColumn, 30, Style.Unit.PCT);
-    //    yoctoSdkPreferenceCellTable.setColumnWidth(urlColumn, 30, Style.Unit.PCT);
-    yoctoSdkPreferenceCellTable.setColumnWidth(selectPreferenceColumn, 40, Style.Unit.PCT);
-    yoctoSdkPreferenceCellTable.setColumnWidth(deletePreferenceColumn, 40, Style.Unit.PCT);
+    remoteTargetPreferenceCellTable.addColumn(nameColumn, local.hostnameColumnHeader());
+    remoteTargetPreferenceCellTable.addColumn(userColumn, local.userColumnHeader());
+    //    remoteTargetPreferenceCellTable.addColumn(urlColumn, local.urlColumnHeader());
+    remoteTargetPreferenceCellTable.addColumn(selectPreferenceColumn, local.selectColumnHeader());
+    remoteTargetPreferenceCellTable.addColumn(deletePreferenceColumn, local.deleteColumnHeader());
+    remoteTargetPreferenceCellTable.setWidth("100%", true);
+    remoteTargetPreferenceCellTable.setColumnWidth(nameColumn, 45, Style.Unit.PCT);
+    remoteTargetPreferenceCellTable.setColumnWidth(userColumn, 30, Style.Unit.PCT);
+    //    remoteTargetPreferenceCellTable.setColumnWidth(urlColumn, 30, Style.Unit.PCT);
+    remoteTargetPreferenceCellTable.setColumnWidth(selectPreferenceColumn, 40, Style.Unit.PCT);
+    remoteTargetPreferenceCellTable.setColumnWidth(deletePreferenceColumn, 40, Style.Unit.PCT);
 
     // don't show loading indicator
-    yoctoSdkPreferenceCellTable.setLoadingIndicator(null);
+    remoteTargetPreferenceCellTable.setLoadingIndicator(null);
   }
 
   /** {@inheritDoc} */
   @Override
-  public void setPairs(@NotNull List<YoctoSdk> pairs) {
-    this.yoctoSdkPreferenceCellTable.setRowData(pairs);
+  public void setPairs(@NotNull List<RemoteTarget> pairs) {
+    this.remoteTargetPreferenceCellTable.setRowData(pairs);
   }
 
   /** {@inheritDoc} */
@@ -223,8 +203,8 @@ public class RemoteTargetManagerViewImpl extends Composite implements RemoteTarg
     this.delegate = delegate;
   }
 
-  @UiHandler("addSdk")
-  public void onAddSdkClicked(ClickEvent event) {
-    delegate.onAddSdkClicked();
+  @UiHandler("addRemoteTarget")
+  public void onAddRemoteTargetClicked(ClickEvent event) {
+    delegate.onAddRemoteTargetClicked();
   }
 }

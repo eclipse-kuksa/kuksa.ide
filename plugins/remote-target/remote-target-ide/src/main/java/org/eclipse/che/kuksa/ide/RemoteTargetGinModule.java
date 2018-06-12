@@ -14,14 +14,22 @@ import com.google.gwt.inject.client.AbstractGinModule;
 import com.google.gwt.inject.client.multibindings.GinMultibinder;
 import com.google.inject.Singleton;
 
-import org.eclipse.che.ide.api.command.CommandType;
 import org.eclipse.che.ide.api.extension.ExtensionGinModule;
 import org.eclipse.che.ide.api.preferences.PreferencePagePresenter;
 import org.eclipse.che.kuksa.ide.macro.RemoteTargetHostnameMacro;
 import org.eclipse.che.kuksa.ide.macro.RemoteTargetMacroRegistrar;
+import org.eclipse.che.kuksa.ide.macro.RemoteTargetUserMacro;
+import org.eclipse.che.kuksa.ide.preferences.RemoteTargetManager;
+import org.eclipse.che.kuksa.ide.preferences.RemoteTargetManagerPresenter;
+import org.eclipse.che.kuksa.ide.preferences.RemoteTargetManagerView;
+import org.eclipse.che.kuksa.ide.preferences.RemoteTargetManagerViewImpl;
+import org.eclipse.che.kuksa.ide.preferences.dialog.RemoteTargetInputDialogFooter;
+import org.eclipse.che.kuksa.ide.preferences.dialog.RemoteTargetInputDialogPresenter;
+import org.eclipse.che.kuksa.ide.preferences.dialog.RemoteTargetInputDialogView;
+import org.eclipse.che.kuksa.ide.preferences.dialog.RemoteTargetInputDialogViewImpl;
 
 /**
- * GIN module for Che Yocto extension.
+ * GIN module for Che Remote Target extension.
  *
  * @author Pedro Cuadra
  */
@@ -31,26 +39,25 @@ public class RemoteTargetGinModule extends AbstractGinModule {
   @Override
   protected void configure() {
 
-
     // All macros
     bind(RemoteTargetHostnameMacro.class).asEagerSingleton();
-        
-    
-    bind(RemoteTargetMacroRegistrar.class).asEagerSingleton();
-    
+    bind(RemoteTargetUserMacro.class).asEagerSingleton();
 
-//    bind(YoctoExtensionManagerView.class)
-//        .to(YoctoExtensionManagerViewImpl.class)
-//        .in(Singleton.class);
-//
-//    bind(YoctoSdkInputDialogView.class).to(YoctoSdkInputDialogViewImpl.class).in(Singleton.class);
-//
-//    bind(YoctoSdkManager.class);
-//    bind(YoctoSdkInputDialogFooter.class);
-//    bind(YoctoSdkInputDialogPresenter.class);
-//
-//    GinMultibinder.newSetBinder(binder(), PreferencePagePresenter.class)
-//        .addBinding()
-//        .to(YoctoExtensionManagerPresenter.class);
+    // Marcro registrar
+    bind(RemoteTargetMacroRegistrar.class).asEagerSingleton();
+
+    bind(RemoteTargetManagerView.class).to(RemoteTargetManagerViewImpl.class).in(Singleton.class);
+
+    bind(RemoteTargetInputDialogView.class)
+        .to(RemoteTargetInputDialogViewImpl.class)
+        .in(Singleton.class);
+
+    bind(RemoteTargetManager.class);
+    bind(RemoteTargetInputDialogFooter.class);
+    bind(RemoteTargetInputDialogPresenter.class);
+
+    GinMultibinder.newSetBinder(binder(), PreferencePagePresenter.class)
+        .addBinding()
+        .to(RemoteTargetManagerPresenter.class);
   }
 }

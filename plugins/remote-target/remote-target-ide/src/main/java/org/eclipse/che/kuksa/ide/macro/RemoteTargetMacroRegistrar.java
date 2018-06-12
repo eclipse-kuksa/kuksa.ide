@@ -25,9 +25,7 @@ import org.eclipse.che.ide.api.workspace.event.WorkspaceRunningEvent;
 import org.eclipse.che.ide.api.workspace.event.WorkspaceStoppedEvent;
 import org.eclipse.che.ide.bootstrap.BasicIDEInitializedEvent;
 
-/**
- * @author Pedro Cuadra
- */
+/** @author Pedro Cuadra */
 @Singleton
 public class RemoteTargetMacroRegistrar {
 
@@ -40,10 +38,12 @@ public class RemoteTargetMacroRegistrar {
       EventBus eventBus,
       Provider<MacroRegistry> macroRegistryProvider,
       AppContext appContext,
-      RemoteTargetHostnameMacro remoteTargetHostnameMacro) {
+      RemoteTargetHostnameMacro remoteTargetHostnameMacro,
+      RemoteTargetUserMacro remoteTargetUserMacro) {
     this.macroRegistryProvider = macroRegistryProvider;
 
     macros.add(remoteTargetHostnameMacro);
+    macros.add(remoteTargetUserMacro);
 
     eventBus.addHandler(
         BasicIDEInitializedEvent.TYPE,

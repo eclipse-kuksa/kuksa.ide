@@ -28,19 +28,19 @@ public interface RemoteTargetManagerView extends View<RemoteTargetManagerView.Ac
      *
      * @param prefKey prefKey what needs to be deleted
      */
-    void onDeleteClicked(@NotNull YoctoSdk prefKey);
+    void onDeleteClicked(@NotNull RemoteTarget prefKey);
 
     /**
      * Performs any actions appropriate in response to the user having pressed the Delete button.
      *
      * @param prefKey prefKey what needs to be deleted
      */
-    void onSelectClicked(@NotNull YoctoSdk pairKey);
+    void onSelectClicked(@NotNull RemoteTarget pairKey);
 
     /**
      * Performs any actions appropriate in response to the user having pressed the Add url button.
      */
-    void onAddSdkClicked();
+    void onAddRemoteTargetClicked();
 
     /** Sets the current state to dirty. */
     void nowDirty();
@@ -51,5 +51,5 @@ public interface RemoteTargetManagerView extends View<RemoteTargetManagerView.Ac
    *
    * @param pairs available pairs
    */
-  void setPairs(@NotNull List<YoctoSdk> pairs);
+  void setPairs(@NotNull List<RemoteTarget> pairs);
 }

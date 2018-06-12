@@ -23,11 +23,14 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
+
 import javax.validation.constraints.NotNull;
+
 import org.eclipse.che.ide.ui.window.Window;
+import org.eclipse.che.kuksa.ide.RemoteTarget;
 
 /**
- * Implementation of the Yocto SDK input dialog view.
+ * Implementation of the Remote Target input dialog view.
  *
  * @author Pedro Cuadra
  */
@@ -38,12 +41,10 @@ public class RemoteTargetInputDialogViewImpl extends Window implements RemoteTar
   /** The window footer. */
   private final RemoteTargetInputDialogFooter footer;
 
-  @UiField Label nameLabel;
-  @UiField TextBox nameValue;
-  @UiField Label versionLabel;
-  @UiField TextBox versionValue;
-  @UiField Label urlLabel;
-  @UiField TextBox urlValue;
+  @UiField Label hostnameLabel;
+  @UiField TextBox hostnameValue;
+  @UiField Label userLabel;
+  @UiField TextBox userValue;
   @UiField Label errorHint;
 
   private ActionDelegate delegate;
@@ -59,11 +60,10 @@ public class RemoteTargetInputDialogViewImpl extends Window implements RemoteTar
     addFooterWidget(footer);
 
     ensureDebugId("askValueDialog-window");
-    nameValue.ensureDebugId("askNameValueDialog-textBox");
-    versionValue.ensureDebugId("askVersionValueDialog-textBox");
-    urlValue.ensureDebugId("askUrlValueDialog-textBox");
+    hostnameValue.ensureDebugId("askHostnameValueDialog-textBox");
+    userValue.ensureDebugId("askUserValueDialog-textBox");
 
-    setTitleCaption("Add new SDK");
+    setTitleCaption("Add new remote target");
   }
 
   @Override
@@ -89,13 +89,12 @@ public class RemoteTargetInputDialogViewImpl extends Window implements RemoteTar
 
   @Override
   protected void onShow() {
-    nameValue.setSelectionRange(selectionStartIndex, selectionLength);
-    versionValue.setSelectionRange(selectionStartIndex, selectionLength);
-    urlValue.setSelectionRange(selectionStartIndex, selectionLength);
+    hostnameValue.setSelectionRange(selectionStartIndex, selectionLength);
+    userValue.setSelectionRange(selectionStartIndex, selectionLength);
     new Timer() {
       @Override
       public void run() {
-        nameValue.setFocus(true);
+        hostnameValue.setFocus(true);
       }
     }.schedule(300);
   }
@@ -107,9 +106,8 @@ public class RemoteTargetInputDialogViewImpl extends Window implements RemoteTar
 
   @Override
   public void setContent(final String label) {
-    this.nameLabel.setText("Name:");
-    this.versionLabel.setText("Version:");
-    this.urlLabel.setText("Download Link:");
+    this.hostnameLabel.setText("Hostname:");
+    this.userLabel.setText("User:");
   }
 
   @Override
@@ -119,9 +117,11 @@ public class RemoteTargetInputDialogViewImpl extends Window implements RemoteTar
 
   @Override
   public void clear() {
-    nameValue.setValue("sdk-name");
-    versionValue.setValue("x.x.x");
-    urlValue.setValue("https://sdk_install_script.sh");
+    RemoteTarget deft = new RemoteTarget();
+    hostnameValue.setValue(deft.getHostname());
+    userValue.setValue(deft.getUser());
+    
+    deft = null;
   }
 
   @Override
@@ -130,18 +130,13 @@ public class RemoteTargetInputDialogViewImpl extends Window implements RemoteTar
   }
 
   @Override
-  public String getName() {
-    return nameValue.getValue();
+  public String getHostname() {
+    return hostnameValue.getValue();
   }
 
   @Override
-  public String getVersion() {
-    return versionValue.getValue();
-  }
-
-  @Override
-  public String getUrl() {
-    return urlValue.getValue();
+  public String getUser() {
+    return userValue.getValue();
   }
 
   @Override
@@ -176,19 +171,14 @@ public class RemoteTargetInputDialogViewImpl extends Window implements RemoteTar
     return isWidgetOrChildFocused(footer.cancelButton);
   }
 
-  @UiHandler("nameValue")
-  void onNameKeyUp(KeyUpEvent event) {
+  @UiHandler("hostnameValue")
+  void onHostnameKeyUp(KeyUpEvent event) {
     delegate.inputValueChanged(RemoteTargetInputDialogView.NAME_FIELD);
   }
 
-  @UiHandler("versionValue")
-  void onVersionKeyUp(KeyUpEvent event) {
+  @UiHandler("userValue")
+  void onUserKeyUp(KeyUpEvent event) {
     delegate.inputValueChanged(RemoteTargetInputDialogView.VERSION_FIELD);
-  }
-
-  @UiHandler("urlValue")
-  void onUrlKeyUp(KeyUpEvent event) {
-    delegate.inputValueChanged(RemoteTargetInputDialogView.URL_FIELD);
   }
 
   /** The UI binder interface for this components. */

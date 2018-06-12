@@ -19,17 +19,17 @@ import org.eclipse.che.ide.api.preferences.PreferencesManager;
 import org.eclipse.che.ide.ui.dialogs.CancelCallback;
 import org.eclipse.che.ide.ui.dialogs.DialogFactory;
 import org.eclipse.che.ide.ui.dialogs.confirm.ConfirmCallback;
-import org.eclipse.che.kuksa.ide.RemoteTargetLocalizationConstant;
 import org.eclipse.che.kuksa.ide.RemoteTarget;
-import org.eclipse.che.kuksa.yocto.ide.preferences.dialog.YoctoSdkCallback;
-import org.eclipse.che.kuksa.yocto.ide.preferences.dialog.YoctoSdkInputDialogPresenter;
+import org.eclipse.che.kuksa.ide.RemoteTargetLocalizationConstant;
+import org.eclipse.che.kuksa.ide.preferences.dialog.RemoteTargetCallback;
+import org.eclipse.che.kuksa.ide.preferences.dialog.RemoteTargetInputDialogPresenter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 // Initially taken from plugin-yaml
 
 /**
- * The presenter for managing the YoctoSdkCellTable in RemoteTargetManagerView.
+ * The presenter for managing the RemoteTargetCellTable in RemoteTargetManagerView.
  *
  * @author Joshua Pinkney
  * @author Pedro Cuadra
@@ -39,45 +39,43 @@ public class RemoteTargetManagerPresenter extends AbstractPreferencePagePresente
     implements RemoteTargetManagerView.ActionDelegate {
 
   private static final Logger LOG = LoggerFactory.getLogger(RemoteTargetManagerPresenter.class);
-  private final String preferenceName = "yocto.preferences";
+  private final String preferenceName = "remote.target.preferences";
   private DialogFactory dialogFactory;
   private RemoteTargetManagerView view;
   private PreferencesManager preferencesManager;
-  private YoctoLocalizationConstant local;
-  //  private YoctoServiceClient serviceClient;
-  //  private NotificationManager notificationManager;
+  private RemoteTargetLocalizationConstant local;
   private boolean dirty = false;
-  private final YoctoSdkManager yoctoSdkManager;
-  private final YoctoSdkInputDialogPresenter inputPresenter;
+  private final RemoteTargetManager remoteTargetManager;
+  private final RemoteTargetInputDialogPresenter inputPresenter;
 
   @Inject
   public RemoteTargetManagerPresenter(
       RemoteTargetManagerView view,
       DialogFactory dialogFactory,
       PreferencesManager preferencesManager,
-      YoctoLocalizationConstant local,
-      YoctoSdkManager yoctoSdkManager,
-      YoctoSdkInputDialogPresenter inputPresenter) {
-    super("Yocto SDK", "Yocto Settings");
+      RemoteTargetLocalizationConstant local,
+      RemoteTargetManager remoteTargetManager,
+      RemoteTargetInputDialogPresenter inputPresenter) {
+    super("Targets", "Remote Targets Settings");
     this.view = view;
     this.dialogFactory = dialogFactory;
     this.local = local;
     this.preferencesManager = preferencesManager;
-    this.yoctoSdkManager = yoctoSdkManager;
+    this.remoteTargetManager = remoteTargetManager;
     if (preferencesManager.getValue(preferenceName) == null
         || "".equals(preferencesManager.getValue(preferenceName))
         || "{}".equals(preferencesManager.getValue(preferenceName))) {
     } else {
-      yoctoSdkManager.loadJsonString(this.preferencesManager.getValue(this.preferenceName));
+      remoteTargetManager.loadJsonString(this.preferencesManager.getValue(this.preferenceName));
     }
     this.view.setDelegate(this);
     this.inputPresenter = inputPresenter;
 
     this.inputPresenter.setInputCallback(
-        new YoctoSdkCallback() {
+        new RemoteTargetCallback() {
           @Override
-          public void accepted(YoctoSdk pref) {
-            yoctoSdkManager.addSdk(pref);
+          public void accepted(RemoteTarget pref) {
+            remoteTargetManager.addRemoteTarget(pref);
             refreshTable();
             nowDirty();
           }
@@ -88,15 +86,15 @@ public class RemoteTargetManagerPresenter extends AbstractPreferencePagePresente
 
   /** {@inheritDoc} */
   @Override
-  public void onDeleteClicked(@NotNull final YoctoSdk pairKey) {
+  public void onDeleteClicked(@NotNull final RemoteTarget pairKey) {
     dialogFactory
         .createConfirmDialog(
-            local.deleteSdk(),
-            local.deleteSdkLabel(),
+            local.deleteRemoteTarget(),
+            local.deleteRemoteTargetLabel(),
             new ConfirmCallback() {
               @Override
               public void accepted() {
-                yoctoSdkManager.removeSdk(pairKey);
+                remoteTargetManager.removeSdk(pairKey);
                 refreshTable();
                 nowDirty();
               }
@@ -107,16 +105,14 @@ public class RemoteTargetManagerPresenter extends AbstractPreferencePagePresente
 
   /** {@inheritDoc} */
   @Override
-  public void onSelectClicked(@NotNull final YoctoSdk pairKey) {
+  public void onSelectClicked(@NotNull final RemoteTarget pairKey) {
 
-    if (this.yoctoSdkManager.selectSdk(pairKey)) {
+    if (this.remoteTargetManager.selectRemoteTarget(pairKey)) {
       LOG.info(
-          "Selected SDK: { Name: "
-              + pairKey.getName()
-              + ", Version: "
-              + pairKey.getVersion()
-              + ", URL: "
-              + pairKey.getUrl()
+          "Selected SDK: { Hostname: "
+              + pairKey.getHostname()
+              + ", User: "
+              + pairKey.getUser()
               + "}");
       refreshTable();
       nowDirty();
@@ -134,7 +130,7 @@ public class RemoteTargetManagerPresenter extends AbstractPreferencePagePresente
 
   /** {@inheritDoc} */
   @Override
-  public void onAddSdkClicked() {
+  public void onAddRemoteTargetClicked() {
     inputPresenter.clear();
     inputPresenter.show();
   }
@@ -159,17 +155,17 @@ public class RemoteTargetManagerPresenter extends AbstractPreferencePagePresente
     refreshTable();
   }
 
-  /** Refresh YoctoSdkCellTable */
+  /** Refresh RemoteTargetCellTable */
   private void refreshTable() {
-    view.setPairs(this.yoctoSdkManager.getAll());
+    view.setPairs(this.remoteTargetManager.getAll());
   }
 
   @Override
   public void storeChanges() {
-    this.preferencesManager.setValue(this.preferenceName, yoctoSdkManager.toJsonString());
+    this.preferencesManager.setValue(this.preferenceName, remoteTargetManager.toJsonString());
     this.preferencesManager.flushPreferences();
     dirty = false;
-    //    delegate.onDirtyChanged();
+    delegate.onDirtyChanged();
   }
 
   @Override

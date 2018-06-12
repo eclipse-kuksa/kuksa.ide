@@ -13,48 +13,42 @@ package org.eclipse.che.kuksa.ide;
 import com.google.gwt.i18n.client.Messages;
 
 /**
- * Localization for Yocto Support plugin.
+ * Localization for Remote Target plugin.
  *
  * @author Pedro Cuadra
  */
 public interface RemoteTargetLocalizationConstant extends Messages {
 
-  @Key("addSdk")
-  String addSdk();
+  @Key("addRemoteTarget")
+  String addRemoteTarget();
 
-  @Key("deleteSdk")
-  String deleteSdk();
+  @Key("deleteRemoteTarget")
+  String deleteRemoteTarget();
 
   @Key("headerUiMessage")
   String headerUiMessage();
 
-  @Key("addSdkUrlLabel")
-  String addSdkUrlLabel();
+  @Key("addRemoteTargetHostnameLabel")
+  String addRemoteTargetHostnameLabel();
 
-  @Key("addSdkNameLabel")
-  String addSdkNameLabel();
+  @Key("addRemoteTargetUserLabel")
+  String addRemoteTargetUserLabel();
 
-  @Key("addSdkVersionLabel")
-  String addSdkVersionLabel();
-
-  @Key("deleteSdkLabel")
-  String deleteSdkLabel();
+  @Key("deleteRemoteTargetLabel")
+  String deleteRemoteTargetLabel();
 
   @Key("selectColumnHeader")
   String selectColumnHeader();
 
-  @Key("urlColumnHeader")
-  String urlColumnHeader();
+  @Key("hostnameColumnHeader")
+  String hostnameColumnHeader();
 
-  @Key("sdkColumnHeader")
-  String sdkColumnHeader();
-
-  @Key("versionColumnHeader")
-  String versionColumnHeader();
+  @Key("userColumnHeader")
+  String userColumnHeader();
 
   @Key("deleteColumnHeader")
   String deleteColumnHeader();
 
-  @Key("addSdkButtonText")
-  String addSdkButtonText();
+  @Key("addRemoteTargetButtonText")
+  String addRemoteTargetButtonText();
 }

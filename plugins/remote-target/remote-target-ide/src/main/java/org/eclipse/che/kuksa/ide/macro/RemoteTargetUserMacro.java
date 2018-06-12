@@ -26,17 +26,17 @@ import org.eclipse.che.kuksa.ide.RemoteTarget;
  * @author Pedro Cuadra
  */
 @Singleton
-public class RemoteTargetHostnameMacro extends BaseMacro {
+public class RemoteTargetUserMacro extends BaseMacro {
 
-  private static final String KEY = "${remote.target.hostname}";
-  private static final String DEFAULT_VALUE = "127.0.0.1";
-  private static final String DESCRIPTION = "Remote Target Hostname";
+  private static final String KEY = "${remote.target.user}";
+  private static final String DEFAULT_VALUE = "root";
+  private static final String DESCRIPTION = "Remote Target User";
 
   private final PromiseProvider promises;
   private String expandVal;
 
   @Inject
-  public RemoteTargetHostnameMacro(PromiseProvider promises) {
+  public RemoteTargetUserMacro(PromiseProvider promises) {
     super(KEY, DEFAULT_VALUE, DESCRIPTION);
 
     expandVal = DEFAULT_VALUE;
@@ -51,6 +51,6 @@ public class RemoteTargetHostnameMacro extends BaseMacro {
   }
 
     public void setSelected(RemoteTarget pref) {
-      this.expandVal = pref.getHostname();
+      this.expandVal = pref.getUser();
     }
 }

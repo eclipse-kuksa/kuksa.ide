@@ -102,5 +102,6 @@ public class RemoteTargetInputDialogFooter implements IsWidget {
   }
 
   /** The UI binder interface for this component. */
-  interface ConfirmWindowFooterUiBinder extends UiBinder<HTMLPanel, RemoteTargetInputDialogFooter> {}
+  interface ConfirmWindowFooterUiBinder
+      extends UiBinder<HTMLPanel, RemoteTargetInputDialogFooter> {}
 }
