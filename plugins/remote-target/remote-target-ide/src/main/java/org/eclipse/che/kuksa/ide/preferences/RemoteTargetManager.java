@@ -13,13 +13,10 @@ package org.eclipse.che.kuksa.ide.preferences;
 import com.google.gwt.json.client.JSONObject;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-
 import elemental.json.Json;
 import elemental.json.JsonObject;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import org.eclipse.che.ide.api.notification.NotificationManager;
 import org.eclipse.che.ide.api.notification.StatusNotification;
 import org.eclipse.che.kuksa.ide.RemoteTarget;
@@ -40,7 +37,7 @@ public class RemoteTargetManager {
   //  private static final Logger LOG = LoggerFactory.getLogger(RemoteTargetManager.class);
   private List<RemoteTarget> remoteTargetList;
   private RemoteTargetLocalizationConstant local;
-  private NotificationManager notificationManager;
+  private final NotificationManager notificationManager;
   private final RemoteTargetHostnameMacro remoteTargetHostnameMacro;
   private final RemoteTargetUserMacro remoteTargetUserMacro;
 
@@ -76,6 +73,12 @@ public class RemoteTargetManager {
 
     this.remoteTargetList.add(pref);
     
+    // To force notification throw
+    if (this.remoteTargetList.size() == 1){
+        this.remoteTargetUserMacro.deselect();
+        this.remoteTargetHostnameMacro.deselect();
+    }
+
     return true;
   }
 
@@ -85,6 +88,10 @@ public class RemoteTargetManager {
    * @param pref The preference you would like to delete
    */
   public void removeSdk(final RemoteTarget pref) {
+    if (pref.isSelected()) {
+        this.remoteTargetUserMacro.deselect();
+        this.remoteTargetHostnameMacro.deselect();
+    }
     this.remoteTargetList.remove(pref);
   }
 
@@ -108,7 +115,6 @@ public class RemoteTargetManager {
     // Update the macros for expansion
     this.remoteTargetUserMacro.setSelected(pref);
     this.remoteTargetHostnameMacro.setSelected(pref);
-    
 
     return true;
   }

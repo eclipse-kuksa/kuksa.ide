@@ -20,6 +20,8 @@ import org.eclipse.che.ide.api.app.AppContext;
 import org.eclipse.che.ide.api.macro.BaseMacro;
 import org.eclipse.che.kuksa.yocto.ide.YoctoConstants;
 import org.eclipse.che.kuksa.yocto.ide.YoctoSdk;
+import org.eclipse.che.ide.api.notification.NotificationManager;
+import org.eclipse.che.ide.api.notification.StatusNotification;
 
 /**
  * Provides path to the environment file of the selected SDK
@@ -32,39 +34,53 @@ public class YoctoSdkEnvPathMacro extends BaseMacro {
   private static final String KEY = "${yocto.sdk.env.path}";
   private static final String DEFAULT_VALUE = "/opt/";
   private static final String DESCRIPTION = "Environment file of the selected Yocto-based SDK";
+  private static final String FAIL_MESSAGE = "Could not expand " + KEY + " Macro. No SDK selected.";
 
-  private final AppContext appContext;
+  private final NotificationManager notificationManager;
   private final PromiseProvider promises;
-  private final CoreLocalizationConstant localizationConstants;
-  private String expandVal;
+  private YoctoSdk sel;
+  private boolean thrown;
 
   @Inject
-  public YoctoSdkEnvPathMacro(
-      AppContext appContext,
-      PromiseProvider promises,
-      CoreLocalizationConstant localizationConstants) {
+  public YoctoSdkEnvPathMacro(PromiseProvider promises,
+    NotificationManager notificationManager) {
     super(KEY, DEFAULT_VALUE, DESCRIPTION);
 
-    expandVal = "def";
-    this.appContext = appContext;
     this.promises = promises;
-    this.localizationConstants = localizationConstants;
+    this.notificationManager = notificationManager;
+    this.sel = null;
+    this.thrown = false;
   }
 
   /** {@inheritDoc} */
   @NotNull
   @Override
   public Promise<String> expand() {
-    return promises.resolve(expandVal);
-  }
-
-  public void setSelectedSdk(YoctoSdk pref) {
+    if (this.sel == null) {
+         if (!thrown) {
+            notificationManager.notify(new StatusNotification(FAIL_MESSAGE, StatusNotification.Status.WARNING,
+            StatusNotification.DisplayMode.FLOAT_MODE));
+            thrown = true;
+        }
+        return promises.resolve("");
+    }
+    
     String path = YoctoConstants.SDK_ROOT_PATH;
 
-    path += "/" + pref.getName();
-    path += "/" + pref.getVersion();
+    path += "/" + this.sel.getName();
+    path += "/" + this.sel.getVersion();
     path += "/env*";
-
-    this.expandVal = path;
+    
+    return promises.resolve(path);  
+  }
+  
+  public void setSelected(YoctoSdk pref) {
+    this.sel = pref;
+    this.thrown = false;
+  }
+  
+  public void deselect() {
+    this.sel = null;
+    this.thrown = false;
   }
 }

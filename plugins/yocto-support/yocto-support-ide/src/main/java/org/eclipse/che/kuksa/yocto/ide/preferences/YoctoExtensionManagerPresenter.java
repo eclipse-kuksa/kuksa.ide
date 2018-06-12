@@ -169,7 +169,7 @@ public class YoctoExtensionManagerPresenter extends AbstractPreferencePagePresen
     this.preferencesManager.setValue(this.preferenceName, yoctoSdkManager.toJsonString());
     this.preferencesManager.flushPreferences();
     dirty = false;
-        delegate.onDirtyChanged();
+    delegate.onDirtyChanged();
   }
 
   @Override

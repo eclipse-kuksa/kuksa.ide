@@ -23,9 +23,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
-
 import javax.validation.constraints.NotNull;
-
 import org.eclipse.che.ide.ui.window.Window;
 import org.eclipse.che.kuksa.ide.RemoteTarget;
 
@@ -120,7 +118,7 @@ public class RemoteTargetInputDialogViewImpl extends Window implements RemoteTar
     RemoteTarget deft = new RemoteTarget();
     hostnameValue.setValue(deft.getHostname());
     userValue.setValue(deft.getUser());
-    
+
     deft = null;
   }
 

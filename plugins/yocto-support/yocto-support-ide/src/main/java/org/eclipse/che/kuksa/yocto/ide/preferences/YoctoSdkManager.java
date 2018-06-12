@@ -41,7 +41,7 @@ public class YoctoSdkManager {
   //  private static final Logger LOG = LoggerFactory.getLogger(YoctoSdkManager.class);
   private List<YoctoSdk> yoctoSdkList;
   private YoctoLocalizationConstant local;
-  private NotificationManager notificationManager;
+  private final NotificationManager notificationManager;
   private final YoctoSdkEnvPathMacro yoctoSdkEnvPathMacro;
   private final YoctoSdkPathMacro yoctoSdkPathMacro;
   private CustomSilentCommandExecutor commandExecutor;
@@ -112,6 +112,12 @@ public class YoctoSdkManager {
     //    downloadSdk(pref);
     installSdk(pref);
     this.yoctoSdkList.add(pref);
+    
+    // To force notification throw
+    if (this.yoctoSdkList.size() == 1){
+        this.yoctoSdkEnvPathMacro.deselect();
+        this.yoctoSdkPathMacro.deselect();
+    }
 
     return true;
   }
@@ -137,6 +143,10 @@ public class YoctoSdkManager {
    * @param pref The preference you would like to delete
    */
   public void removeSdk(final YoctoSdk pref) {
+    if (pref.isSelected()) {
+        this.yoctoSdkEnvPathMacro.deselect();
+        this.yoctoSdkPathMacro.deselect();
+    }
     this.uninstallSdk(pref);
     this.yoctoSdkList.remove(pref);
   }
@@ -159,8 +169,8 @@ public class YoctoSdkManager {
     pref.setSelected(true);
 
     // Update the macros for expansion
-    this.yoctoSdkEnvPathMacro.setSelectedSdk(pref);
-    this.yoctoSdkPathMacro.setSelectedSdk(pref);
+    this.yoctoSdkEnvPathMacro.setSelected(pref);
+    this.yoctoSdkPathMacro.setSelected(pref);
 
     return true;
   }
@@ -187,8 +197,8 @@ public class YoctoSdkManager {
         this.yoctoSdkList.add(pref);
 
         if (pref.isSelected()) {
-          this.yoctoSdkEnvPathMacro.setSelectedSdk(pref);
-          this.yoctoSdkPathMacro.setSelectedSdk(pref);
+          this.yoctoSdkEnvPathMacro.setSelected(pref);
+          this.yoctoSdkPathMacro.setSelected(pref);
         }
       }
     }
