@@ -77,7 +77,7 @@ public class YoctoSdkManager {
     cmdLine += "cd " + YoctoSdkManager.SDK_TMP_PATH + " && ";
     cmdLine +=
         "wget --quiet -O " + getDownloadPath(pref) + " " + pref.getUrl() + " -o /dev/null && ";
-    // Check if was downloaded successfully    
+    // Check if was downloaded successfully
     cmdLine += "`[ -s " + getDownloadPath(pref) + " ] || exit 1` && ";
     cmdLine += "chmod +x " + getDownloadPath(pref) + " && ";
     cmdLine += getDownloadPath(pref) + " -y -d " + getInstallDirectory(pref);
@@ -118,7 +118,7 @@ public class YoctoSdkManager {
 
   private void uninstallSdk(final YoctoSdk pref) {
     String cmdLine = "rm -rf " + getInstallDirectory(pref) + " && ";
-    
+
     cmdLine += "rm -rf " + getDownloadPath(pref);
 
     CommandImpl uninstallCmd = new CommandImpl("Uninstall SDK", cmdLine, "yocto");

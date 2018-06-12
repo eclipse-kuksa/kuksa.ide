@@ -28,7 +28,8 @@ import org.eclipse.che.ide.machine.MachineResources;
 @Singleton
 public class YoctoCommandType implements CommandType {
 
-  public static final String COMMAND_TEMPLATE = "source ${yocto.sdk.env.path} && cd ${current.project.path} && echo \"Hello\"";
+  public static final String COMMAND_TEMPLATE =
+      "source ${yocto.sdk.env.path} && cd ${current.project.path} && echo \"Hello\"";
 
   private static final String ID = "yocto";
 

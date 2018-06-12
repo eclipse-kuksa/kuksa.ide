@@ -113,13 +113,13 @@ public class CustomSilentCommandExecutor {
 
                 console.getStdErrConsumer().accept(arg0);
 
-//                if (ignoreErrors != null) {
-//                  for (String ignoreError : ignoreErrors) {
-//                    if (arg0.getText().contains(ignoreError)) {
-//                      return;
-//                    }
-//                  }
-//                }
+                //                if (ignoreErrors != null) {
+                //                  for (String ignoreError : ignoreErrors) {
+                //                    if (arg0.getText().contains(ignoreError)) {
+                //                      return;
+                //                    }
+                //                  }
+                //                }
                 notification.setTitle(orginalTitle + " failed with " + arg0.getText());
                 notification.setStatus(StatusNotification.Status.FAIL);
               }

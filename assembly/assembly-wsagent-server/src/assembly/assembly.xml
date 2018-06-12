@@ -22,7 +22,7 @@
             <outputDirectory>webapps</outputDirectory>
             <outputFileNameMapping>ROOT.war</outputFileNameMapping>
             <includes>
-                <include>org.eclipse.che.sample:assembly-wsagent-war</include>
+                <include>org.eclipse.che.kuksa:assembly-wsagent-war</include>
             </includes>
         </dependencySet>
     </dependencySets>
