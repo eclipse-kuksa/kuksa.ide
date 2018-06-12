@@ -1,68 +1,87 @@
 {
-    "id": "yocto",
-    "creator": "ide",
-    "name": "Yocto",
-    "description": "Yocto development stack.",
-    "scope": "general",
-    "tags": [
-      "C++",
-      "gcc",
-      "make",
-      "Ubuntu",
-      "Git",
-      "yocto"
-    ],
-    "components": [
+  "description": "Yocto development stack.",
+  "scope": "general",
+  "tags": [
+    "C++",
+    "gcc",
+    "make",
+    "Ubuntu",
+    "Git",
+    "yocto"
+  ],
+  "workspaceConfig": {
+    "environments": {
+      "default": {
+        "recipe": {
+          "type": "dockerimage",
+          "content": "eclipse/cpp_gcc"
+        },
+        "machines": {
+          "dev-machine": {
+            "env": {},
+            "servers": {},
+            "volumes": {},
+            "installers": [
+              "org.eclipse.che.exec",
+              "org.eclipse.che.terminal",
+              "org.eclipse.che.ws-agent"
+            ],
+            "attributes": {
+              "memoryLimitBytes": "2147483648"
+            }
+          }
+        }
+      }
+    },
+    "projects": [],
+    "commands": [
       {
-        "name": "CPP",
-        "version": "4.8.4"
+        "commandLine": "source ${yocto.sdk.env.path} && cd ${current.project.path} && make",
+        "name": "Build",
+        "type": "yocto",
+        "attributes": {
+          "goal": "Build",
+          "previewUrl": ""
+        }
       },
       {
-        "name": "gcc",
-        "version": "4.8.4"
+        "commandLine": "source ${yocto.sdk.env.path} && cd ${current.project.path} && mkdir build && cd build && cmake ..",
+        "name": "CMake Configure",
+        "type": "yocto",
+        "attributes": {
+          "goal": "Common",
+          "previewUrl": ""
+        }
       },
       {
-        "name": "Make",
-        "version": "3.81"
+        "commandLine": "rm -rf ${current.project.path}/build",
+        "name": "Clean",
+        "type": "yocto",
+        "attributes": {
+          "goal": "Common",
+          "previewUrl": ""
+        }
       }
     ],
-    "workspaceConfig": {
-      "environments": {
-        "default": {
-          "machines": {
-            "dev-machine": {
-              "installers": [
-                "org.eclipse.che.exec", "org.eclipse.che.terminal", "org.eclipse.che.ws-agent"
-              ],
-              "servers": {},
-              "attributes" : {
-                "memoryLimitBytes": "2147483648"
-              }
-            }
-          },
-          "recipe": {
-            "content": "eclipse/cpp_gcc",
-            "type": "dockerimage"
-          }
-        }
-      },
-      "name": "default",
-      "defaultEnv": "default",
-      "description": null,
-      "commands": [
-        {
-          "name": "run",
-          "type": "custom",
-          "commandLine": "cd ${current.project.path} && make && ./a.out",
-          "attributes": {
-            "previewUrl": "",
-            "goal": "Run"
-          }
-        }
-      ]
+    "defaultEnv": "default",
+    "name": "default",
+    "links": []
+  },
+  "components": [
+    {
+      "version": "4.8.4",
+      "name": "CPP"
     },
-    "stackIcon": {
-      "name": "type-cpp.svg",
-      "mediaType": "image/svg+xml"
+    {
+      "version": "4.8.4",
+      "name": "gcc"
+    },
+    {
+      "version": "3.81",
+      "name": "Make"
     }
-  }
+  ],
+  "creator": "ide",
+  "name": "Yocto",
+  "id": "yocto"
+}

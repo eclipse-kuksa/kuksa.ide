@@ -1,0 +1,124 @@
+{
+  "description": "AGL development stack.",
+  "scope": "general",
+  "tags": [
+    "C++",
+    "gcc",
+    "make",
+    "Ubuntu",
+    "Git",
+    "yocto",
+    "AGL"
+  ],
+  "workspaceConfig": {
+    "environments": {
+      "default": {
+        "recipe": {
+          "type": "dockerimage",
+          "content": "eclipse/cpp_gcc"
+        },
+        "machines": {
+          "dev-machine": {
+            "env": {},
+            "servers": {},
+            "volumes": {},
+            "installers": [
+              "org.eclipse.che.exec",
+              "org.eclipse.che.terminal",
+              "org.eclipse.che.ws-agent"
+            ],
+            "attributes": {
+              "memoryLimitBytes": "2147483648"
+            }
+          }
+        }
+      }
+    },
+    "projects": [],
+    "commands": [
+      {
+        "commandLine": "source ${yocto.sdk.env.path} && cd ${current.project.path} && export RSYNC_TARGET=${remote.target.user}@${remote.target.hostname} && conf.d/autobuild/agl/autobuild package",
+        "name": "Package Widget",
+        "type": "yocto",
+        "attributes": {
+          "goal": "Build",
+          "previewUrl": ""
+        }
+      },
+      {
+        "commandLine": "source ${yocto.sdk.env.path} && cd ${current.project.path} && export RSYNC_TARGET=${remote.target.user}@${remote.target.hostname} && conf.d/autobuild/agl/autobuild build",
+        "name": "Build",
+        "type": "yocto",
+        "attributes": {
+          "goal": "Deploy",
+          "previewUrl": ""
+        }
+      },
+      {
+        "commandLine": "source ${yocto.sdk.env.path} && cd ${current.project.path} && conf.d/autobuild/agl/autobuild clean",
+        "name": "Clean",
+        "type": "yocto",
+        "attributes": {
+          "goal": "Common",
+          "previewUrl": ""
+        }
+      },
+      {
+        "commandLine": "source ${yocto.sdk.env.path} && cd ${current.project.path} && conf.d/autobuild/agl/autobuild distclean",
+        "name": "Clean All",
+        "type": "yocto",
+        "attributes": {
+          "goal": "Common",
+          "previewUrl": ""
+        }
+      },
+      {
+        "commandLine": "source ${yocto.sdk.env.path} && cd ${current.project.path} && export RSYNC_TARGET=${remote.target.user}@${remote.target.hostname} && conf.d/autobuild/agl/autobuild configure",
+        "name": "Configure",
+        "type": "yocto",
+        "attributes": {
+          "goal": "Common",
+          "previewUrl": ""
+        }
+      },
+      {
+        "commandLine": "source ${yocto.sdk.env.path} && cd ${current.project.path}/build && make widget-target-install",
+        "name": "Widget Remote Install",
+        "type": "yocto",
+        "attributes": {
+          "goal": "Deploy",
+          "previewUrl": ""
+        }
+      },
+      {
+        "commandLine": "source ${yocto.sdk.env.path} && cd ${current.project.path}/build && scp *.wgt ${remote.target.user}@${remote.target.hostname}",
+        "name": "Deploy Widget Install",
+        "type": "yocto",
+        "attributes": {
+          "goal": "Deploy",
+          "previewUrl": ""
+        }
+      }
+    ],
+    "defaultEnv": "default",
+    "name": "default",
+    "links": []
+  },
+  "components": [
+    {
+      "version": "4.8.4",
+      "name": "CPP"
+    },
+    {
+      "version": "4.8.4",
+      "name": "gcc"
+    },
+    {
+      "version": "3.81",
+      "name": "Make"
+    }
+  ],
+  "creator": "ide",
+  "name": "Automotive Grade Linux",
+  "id": "agl"
+}
