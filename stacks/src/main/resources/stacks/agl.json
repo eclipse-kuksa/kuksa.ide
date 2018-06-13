@@ -92,7 +92,7 @@
       },
       {
         "commandLine": "source ${yocto.sdk.env.path} && cd ${current.project.path}/build && scp *.wgt ${remote.target.user}@${remote.target.hostname}:.",
-        "name": "Deploy Widget Install",
+        "name": "Deploy Widget",
         "type": "yocto",
         "attributes": {
           "goal": "Deploy",
