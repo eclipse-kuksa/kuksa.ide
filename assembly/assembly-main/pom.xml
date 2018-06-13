@@ -34,6 +34,11 @@
             <artifactId>assembly-wsmaster-war</artifactId>
             <type>war</type>
         </dependency>
+	<dependency>
+            <groupId>org.eclipse.che.kuksa</groupId>
+            <artifactId>kuksa-samples</artifactId>
+            <type>jar</type>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -58,7 +63,14 @@
                     <tarLongFileMode>posix</tarLongFileMode>
                 </configuration>
             </plugin>
-            <plugin>
+	    <plugin>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.2.2</version>
+                <configuration>
+                    <packagingExcludes>**/che-core-ide-templates*.jar</packagingExcludes>
+                </configuration>
+            </plugin>
+	    <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
                 <executions>
@@ -78,6 +90,7 @@
                                     <overWrite>true</overWrite>
                                     <outputDirectory>${project.build.directory}/dependency</outputDirectory>
 				    <excludes>**/api.war</excludes>
+				    <excludes>**/samples.json</excludes>
                                 </artifactItem>
                             </artifactItems>
                         </configuration>

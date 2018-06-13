@@ -72,6 +72,7 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
                 <configuration>
+                    <packagingExcludes>WEB-INF/lib/che-core-ide-stacks*.jar</packagingExcludes>
                     <overlays>
                         <overlay>
                             <groupId>org.eclipse.che</groupId>
@@ -89,13 +90,6 @@
                     </overlays>
                 </configuration>
             </plugin>
-	    <plugin>
-              <artifactId>maven-war-plugin</artifactId>
-              <version>3.2.2</version>
-              <configuration>
-                <packagingExcludes>WEB-INF/lib/che-core-ide-stacks*.jar</packagingExcludes>
-              </configuration>
-	    </plugin> 
         </plugins>
     </build>
 </project>

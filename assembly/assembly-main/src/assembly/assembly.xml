@@ -43,6 +43,19 @@
                 <include>org.eclipse.che.kuksa:assembly-wsmaster-war</include>
             </includes>
         </dependencySet>
+	 <dependencySet>
+            <useProjectArtifact>false</useProjectArtifact>
+            <unpack>true</unpack>
+            <outputDirectory>templates</outputDirectory>
+            <includes>
+                <include>org.eclipse.che.kuksa:kuksa-samples</include>
+            </includes>
+            <unpackOptions>
+                <excludes>
+                    <exclude>META-INF/**</exclude>
+                </excludes>
+            </unpackOptions>
+        </dependencySet>
     </dependencySets>
 
     <fileSets>
