@@ -1,7 +1,0 @@
-image: eclipse/che:6.6.0
-
-build:
-  stage: build
-  script:
-    - mvn sortpom:sort fmt:format && mvn clean install
-  allow_failure: false
