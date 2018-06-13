@@ -1,0 +1,3 @@
+[[runners]]
+  [runners.docker]
+    volumes = ["/root/.m2:/home/user/.m2"]
