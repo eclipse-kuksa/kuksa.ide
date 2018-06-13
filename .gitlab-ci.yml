@@ -6,5 +6,5 @@ stages:
 build:
   stage: build
   script:
-    - mvn sortpom:sort fmt:format
+    - mvn sortpom:sort fmt:format && mvn clean install
   allow_failure: false
