@@ -1,4 +1,4 @@
-image: eclipse/che-dev:6.6.0
+image: eclipse/che-dev:nightly
 
 stages:
   - build
