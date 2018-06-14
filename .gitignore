@@ -74,3 +74,9 @@ docs/assets/imgs
 ##################
 plugins/plugin-terminal-ui/node_modules/
 plugins/plugin-terminal-ui/build/
+
+# Docs Sphinx #
+################
+docs/dev/build
+docs/dev/venv
+docs/venv
