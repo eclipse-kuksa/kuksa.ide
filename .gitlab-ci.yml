@@ -7,4 +7,20 @@ build:
   stage: build
   script:
     - mvn clean install -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
-  allow_failure: false
+  allow_failure: true
+
+pages:
+  image: pjcuadra/sphinx-doc
+  script:
+  - curl -sLO https://github.com/github/git-lfs/releases/download/v2.0.1/git-lfs-linux-amd64-2.0.1.tar.gz
+  - tar xf git-lfs-linux-amd64-2.0.1.tar.gz && mv git-lfs-2.0.1/git-lfs /usr/bin/ && rm -Rf git-lfs-2.0.1
+  - pip install -r docs/dev/requirements.txt
+  - git lfs pull
+  - cd docs/dev && make html && cd ..
+  - mv docs/dev/build/html/ public/
+  artifacts:
+    paths:
+    - public
+  only:
+  - master
+
