@@ -1,16 +1,10 @@
-image: eclipse/che-dev:nightly
+image: pjcuadra/sphinx-doc
 
 stages:
   - build
 
-build:
-  stage: build
-  script:
-    - mvn clean install -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
-  allow_failure: true
-
 pages:
-  image: pjcuadra/sphinx-doc
+  stage: build
   script:
   - curl -sLO https://github.com/github/git-lfs/releases/download/v2.0.1/git-lfs-linux-amd64-2.0.1.tar.gz
   - tar xf git-lfs-linux-amd64-2.0.1.tar.gz && mv git-lfs-2.0.1/git-lfs /usr/bin/ && rm -Rf git-lfs-2.0.1
