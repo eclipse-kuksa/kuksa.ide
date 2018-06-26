@@ -1,0 +1,25 @@
+{
+    "category": "Samples",
+    "commands": [],
+    "displayName": "agl-helloworld-service",
+    "name": "agl-helloworld-service",
+    "links": [],
+    "tags": [
+        "agl",
+        "gcc",
+        "cpp"
+    ],
+    "modules": [],
+    "mixins": [],
+    "source": {
+        "type": "git",
+        "location": "https://github.com/iotbzh/helloworld-service.git",
+        "parameters": {}
+    },
+    "attributes": {},
+    "path": "/helloworld-service",
+    "problems": [],
+    "projectType": "c",
+    "description": "A binding example for AGL"
+}
+

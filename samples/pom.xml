@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright (c) 2012-2018
+    All rights reserved. This program and the accompanying materials
+    are made available under the terms of the Eclipse Public License v1.0
+    which accompanies this distribution, and is available at
+    http://www.eclipse.org/legal/epl-v10.html
+
+--><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <artifactId>kuksa-ide-parent</artifactId>
+        <groupId>org.eclipse.che.kuksa</groupId>
+        <version>6.7.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+    <groupId>org.eclipse.che.kuksa</groupId>
+    <artifactId>kuksa-samples</artifactId>
+    <packaging>jar</packaging>
+    <name>Kuksa IDE :: Samples</name>
+    <dependencies>
+	<dependency>
+                <groupId>org.eclipse.che.core</groupId>
+                <artifactId>che-core-ide-templates</artifactId>
+                <type>jar</type>
+        </dependency>
+    </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.mycila</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <configuration>
+                    <excludes>
+                        <exclude>**/pom.xml</exclude>
+                        <exclude>**/*.json</exclude>
+                        <exclude>**/inject_samples.py</exclude>
+                        <exclude>**/type-ceylon.svg</exclude>
+                        <exclude>**/type-bitnami.svg</exclude>
+                        <exclude>**/type-zend.svg</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+            <!--Extract core's resources-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.1.1</version>
+                <executions>
+                    <execution>
+                        <id>analyze</id>
+                        <goals>
+                            <goal>analyze-only</goal>
+                        </goals>                
+                        <configuration>
+                            <failOnWarning>true</failOnWarning>
+                            <ignoredUnusedDeclaredDependencies>
+                              <ignoredUnusedDeclaredDependency>org.eclipse.che.core:che-core-ide-templates</ignoredUnusedDeclaredDependency>
+                            </ignoredUnusedDeclaredDependencies>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>unpack</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>unpack-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <overWrite>true</overWrite>
+                            <excludes>META-INF/**</excludes>
+                            <outputDirectory>src/main/resources</outputDirectory>
+                            <overWriteReleases>true</overWriteReleases>
+                            <overWriteSnapshots>true</overWriteSnapshots>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.2.1</version>
+                <executions>
+                    <execution>
+                        <configuration>
+                            <executable>python</executable>
+                            <workingDirectory>src/scripts/</workingDirectory>
+                            <arguments>
+                                <argument>inject_samples.py</argument>
+                            </arguments>    
+        
+                        </configuration>
+                        <id>python-build</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+	<resources>
+           <resource>
+	     <directory>src/main/resources</directory>
+          </resource>
+        </resources>
+    </build>
+</project>
