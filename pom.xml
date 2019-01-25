@@ -13,11 +13,11 @@
     <parent>
         <artifactId>maven-depmgt-pom</artifactId>
         <groupId>org.eclipse.che.depmgt</groupId>
-        <version>6.7.0-SNAPSHOT</version>
+        <version>6.17.0</version>
     </parent>
     <groupId>org.eclipse.che.kuksa</groupId>
     <artifactId>kuksa-ide-parent</artifactId>
-    <version>6.7.0-SNAPSHOT</version>
+    <version>6.17.0</version>
     <packaging>pom</packaging>
     <name>Kuksa IDE</name>
     <url>https://www.eclipse.org/che/</url>
@@ -29,12 +29,12 @@
         </license>
     </licenses>
     <scm>
-        <connection>scm:git:ssh://git@gitlab.idial.institute:2222/pedro.cuadrachamorro/kuksa-ide.git</connection>
-        <developerConnection>scm:git:ssh://git@gitlab.idial.institute:2222/pedro.cuadrachamorro/kuksa-ide.git</developerConnection>
+        <connection>scm:git:git@github.com:eclipse/kuksa.ide.git</connection>
+        <developerConnection>scm:git@github.com:eclipse/kuksa.ide.git</developerConnection>
         <tag>HEAD</tag>
     </scm>
     <properties>
-        <che.version>6.7.0-SNAPSHOT</che.version>
+        <che.version>6.17.0</che.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -117,28 +117,35 @@
         </dependencies>
     </dependencyManagement>
     <repositories>
+        <!-- Maven2 Repository, quick access -->
         <repository>
-            <id>codenvy-public-repo</id>
-            <name>codenvy public</name>
-            <url>https://maven.codenvycorp.com/content/groups/public/</url>
+            <id>maven-central</id>
+            <name>maven2 repository</name>
+            <url>http://central.maven.org/maven2/</url>
         </repository>
-        <repository>
-            <id>codenvy-public-snapshots-repo</id>
-            <name>codenvy public snapshots</name>
-            <url>https://maven.codenvycorp.com/content/repositories/codenvy-public-snapshots/</url>
-        </repository>
+        <!-- ossrh Repository, contains snapshots (e.g. 6.18.0-SNAPSHOT), but much slower -->
+        <!--
+        <pluginRepository>
+            <id>ossrh</id>
+            <name>central public snapshots</name>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+        </pluginRepository>
+        -->
     </repositories>
     <pluginRepositories>
         <pluginRepository>
-            <id>codenvy-public-repo</id>
-            <name>codenvy public</name>
-            <url>https://maven.codenvycorp.com/content/groups/public/</url>
+            <id>maven-central</id>
+            <name>maven2 repository</name>
+            <url>http://central.maven.org/maven2/</url>
         </pluginRepository>
+        <!-- ossrh Repository, contains snapshots (e.g. 6.18.0-SNAPSHOT), but much slower -->
+        <!--
         <pluginRepository>
-            <id>codenvy-public-snapshots-repo</id>
-            <name>codenvy public snapshots</name>
-            <url>https://maven.codenvycorp.com/content/repositories/codenvy-public-snapshots/</url>
+            <id>ossrh</id>
+            <name>central public snapshots</name>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
         </pluginRepository>
+        -->
     </pluginRepositories>
     <build>
         <plugins>

@@ -13,7 +13,7 @@
     <parent>
         <artifactId>kuksa-ide-assembly-parent</artifactId>
         <groupId>org.eclipse.che.kuksa</groupId>
-        <version>6.7.0-SNAPSHOT</version>
+        <version>6.17.0</version>
     </parent>
     <artifactId>assembly-main</artifactId>
     <packaging>pom</packaging>

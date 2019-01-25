@@ -16,7 +16,7 @@
     <parent>
         <artifactId>plugin-parent</artifactId>
         <groupId>org.eclipse.che.kuksa</groupId>
-        <version>6.7.0-SNAPSHOT</version>
+        <version>6.17.0</version>
     </parent>
     <artifactId>yocto-support-parent</artifactId>
     <packaging>pom</packaging>
@@ -24,16 +24,4 @@
     <modules>
         <module>yocto-support-ide</module>
     </modules>
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>net.ltgt.gwt.maven</groupId>
-                <artifactId>gwt-maven-plugin</artifactId>
-                <extensions>true</extensions>
-                <configuration>
-                    <moduleName>org.eclipse.che.kuksa.yocto.ide.YoctoSupportExtension</moduleName>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
 </project>

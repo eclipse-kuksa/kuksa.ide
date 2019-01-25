@@ -13,7 +13,7 @@
     <parent>
         <artifactId>remote-target-parent</artifactId>
         <groupId>org.eclipse.che.kuksa</groupId>
-        <version>6.7.0-SNAPSHOT</version>
+        <version>6.17.0</version>
     </parent>
     <artifactId>remote-target-ide</artifactId>
     <packaging>gwt-lib</packaging>
@@ -65,7 +65,7 @@
         <dependency>
           <groupId>org.eclipse.che.core</groupId>
           <artifactId>che-core-api-model</artifactId>
-          <version>6.7.0-SNAPSHOT</version>
+          <version>${che.version}</version>
         </dependency>
     </dependencies>
     <build>
