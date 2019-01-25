@@ -12,8 +12,6 @@ import org.eclipse.che.ide.api.extension.Extension;
 
 /**
  * Server service extension that registers action which calls a service.
- *
- * @author Edgar Mueller
  */
 @Singleton
 @Extension(title = "Yocto Support", version = "0.0.1")
