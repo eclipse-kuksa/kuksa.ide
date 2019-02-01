@@ -36,6 +36,7 @@
                         <exclude>**/pom.xml</exclude>
                         <exclude>**/*.json</exclude>
                         <exclude>**/inject_stacks.py</exclude>
+                        <exclude>**/type-apache-camel.svg</exclude>
                         <exclude>**/type-ceylon.svg</exclude>
                         <exclude>**/type-bitnami.svg</exclude>
                         <exclude>**/type-zend.svg</exclude>
