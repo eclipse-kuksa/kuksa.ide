@@ -19,6 +19,11 @@ This repository contains documentation and implementation to setup an Eclipse Ch
 AGL represents an automotive specific Linux distribution specifically designed as open software stack for connected car scenarios.
 The following video features an example on how to use the Kuksa-IDE for developing AGL applications and services running on a [Rover](https://wiki.eclipse.org/APP4MC/Rover)
 
+## Version
+
+The Eclipse Che Kuksa instance relies on Che 6.10.
+However, there a plans to port the Kuksa-specific extensions, i.e. the developed [plugins](https://github.com/eclipse/kuksa.ide/tree/master/plugins), to Che 7.0
+
 
 # Building & Deploying
 
