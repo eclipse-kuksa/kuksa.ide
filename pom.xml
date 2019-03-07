@@ -13,11 +13,11 @@
     <parent>
         <artifactId>maven-depmgt-pom</artifactId>
         <groupId>org.eclipse.che.depmgt</groupId>
-        <version>6.17.0</version>
+        <version>6.10.0</version>
     </parent>
     <groupId>org.eclipse.che.kuksa</groupId>
     <artifactId>kuksa-ide-parent</artifactId>
-    <version>6.17.0</version>
+    <version>6.10.0</version>
     <packaging>pom</packaging>
     <name>Kuksa IDE</name>
     <url>https://www.eclipse.org/che/</url>
@@ -34,7 +34,7 @@
         <tag>HEAD</tag>
     </scm>
     <properties>
-        <che.version>6.17.0</che.version>
+        <che.version>6.10.0</che.version>
     </properties>
     <dependencyManagement>
         <dependencies>

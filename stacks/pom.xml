@@ -12,7 +12,7 @@
     <parent>
         <artifactId>kuksa-ide-parent</artifactId>
         <groupId>org.eclipse.che.kuksa</groupId>
-        <version>6.17.0</version>
+        <version>6.10.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <groupId>org.eclipse.che.kuksa</groupId>
