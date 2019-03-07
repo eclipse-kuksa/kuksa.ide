@@ -1,6 +1,6 @@
 <!--
 ******************************************************************************
-Copyright (c) 2018 Dortmund University of Applied Sciences and Arts
+Copyright (c) 2019 Dortmund University of Applied Sciences and Arts
 
 All rights reserved. This program and the accompanying materials
 are made available under the terms of the Eclipse Public License v2.0
@@ -9,23 +9,27 @@ https://www.eclipse.org/org/documents/epl-2.0/index.php
 
 Contributors:
     Robert Hoettger - initial readme files added
+    Philipp Heisig  - documentation added
 *****************************************************************************
 -->
 
 # Kuksa-IDE Repo
 
-This repository contains documentation and implementation to setup an Eclipse Che Kuksa instance, that incorporates an Automotive Grade Linux (AGL) workspace with Yocto support.
+This repository contains documentation and implementation to setup an Eclipse Che Kuksa instance, which incorporates an Automotive Grade Linux (AGL) stack with Yocto support.
 AGL represents an automotive specific Linux distribution specifically designed as open software stack for connected car scenarios.
 The following video features an example on how to use the Kuksa-IDE for developing AGL applications and services running on a [Rover](https://wiki.eclipse.org/APP4MC/Rover)
 
-[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/lK8z8SSrpuY/0.jpg)](https://www.youtube.com/watch?v=lK8z8SSrpuY)
 
-## Documentation Build
+# Building & Deploying
 
-The Kuksa-IDE documentation is available [here](https://kuksa-che-ide.readthedocs.io/en/latest/).
+All the necessary steps for building and running a Eclipse Che Kuksa instance are available [here](https://kuksa-che-ide.readthedocs.io/en/latest/).
 
 [![Documentation Status](https://readthedocs.org/projects/kuksa-che-ide/badge/?version=latest)](https://kuksa-che-ide.readthedocs.io/en/latest/?badge=latest)
 
+## Prerequisite
+
+* A running docker instance on a Linux host system (tested with Ubuntu 18.04).
+* Maven
 
 # Model-driven Development of AGL Applications and Services
 
@@ -36,11 +40,11 @@ For more information please refer to the [AGL documentation](http://docs.automot
 
 The following sections demonstrate the development of AGL applications/services in a model-driven way based on the tool RAML2AGL (cf. Section [Raml2AGL](#raml2agl) ) as well as the building and deployment of AGL applications/services to a remote device running AGL (cf. Section [Building & Deploying](building-and-deploying)).
 
-## Prerequiste
+## Prerequisite
 
 * Eclipse Che Kuksa instance including the AGL stack
 
-## Setting up Eclipse Che KUKSA
+## Setting up Eclipse Che Kuksa
 
 The following steps are necessary if you want to build and deploy AGL applications & services within Che:
 
@@ -138,7 +142,4 @@ raml2agl -i <model>.raml [-o <output_dir>] [-s <output_sources_dir>] [-h <output
 ### Example Application and Service
 This section features an example application as well as service to demonstrate the usage of RAML2AGL within Eclipse Che Kuksa.  
 
-
-## Building and Deploying
-
-tbd
+_tbd_
