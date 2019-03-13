@@ -1,7 +1,7 @@
 Quick Start
 -----------
 
-Kuksa IDE is built as a full custom Eclipse Che Assembly. 
+Kuksa IDE is built as a full custom Eclipse Che Assembly.
 Therefore, it includes all assembly components specified and described
 in `Eclipse Che Assembly
 <https://www.eclipse.org/che/docs/assemblies.html>`_ are included
@@ -22,8 +22,14 @@ Deploying the Assembly
 ++++++++++++++++++++++
 
 .. code-block:: bash
-
     cd <kuksa-ide-root-path>/assembly/assembly-main/target/eclipse-che-<version>/eclipse-che-<version>
+
+Running as Single User:
+
+.. code-block:: bash
     docker run -it --rm -v /var/run/docker.sock:/var/run/docker.sock -v `pwd`:/assembly -v /tmp:/data -e CHE_PREDEFINED_STACKS_RELOAD__ON__START=true eclipse/che start
 
+Running as Multi User:
 
+.. code-block:: bash
+    docker run -it -e CHE_MULTIUSER=true --rm -v /var/run/docker.sock:/var/run/docker.sock -v `pwd`:/assembly -v /tmp:/data -e CHE_PREDEFINED_STACKS_RELOAD__ON__START=true eclipse/che start
