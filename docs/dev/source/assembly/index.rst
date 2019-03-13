@@ -25,7 +25,7 @@ running;
 .. code-block:: bash
 
     cd <kuksa-ide-root-path>
-    docker run -ti -v /tmp:/home/user/.m2 -v `pwd`:/home/user/che-build -v `pwd`:/projects eclipse/che-dev:6.10.0 sh -c "mvn clean install"
+    docker run -ti -v ~/.m2:/home/user/.m2 -v `pwd`:/home/user/che-build -v `pwd`:/projects eclipse/che-dev:6.10.0 sh -c "mvn clean install"
 
 
 Eclipse Che's developers recommend mounting Maven repo (-v ~/.m2:/home/user/.m2)
@@ -136,7 +136,7 @@ To build our Eclipse Che Assembly you can follow the steps in the article
 .. note::
 
     Building Eclipse Che Assembly using the procedure don't allow the user
-    to have a look at anythink that is outside the workspace. However, it's
+    to have a look at anything that is outside the workspace. However, it's
     easier to start testing and even debugging your IDE extensions.
 
 

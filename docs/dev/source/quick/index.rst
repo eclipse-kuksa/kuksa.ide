@@ -15,7 +15,7 @@ Build the assembly by running;
 .. code-block:: bash
 
     cd <kuksa-ide-root-path>
-    docker run -ti -v /tmp:/home/user/.m2 -v `pwd`:/home/user/che-build -v `pwd`:/projects eclipse/che-dev:6.10.0 sh -c "mvn clean install"
+    docker run -ti -v ~/.m2:/home/user/.m2 -v `pwd`:/home/user/che-build -v `pwd`:/projects eclipse/che-dev:6.10.0 sh -c "mvn clean install"
 
 
 Deploying the Assembly
