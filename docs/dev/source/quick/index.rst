@@ -21,15 +21,26 @@ Build the assembly by running;
 Deploying the Assembly
 ++++++++++++++++++++++
 
+
+
 .. code-block:: bash
+
     cd <kuksa-ide-root-path>/assembly/assembly-main/target/eclipse-che-<version>/eclipse-che-<version>
 
 Running as Single User:
 
 .. code-block:: bash
-    docker run -it --rm -v /var/run/docker.sock:/var/run/docker.sock -v `pwd`:/assembly -v /tmp:/data -e CHE_PREDEFINED_STACKS_RELOAD__ON__START=true eclipse/che start
+
+    docker run -it --rm -v /var/run/docker.sock:/var/run/docker.sock -v `pwd`:/assembly -v /tmp:/data -e CHE_PREDEFINED_STACKS_RELOAD__ON__START=true eclipse/che:6.10.0 start
 
 Running as Multi User:
 
 .. code-block:: bash
-    docker run -it -e CHE_MULTIUSER=true --rm -v /var/run/docker.sock:/var/run/docker.sock -v `pwd`:/assembly -v /tmp:/data -e CHE_PREDEFINED_STACKS_RELOAD__ON__START=true eclipse/che start
+
+    docker run -it --rm -v /var/run/docker.sock:/var/run/docker.sock -v `pwd`:/assembly -v /tmp:/data -e CHE_PREDEFINED_STACKS_RELOAD__ON__START=true -e CHE_MULTIUSER=true eclipse/che:6.10.0 start
+
+Custom Stacks
+#############
+
+In case a custom stack, such as the AGL stack, is not included within the Che instance for some reasons, one can use swagger to add it.
+Therefore, open *YOUR_IP*:8080/swagger/#!/stack/createStack , click on stack -> stack post, add the according json (e.g. https://github.com/eclipse/kuksa.ide/blob/master/stacks/src/main/resources/stacks/agl.json), and post it via the "Try it out!" button.

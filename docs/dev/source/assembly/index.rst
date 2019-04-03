@@ -146,23 +146,28 @@ Deploying the Assembly within Eclipse Che's Docker
 ++++++++++++++++++++++++++++++++++++++++++++++++++
 
 .. code-block:: bash
+
     cd <kuksa-ide-root-path>/assembly/assembly-main/target/eclipse-che-<version>/eclipse-che-<version>
 
 Running as Single User:
 
 .. code-block:: bash
-    docker run -it --rm -v /var/run/docker.sock:/var/run/docker.sock -v `pwd`:/assembly -v /tmp:/data -e CHE_PREDEFINED_STACKS_RELOAD__ON__START=true eclipse/che start
+
+    docker run -it --rm -v /var/run/docker.sock:/var/run/docker.sock -v `pwd`:/assembly -v /tmp:/data -e CHE_PREDEFINED_STACKS_RELOAD__ON__START=true eclipse/che:6.10.0 start
 
 Running as Multi User:
 
 .. code-block:: bash
-    docker run -it -e CHE_MULTIUSER=true --rm -v /var/run/docker.sock:/var/run/docker.sock -v `pwd`:/assembly -v /tmp:/data -e CHE_PREDEFINED_STACKS_RELOAD__ON__START=true eclipse/che start
 
-.. warning::
+    docker run -it --rm -v /var/run/docker.sock:/var/run/docker.sock -v `pwd`:/assembly -v /tmp:/data -e CHE_PREDEFINED_STACKS_RELOAD__ON__START=true -e CHE_MULTIUSER=true eclipse/che:6.10.0 start
 
-    The previous command includes optional arguments denoted by :code:`[arg]`. If you want
-    to keep any (or all) remove the brackets :code:`[]`.
 
 If you want to run the Kuksa IDE in multi user mode add :code:`-e CHE_MULTIUSER=true`. Similarly,
 if from the previous run you added news custom stacks to the assembly you'll need to add
 :code:`-e CHE_PREDEFINED_STACKS_RELOAD__ON__START=true`.
+
+Custom Stacks
+#############
+
+In case a custom stack, such as the AGL stack, is not included within the Che instance for some reasons, one can use swagger to add it.
+Therefore, open *YOUR_IP*:8080/swagger/#!/stack/createStack , click on stack -> stack post, add the according json (e.g. https://github.com/eclipse/kuksa.ide/blob/master/stacks/src/main/resources/stacks/agl.json), and post it via the "Try it out!" button.
