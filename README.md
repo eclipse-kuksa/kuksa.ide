@@ -21,7 +21,7 @@ The following video features an example on how to use the Kuksa-IDE for developi
 
 ## Version
 
-The Eclipse Che Kuksa instance relies on Che 6.10.
+The current Eclipse Che Kuksa instance relies on Che 6.10.
 However, there a plans to port the Kuksa-specific extensions, i.e. the developed [plugins](https://github.com/eclipse/kuksa.ide/tree/master/plugins), to Che 7.0
 
 
@@ -55,7 +55,7 @@ The following steps are necessary if you want to build and deploy AGL applicatio
 
 * Create a new workspace with Automotive Grade Linux (AGL) as selected stack
 * Go to "Profile" &rightarrow; "Preferences" &rightarrow; "Remote Targets" and add a new Remote Target with the device IP and the according User, e.g. "root". Then select the Target.
-* Go to Profile &rightarrow; Preferences &rightarrow; Yocto Settings and add a new SDK with a Name, e.g. "agl-rover", a Version, e.g. "1.0.0" and "https://owncloud.idial.institute/s/Mm7tPJJ337QJpbR/download" as Donwload Link. Then select the added Yocto SDK.
+* Go to Profile &rightarrow; Preferences &rightarrow; Yocto Settings and add a new SDK with a Name, e.g. "agl-rover", a Version, e.g. "1.0.0" and a link to an appropriate AGL SDK, e.g. the AGL [Rover](https://github.com/app4mc-rover) SDK from "https://owncloud.idial.institute/s/kpntqpTz8cgx7X6/download", as Download Link. Then select the added Yocto SDK.
 * To avoid connection trouble, open the Terminal and ssh into the appropriate Device:
 `
 ssh <User>@<IP>

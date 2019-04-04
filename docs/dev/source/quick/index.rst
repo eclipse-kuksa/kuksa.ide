@@ -10,7 +10,7 @@ into Kuksa IDE's build system.
 Build the Assembly
 ++++++++++++++++++
 
-Build the assembly by running;
+Build the assembly by running:
 
 .. code-block:: bash
 
@@ -20,7 +20,6 @@ Build the assembly by running;
 
 Deploying the Assembly
 ++++++++++++++++++++++
-
 
 
 .. code-block:: bash
