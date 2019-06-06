@@ -27,5 +27,5 @@ A Che Kuksa Plugin allows to establish an end-to-end workflow from the IDE via t
 
 ## Version
 
-The current Eclipse Che Kuksa instance relies on Che 6.10 (cf.).
+The current Eclipse Che Kuksa instance relies on Che 6.10 (cf. [che-6](https://github.com/eclipse/kuksa.ide/tree/master/che-6)).
 However, there a plans to port the Kuksa-specific extensions, i.e. the developed [plugins](https://github.com/eclipse/kuksa.ide/tree/master/plugins), to Che 7.0
