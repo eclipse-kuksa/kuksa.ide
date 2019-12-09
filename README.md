@@ -23,9 +23,10 @@ AGL represents an automotive specific Linux distribution specifically designed a
 The following video features an example on how to use the Kuksa-IDE for developing AGL applications and services running on a [Rover](https://wiki.eclipse.org/APP4MC/Rover)
 
 * App Store integration:
-A Che Kuksa Plugin allows to establish an end-to-end workflow from the IDE via the Appstore and Hawkbit to the device. _tbd_
+A set Visual Studio Code extensions to establish an end-to-end workflow from the IDE via the Appstore and Hawkbit to the device. These VSCode extensions can be installed into Eclipse Che or Gitpod as .vsix files.
 
 ## Version
 
 The current Eclipse Che Kuksa instance relies on Che 6.10 (cf. [che-6](https://github.com/eclipse/kuksa.ide/tree/master/che-6)).
-However, there a plans to port the Kuksa-specific extensions, i.e. the developed [plugins](https://github.com/eclipse/kuksa.ide/tree/master/plugins), to Che 7.0
+
+The Kuksa VSCode extensions extends the VSCode IDE, so that developers can do OTA updates directly from the IDE
