@@ -70,11 +70,16 @@ In this way, changes to the IDE can be be done.
 2. Open a new terminal (Menu bar / Ctrl+Shift+Ö / cmd+shift+P on MAC) in Visual Studio Code
 3. Install prerequisite: 
    * "npm install"
-   * "npm install vsce" (optional, depends on the system configuration)
+   * "npm install vsce" 
    * Install .vsix extensions from https://marketplace.visualstudio.com/items?itemName=fabiospampinato.vscode-install-vsix
-4. Run "vsce package". A "xxx.vsix" file should be generated
+4. Run "vsce package". A "xxx.vsix" file should be generated ( in-case of any errors delete the node_modules directory and install vsce again)
 5. Run "Extensions:Install from VSIX" and select the accoring .vsix file
 6. Reload VSCode
+
+### Development Flow
+
+1. Press ´F5´ from the Editor.
+2. An ´Extension Development Window´ will open which enables to test ´Kuksa Extensions´ in real time.
 
 ### Using Kuksa IDE
 
@@ -126,10 +131,3 @@ In OSX, if you are running into `bash: code: command not found` please open the 
 2. Generate YAML config file through form
 3. Generate Docker image
 4. Push docker image (.tar) through app-publisher
-
-## Work in progress
-
-1. File system not compatible with online IDE (gitpod)
-2. Custom Gitpod repo for Kuksa
-3. Verification and validation in Kuksa forms
-4. Error Handling
