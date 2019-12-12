@@ -78,8 +78,8 @@ In this way, changes to the IDE can be be done.
 
 ### Development Flow
 
-1. Press ´F5´ from the Editor.
-2. An ´Extension Development Window´ will open which enables to test ´Kuksa Extensions´ in real time.
+1. Press `F5` from the Editor.
+2. An Extension Development Window will open which enables to test Kuksa Extensions in real time.
 
 ### Using Kuksa IDE
 
