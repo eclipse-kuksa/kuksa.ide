@@ -9,7 +9,7 @@ Therefore, a build script allows to generate target-specific docker images.
 Based on a generated .yaml config file and a Python-based script, the resulting docker images can then be published to the app store and hawkbit respectively.
 This process is depicted in the following image:
 
-![](images/kuksa_ide.png)
+![](https://github.com/nilbro/kuksa.ide/blob/master/VSCode-Extensions/images/kuksa_ide.png)
 
 ## Architecture
 
@@ -90,7 +90,7 @@ Open the command palette (View -> Command Palette / Ctrl+Shift+P) and search for
 1. Provide folder/workspace name
 2. Project tree will be generated as follows:
 
-![](images/tree.png)
+![](https://github.com/nilbro/kuksa.ide/blob/master/VSCode-Extensions/images/tree.png)
 
 *The project folder will be created inside the folder VSCode was open (by default the $HOME directory)*
 
@@ -106,7 +106,7 @@ Open the command palette (View -> Command Palette / Ctrl+Shift+P) and search for
 1. Open a Kuksa project in VSCode. 
 2. Run command and provide the details:
 
-![](images/yaml_form.png)
+![](https://github.com/nilbro/kuksa.ide/blob/master/VSCode-Extensions/images/yaml_form.png)
 
 
 3. Check if kuksa.yaml file is populated.
