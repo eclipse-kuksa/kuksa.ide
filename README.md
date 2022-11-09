@@ -13,6 +13,8 @@ Contributors:
 *****************************************************************************
 -->
 
+# THIS REPOSITORY HAS BEEN ARCHIVED, see [issue 10](https://github.com/eclipse/kuksa.ide/issues/10) for details.
+
 # Kuksa-IDE Repo
 
 ## Che-6
