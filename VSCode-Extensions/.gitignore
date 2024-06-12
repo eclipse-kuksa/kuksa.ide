@@ -1,16 +1,4 @@
-
-.vscode/
-
 *.vsix
-
 out/
-
 node_modules/
-
-kuksa/kuksa.yaml
-
-kuksa/temp.txt
-
-Dockerfile
-
 package-lock.json
